@@ -1,3 +1,8 @@
+![C#](https://img.shields.io/badge/C%23-239120?style=flat-square&logo=c-sharp&logoColor=white)
+![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
+![WPF](https://img.shields.io/badge/UI-WPF-blue?style=flat-square)
+![Architecture](https://img.shields.io/badge/Pattern-MVVM-orange?style=flat-square)
+
 # EasySave - Sauvegarde ProSoft
 
 ## Contexte du Projet
