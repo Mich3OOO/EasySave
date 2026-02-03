@@ -1,7 +1,7 @@
 ![C#](https://img.shields.io/badge/C%23-11-239120)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![WPF](https://img.shields.io/badge/WPF-MVVM-blue)
-![Visual Studio](https://img.shields.io/badge/Visual_Studio-2022-purple)
+![Visual Studio](https://img.shields.io/badge/Visual_Studio-2026-purple)
 
 # EasySave - Sauvegarde ProSoft
 
