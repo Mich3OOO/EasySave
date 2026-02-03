@@ -1,7 +1,7 @@
-![C#](https://img.shields.io/badge/C%23-239120?style=flat-square&logo=c-sharp&logoColor=white)
-![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
-![WPF](https://img.shields.io/badge/UI-WPF-blue?style=flat-square)
-![Architecture](https://img.shields.io/badge/Pattern-MVVM-orange?style=flat-square)
+![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=c-sharp&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat&logo=.net&logoColor=white)
+![WPF](https://img.shields.io/badge/WPF-MVVM-0078D7?style=flat&logo=windows&logoColor=white)
+![Visual Studio](https://img.shields.io/badge/Visual%20Studio-2022-5C2D91?style=flat&logo=visual-studio&logoColor=white)
 
 # EasySave - Sauvegarde ProSoft
 
