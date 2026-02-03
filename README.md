@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # EasySave - Sauvegarde ProSoft
-=======
-# EasySave - Solution de Sauvegarde ProSoft
->>>>>>> c5f572bb673ee68161f8279f5ccb63ef2b9b37f1
 
 ## Contexte du Projet
 
