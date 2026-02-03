@@ -1,12 +1,12 @@
-# 💾 EasySave - Solution de Sauvegarde ProSoft
+# EasySave - Solution de Sauvegarde ProSoft
 
-## 📋 Contexte du Projet
+## Contexte du Projet
 
 Ce projet s'inscrit dans le cursus PGE A3 FISA INFO - Génie Logiciel 2526 pour le module de Programmation Système.
 
 Développé pour l'éditeur de logiciels ProSoft, EasySave est une solution de sauvegarde destinée à être commercialisée (200 €HT + maintenance). Le projet suit un cycle de développement itératif simulant une évolution logicielle réelle, passant d'une application Console à une interface graphique complète avec gestion du parallélisme.
 
-## 🚀 Fonctionnalités Principales
+## Fonctionnalités Principales
 
 L'application permet de gérer des travaux de sauvegarde (complets ou différentiels) avec une gestion précise des logs et des états en temps réel.
 
@@ -18,7 +18,7 @@ L'application permet de gérer des travaux de sauvegarde (complets ou différent
 * État en temps réel (State) : Suivi de la progression des sauvegardes (JSON).
 * Ligne de commande : Exécution via arguments (ex: `EasySave.exe 1-3`).
 
-### 📅 Roadmap des Versions (Cycle de Vie)
+### Roadmap des Versions (Cycle de Vie)
 
 Le développement est découpé en 3 livrables majeurs :
 
@@ -32,7 +32,7 @@ Le développement est découpé en 3 livrables majeurs :
 | Logiciel Métier | Non | Non | Interdiction lancement | Pause automatique |
 | Priorité Fichiers | Non | Non | Non | Oui |
 
-## 🛠️ Stack Technique
+## Stack Technique
 
 * Langage : C#
 * Framework : .NET 8.0
