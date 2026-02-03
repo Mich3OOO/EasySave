@@ -27,15 +27,21 @@ L'application permet de gérer des travaux de sauvegarde (complets ou différent
 
 Le développement est découpé en 3 livrables majeurs :
 
-| Fonctionnalité | Version 1.0 | Version 1.1 | Version 2.0 | Version 3.0 |
-| --- | --- | --- | --- | --- |
-| Interface | Console | Console | GUI (WPF/MVVM) | GUI (WPF/MVVM) |
-| Nb. Travaux | 5 max | 5 max | Illimité | Illimité |
-| Format Logs | JSON | JSON / XML | JSON / XML | JSON / XML (Centralisé Docker) |
-| Exécution | Séquentielle | Séquentielle | Séquentielle | Parallèle |
-| Cryptage | Non | Non | Oui (CryptoSoft) | Oui (Mono-instance) |
-| Logiciel Métier | Non | Non | Interdiction lancement | Pause automatique |
-| Priorité Fichiers | Non | Non | Non | Oui |
+Le tableau suivant détaille l'évolution des fonctionnalités à travers les différentes itérations du projet :
+
+| Fonction | Version 1.0 | Version 1.1 | Version 2.0 |
+| :--- | :--- | :--- | :--- |
+| **Interface Graphique** | Console | Console | Graphique (WPF) |
+| **Multi-langues** | Anglais et Français | Anglais et Français | Anglais et Français |
+| **Travaux de sauvegarde** | Limité à 5 | Limité à 5 | Illimité |
+| **Fichier Log journalier** | Oui | Oui | Oui (Infos suppl. sur temps de cryptage) |
+| **Utilisation d'une DLL pour le log** | Oui | Oui | Oui |
+| **Fichier Etat** | Oui | Oui | Oui |
+| **Fonctionnement Sauvegarde** | Mono ou séquentielle | Mono ou séquentielle | Mono ou séquentielle |
+| **Arrêt si logiciel métier détecté** | Non | Non | Oui |
+| **Ligne de commande** | Oui | Oui | Identique version 1.0 |
+| **Utilisation de « CryptoSoft »** | Non | Non | Oui |
+
 
 ## Stack Technique
 
