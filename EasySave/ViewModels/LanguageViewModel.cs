@@ -1,27 +1,28 @@
 using System.Text.Json;
+using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
 public class LanguageViewModel
 {
     private readonly string _dictionaryPath;
-    private Dictionary<string, Dictionary<string, string>> _dictionary;
-    private string _currentLanguage;
+    private Dictionary<string, Dictionary<Languages, string>> _dictionary;
+    private Languages _currentLanguage;
 
     public LanguageViewModel(string dictionaryPath)
     {
         _dictionaryPath = dictionaryPath;
-        _dictionary = new Dictionary<string, Dictionary<string, string>>();
-        _currentLanguage = "en"; // Langue par défaut
+        _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
+        _currentLanguage = Languages.EN; // Langue par défaut
         _loadDictionary();
     }
 
-    public void SetLanguage(string language)
+    public void SetLanguage(Languages language)
     {
-        _currentLanguage = language.ToLower();
+        _currentLanguage = language;
     }
 
-    public string GetCurrentLanguage()
+    public Languages GetCurrentLanguage()
     {
         return _currentLanguage;
     }
@@ -45,7 +46,7 @@ public class LanguageViewModel
             if (File.Exists(_dictionaryPath))
             {
                 string jsonContent = File.ReadAllText(_dictionaryPath);
-                var loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(jsonContent);
+                var loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<Languages, string>>>(jsonContent);
                 
                 if (loadedDictionary != null)
                 {
@@ -56,7 +57,7 @@ public class LanguageViewModel
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading dictionary: {ex.Message}");
-            _dictionary = new Dictionary<string, Dictionary<string, string>>();
+            _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
         }
     }
 }

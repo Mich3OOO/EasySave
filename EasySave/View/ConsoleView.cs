@@ -167,9 +167,11 @@ public class ConsoleView
 
         string lang = _ask("language");
 
-        if (lang == "en" || lang == "fr")
+        Languages newLanguage;
+        
+        if (Languages.TryParse(lang.ToUpper(), out newLanguage))
         {
-            _languageViewModel.SetLanguage(lang);
+            _languageViewModel.SetLanguage(newLanguage);
             Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}");
         }
         else
