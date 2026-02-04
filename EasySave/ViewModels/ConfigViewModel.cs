@@ -48,10 +48,10 @@ public class ConfigViewModel
             _config.UpdateJob(jobName,job); 
         }
     }
-    public bool CreateJob(string name, string source, string destination) //bool to indicate success or failure
+    public bool CreateJob(string name, string source, string destination) 
     {
         List<SavedJob> savedJobs = _config.SavedJobs;
-        _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));
+        return _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));
     }
     public string[] GetJobsNames()
     {
