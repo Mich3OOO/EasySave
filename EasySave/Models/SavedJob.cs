@@ -15,6 +15,11 @@ public class SavedJob
 
     public SavedJob(int id, string name, string destination, string source)
     {
+        _id = -1;
+        _name = "";
+        _destination = "";
+        _source = "";
+        
         Id = id;
         Name = name;
         Destination = destination;
