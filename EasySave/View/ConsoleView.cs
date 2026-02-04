@@ -5,7 +5,7 @@ namespace EasySave.View;
 
 public class ConsoleView
 {
-    // ViewModels are used to communicate with the logic layer
+    // ViewModels used to communicate with the logic layer
     private readonly LanguageViewModel _languageViewModel;
     private readonly ConfigViewModel _configViewModel;
     private readonly BackupViewModel _backupViewModel;
@@ -22,28 +22,20 @@ public class ConsoleView
     /// Centralized method to ask a question to the user.
     /// Uses the LanguageViewModel to handle internationalization.
     /// </summary>
-    /// <param name="questionKey">The translation key for the question</param>
-    /// <returns>The user's input string</returns>
     private string _ask(string questionKey)
     {
-        // Fetch the translated text from the dictionary with GetTranslation method
+        // Fetch the translated text from the dictionary
         string translatedQuestion = _languageViewModel.GetTranslation(questionKey);
 
-        //Write the translated user input 
         Console.Write($"{translatedQuestion} > ");
-
-        // Read user input
         string? input = Console.ReadLine();
 
-        // Returns empty string if input is null to avoid crashes
         return input ?? string.Empty;
     }
 
     /// <summary>
     /// Entry point for commands. Handles both interactive menu and CLI arguments.
     /// </summary>
-    /// <param name="command">The first argument (e.g., "1-3" or "1;3")</param>
-    /// <param name="args">Additional arguments if necessary</param>
     public void RunCommand(string? command, string[] args)
     {
         // If no command is provided, launch the interactive menu
@@ -53,100 +45,138 @@ public class ConsoleView
         }
         else
         {
-            // Process CLI arguments (Requirement: EasySave.exe 1-3 or 1;3)
-            ProcessDirectCommand(command, BackupType.Complete); // Default to Complete backup for CLI
+            // Process CLI arguments (Requirement: EasySave.exe 1-3)
+            // Default to Complete backup for CLI to avoid blocking
+            ProcessDirectCommand(command, BackupType.Complete);
         }
     }
 
     /// <summary>
-    /// Displays the main menu loop for interactive mode.
+    /// Displays the main menu loop for interactive mode
     /// </summary>
     private void ShowMainMenu()
     {
         bool exit = false;
         while (!exit)
         {
+            // Clear console for a cleaner look
+            Console.Clear();
             Console.WriteLine("\n--- EasySave Version 1.0 ---");
-            Console.WriteLine($"1. {_languageViewModel.GetTranslation("menu_create")}");    //Choice 1: Create Backup Job (translated in selected language)
-            Console.WriteLine($"2. {_languageViewModel.GetTranslation("menu_run")}");       //Choice 2: Run Backup Job (translated in selected language) 
-            Console.WriteLine($"3. {_languageViewModel.GetTranslation("menu_exit")}");      //Choice 3: Exit (translated in selected language)
 
-            string choice = _ask("menu_choice");    // Ask user for choice with _ask method
+            // Display menu options using translations
+
+            Console.WriteLine($"1. {_languageViewModel.GetTranslation("menu_create")}");
+            Console.WriteLine($"2. {_languageViewModel.GetTranslation("menu_run")}");
+            Console.WriteLine($"3. {_languageViewModel.GetTranslation("settings")} / {_languageViewModel.GetTranslation("language")}");
+            Console.WriteLine($"4. {_languageViewModel.GetTranslation("menu_exit")}");
+
+            string choice = _ask("menu_choice");
 
             switch (choice)
             {
                 case "1":
-                    CreateBackupJob();  //call CreateBackupJob method
+                    CreateBackupJob();
                     break;
                 case "2":
-                    RunBackupSelection();   //call RunBackupSelection method
+                    RunBackupSelection();
                     break;
                 case "3":
-                    exit = true;    // Set exit flag to true to break the loop
+                    ChangeLanguageMenu();
+                    break;
+                case "4":
+                    exit = true;
                     break;
                 default:
-                    Console.WriteLine(_languageViewModel.GetTranslation("error_invalid_choice")); // Handle invalid input
+                    Console.WriteLine(_languageViewModel.GetTranslation("error_invalid_choice"));
+                    Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+                    Console.ReadKey();
                     break;
             }
         }
     }
 
     /// <summary>
-    /// Logic to create a new backup job (Max 5 jobs).
+    /// Logic to create a new backup job.
     /// </summary>
     private void CreateBackupJob()
     {
         Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("title_new_job")} ---");
 
-        string name = _ask("input_name");   // Ask for job name
-        string source = _ask("input_source"); // Ask for source directory
-        string target = _ask("input_target");   // Ask for target directory
+        string name = _ask("input_name");
+        string source = _ask("input_source");
+        string target = _ask("input_target");
 
-        // create the job via the ConfigViewModel
+        // Create the job via the ConfigViewModel
         bool success = _configViewModel.CreateJob(name, source, target);
 
         if (success)
-        {
             Console.WriteLine(_languageViewModel.GetTranslation("success_job_created"));
-        }
         else
-        {
             Console.WriteLine(_languageViewModel.GetTranslation("error_job_limit"));
-        }
+
+        // Pause to let user read the message
+        Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+        Console.ReadKey();
     }
 
     /// <summary>
     /// Handles the manual execution of jobs from the menu.
     /// </summary>
-        private void RunBackupSelection()
-        {
-            string id = _ask("input_run_id");
+    private void RunBackupSelection()
+    {
+        string id = _ask("input_run_id");
 
-            // Ask for the type here
-            Console.WriteLine("1. Full");
-            Console.WriteLine("2. Differential");
-            string typeInput = _ask("input_type");
+        // Ask for the type using translations
+        Console.WriteLine($"1. {_languageViewModel.GetTranslation("complete")}");
+        Console.WriteLine($"2. {_languageViewModel.GetTranslation("differential")}");
 
-            BackupType selectedType = (typeInput == "2") ? BackupType.Differential : BackupType.Complete;
+        string typeInput = _ask("input_type");
 
-            // Now call the execution with the type
-            ProcessDirectCommand(id, selectedType);
-        }
+        BackupType selectedType = (typeInput == "2") ? BackupType.Differential : BackupType.Complete;
+
+        // Call the execution logic
+        ProcessDirectCommand(id, selectedType);
+
+        Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+        Console.ReadKey();
+    }
 
     /// <summary>
     /// Parses the command string to identify ranges or lists of jobs to run.
     /// </summary>
-    /// <param name="command">The command string (e.g., "1-3")</param>
     private void ProcessDirectCommand(string command, BackupType type)
     {
         try
         {
-            // Call the BackupViewModel to run the specified range or list of jobs
             _backupViewModel.RunRangeBackup(command, type);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"{_languageViewModel.GetTranslation("error_execution")}: {ex.Message}");
         }
+    }
+
+    /// <summary>
+    /// method to handle language switching
+    /// </summary>
+    private void ChangeLanguageMenu()
+    {
+        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---");
+        Console.WriteLine("en - English");
+        Console.WriteLine("fr - Français");
+
+        string lang = _ask("language");
+
+        if (lang == "en" || lang == "fr")
+        {
+            _languageViewModel.SetLanguage(lang);
+            Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}");
+        }
+        else
+        {
+            Console.WriteLine(_languageViewModel.GetTranslation("invalid_language"));
+        }
+
+        System.Threading.Thread.Sleep(1000); // Small pause
     }
 }

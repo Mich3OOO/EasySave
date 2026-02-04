@@ -1,65 +1,35 @@
 ﻿using EasySave.View;
-
-namespace EasySave;
+using EasySave.ViewModels;
+using EasySave.Models; // Si besoin
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        // 1. Setup Encoding for accents
         Console.OutputEncoding = System.Text.Encoding.UTF8;
-        
-        // Créer une instance du LanguageViewModel avec le bon chemin
-        string dictionaryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
-        var langViewModel = new LanguageViewModel(dictionaryPath);
 
-        bool running = true;
+        // 2. Define path to dictionary.json
+        string dictionaryPath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, 
+            "..", "..", "..", 
+            "Resources", 
+            "dictionary.json"
+        );
 
-        while (running)
-        {
-            Console.Clear();
-            Console.WriteLine("=== EasySave - Language Test ===\n");
-            Console.WriteLine($"{langViewModel.GetTranslation("language")}: {langViewModel.GetCurrentLanguage().ToUpper()}\n");
-            Console.WriteLine($"1. {langViewModel.GetTranslation("welcome")}");
-            Console.WriteLine($"2. {langViewModel.GetTranslation("backup")}");
-            Console.WriteLine($"3. {langViewModel.GetTranslation("settings")}");
-            Console.WriteLine($"4. {langViewModel.GetTranslation("exit")}");
-            Console.WriteLine($"\n--- {langViewModel.GetTranslation("commands")} ---");
-            Console.WriteLine("lang [en/fr] - Change language");
-            Console.WriteLine("quit - Exit program");
-            Console.Write("\nEnter command: ");
+        // 3. Initialize ViewModels (Dependency Injection)
+        // Note: Make sure LanguageViewModel constructor accepts the path!
+        LanguageViewModel langVM = new LanguageViewModel(dictionaryPath);
+        ConfigViewModel configVM = new ConfigViewModel();
+        BackupViewModel backupVM = new BackupViewModel(); // Assure-toi que le constructeur est vide ou géré
 
-            string? input = Console.ReadLine()?.Trim().ToLower();
+        // 4. Create the View with the ViewModels
+        ConsoleView view = new ConsoleView(langVM, configVM, backupVM);
 
-            if (string.IsNullOrEmpty(input))
-                continue;
+        // 5. Run the application
+        // Check if there are arguments (Command Line Mode) or not (Menu Mode)
+        string command = args.Length > 0 ? args[0] : null;
 
-            if (input == "quit")
-            {
-                running = false;
-            }
-            else if (input.StartsWith("lang "))
-            {
-                string lang = input.Substring(5).Trim();
-                if (lang == "en" || lang == "fr")
-                {
-                    langViewModel.SetLanguage(lang);
-                    // Retourne directement au menu avec la nouvelle langue
-                }
-                else
-                {
-                    Console.WriteLine($"\n{langViewModel.GetTranslation("error")}: {langViewModel.GetTranslation("invalid_language")}");
-                    Console.WriteLine($"\n{langViewModel.GetTranslation("press_key")}");
-                    Console.ReadKey();
-                }
-            }
-            else
-            {
-                Console.WriteLine($"\n{langViewModel.GetTranslation("error")}: {langViewModel.GetTranslation("unknown_command")}");
-                Console.WriteLine($"\n{langViewModel.GetTranslation("press_key")}");
-                Console.ReadKey();
-            }
-        }
-
-        Console.WriteLine($"\n{langViewModel.GetTranslation("exit")}...");
+        view.RunCommand(command, args);
     }
 }

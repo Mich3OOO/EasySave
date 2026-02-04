@@ -1,102 +1,78 @@
 ﻿{
-    "welcome":  {
-                    "en":  "Welcome",
-                    "fr":  "Bienvenue"
-                },
-    "backup":  {
-                   "en":  "Backup",
-                   "fr":  "Sauvegarde"
-               },
-    "settings":  {
-                     "en":  "Settings",
-                     "fr":  "Paramètres"
-                 },
-    "exit":  {
-                 "en":  "Exit",
-                 "fr":  "Quitter"
-             },
-    "name":  {
-                 "en":  "Name",
-                 "fr":  "Nom"
-             },
-    "source":  {
-                   "en":  "Source",
-                   "fr":  "Source"
-               },
-    "destination":  {
-                        "en":  "Destination",
-                        "fr":  "Destination"
-                    },
-    "language":  {
-                     "en":  "Language",
-                     "fr":  "Langue"
-                 },
-    "save":  {
-                 "en":  "Save",
-                 "fr":  "Enregistrer"
-             },
-    "cancel":  {
-                   "en":  "Cancel",
-                   "fr":  "Annuler"
-               },
-    "create":  {
-                   "en":  "Create",
-                   "fr":  "Créer"
-               },
-    "delete":  {
-                   "en":  "Delete",
-                   "fr":  "Supprimer"
-               },
-    "edit":  {
-                 "en":  "Edit",
-                 "fr":  "Modifier"
-             },
-    "start":  {
-                  "en":  "Start",
-                  "fr":  "Démarrer"
-              },
-    "stop":  {
-                 "en":  "Stop",
-                 "fr":  "Arrêter"
-             },
-    "complete":  {
-                     "en":  "Complete",
-                     "fr":  "Terminé"
-                 },
-    "error":  {
-                  "en":  "Error",
-                  "fr":  "Erreur"
-              },
-    "success":  {
-                    "en":  "Success",
-                    "fr":  "Succès"
-                },
-    "loading":  {
-                    "en":  "Loading",
-                    "fr":  "Chargement"
-                },
-    "confirm":  {
-                    "en":  "Confirm",
-                    "fr":  "Confirmer"
-                },
-    "language_changed":  {
-                             "en":  "Language changed to",
-                             "fr":  "Langue changée en"
-                         },
-    "invalid_language":  {
-                             "en":  "Invalid language. Use en or fr",
-                             "fr":  "Langue invalide. Utilisez en ou fr"
-                         },
-    "unknown_command":  {
-                            "en":  "Unknown command",
-                            "fr":  "Commande inconnue"
-                        },
-    "press_key":  {
-                      "en":  "Press any key to continue...",
-                      "fr":  "Appuyez sur une touche pour continuer..."
-                  },
-    "commands":  {
-                     "en":  "Commands",
-                     "fr":  "Commandes"
-                 }
+    "welcome": {
+        "en": "Welcome to EasySave",
+        "fr": "Bienvenue sur EasySave"
+    },
+    "menu_create": {
+        "en": "Create a backup job",
+        "fr": "Créer un travail de sauvegarde"
+    },
+    "menu_run": {
+        "en": "Execute backup jobs",
+        "fr": "Exécuter des travaux de sauvegarde"
+    },
+    "menu_exit": {
+        "en": "Exit application",
+        "fr": "Quitter l'application"
+    },
+    "menu_choice": {
+        "en": "Please enter your choice",
+        "fr": "Veuillez entrer votre choix"
+    },
+    "title_new_job": {
+        "en": "Create a New Backup Job",
+        "fr": "Création d'un nouveau travail"
+    },
+    "input_name": {
+        "en": "Enter backup job name",
+        "fr": "Entrez le nom du travail"
+    },
+    "input_source": {
+        "en": "Enter source directory path",
+        "fr": "Entrez le chemin du répertoire source"
+    },
+    "input_target": {
+        "en": "Enter destination directory path",
+        "fr": "Entrez le chemin du répertoire de destination"
+    },
+    "input_type": {
+        "en": "Select type (1 or 2)",
+        "fr": "Sélectionnez le type (1 ou 2)"
+    },
+    "input_run_id": {
+        "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
+        "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
+    },
+    "success_job_created": {
+        "en": "Backup job created successfully!",
+        "fr": "Travail de sauvegarde créé avec succès !"
+    },
+    "error_job_limit": {
+        "en": "Error: You cannot create more than 5 jobs.",
+        "fr": "Erreur : Impossible de créer plus de 5 travaux."
+    },
+    "error_invalid_choice": {
+        "en": "Invalid choice. Please try again.",
+        "fr": "Choix invalide. Veuillez réessayer."
+    },
+    "error_execution": {
+        "en": "Execution Error",
+        "fr": "Erreur d'exécution"
+    },
+    "backup": {
+        "en": "Backup",
+        "fr": "Sauvegarde"
+    },
+    "settings": {
+        "en": "Settings",
+        "fr": "Paramètres"
+    },
+    "complete": {
+        "en": "Complete",
+        "fr": "Complète"
+    },
+    "differential": {
+        "en": "Differential",
+        "fr": "Différentielle"
+    }
 }
