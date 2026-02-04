@@ -59,5 +59,10 @@ public class SavedJob
             throw new Exception("Invalid destination path"); 
         }
     }
+
+    public override string ToString()
+    {
+        return $"{_id} -  {_name} | {_destination} -> {_source}";
+    }
     
 }
