@@ -1,6 +1,4 @@
-using System.Text.Json;
-
-namespace EasySave.View;
+namespace EasySave.ViewModels;
 
 public class LanguageViewModel
 {
@@ -12,7 +10,7 @@ public class LanguageViewModel
     {
         _dictionaryPath = dictionaryPath;
         _dictionary = new Dictionary<string, Dictionary<string, string>>();
-        _currentLanguage = "en"; // Langue par défaut
+        _currentLanguage = "en"; // Langue par dï¿½faut
         _loadDictionary();
     }
 
