@@ -4,7 +4,7 @@ namespace EasySave.View;
 
 public class BackupViewModel
 {
-    private StatesManager _statesManager;
+    private StateManager _statesManager;
     private Config _config;
 
     private void _runBackup(int jobId, BackupType backupType)

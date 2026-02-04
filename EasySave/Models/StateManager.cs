@@ -2,13 +2,18 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public class StatesManager: IEventListener
+public class StateManager: IEventListener
 {
-    private List<State> _states;
+    private List<StateInfo> _states;
     private readonly string _statePath;
     
     
     public void Update(BackupInfo data)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Save()
     {
         throw new NotImplementedException();
     }
