@@ -71,7 +71,6 @@ public class Config
                 json += temp.GetString(b);
             }
             
-            Console.WriteLine(json);
             ConfigStructure? config = JsonSerializer.Deserialize<ConfigStructure>(json.Trim('\0'));
 
             if (config is null)
