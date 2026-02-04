@@ -1,4 +1,4 @@
-namespace EasySave.View;
+namespace EasySave.ViewModels;
 
 public class LanguageViewModel
 {

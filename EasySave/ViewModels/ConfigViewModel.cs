@@ -1,6 +1,6 @@
 using EasySave.Models;
 
-namespace EasySave.View;
+namespace EasySave.ViewModels;
 
 public class ConfigViewModel
 {
@@ -26,7 +26,7 @@ public class ConfigViewModel
     {
         throw new NotImplementedException();
     }
-    public void CreateJob(string name, string source, string destination)
+    public bool CreateJob(string name, string source, string destination) //bool to indicate success or failure
     {
         throw new NotImplementedException();
     }
