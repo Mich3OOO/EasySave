@@ -93,13 +93,15 @@ public class Config
         _savedJobs = new List<SavedJob>();
     }
 
-    public void AddJob(SavedJob job)
+    public bool AddJob(SavedJob job)
     {
         if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)
         {
             _savedJobs.Add(job);
+            return true;
         }
         
+        return false;
     }
     
     public void UpdateJob(string jobName,SavedJob job)
