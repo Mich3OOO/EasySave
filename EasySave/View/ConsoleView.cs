@@ -163,7 +163,7 @@ public class ConsoleView
     {
         Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---");
         Console.WriteLine("en - English");
-        Console.WriteLine("fr - Français");
+        Console.WriteLine("fr - FranÃ§ais");
 
         string lang = _ask("language");
 
