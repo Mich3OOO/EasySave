@@ -7,7 +7,7 @@ public class Logger
     
     private Logger()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     // Allows to create logs as a text file with "[level] - message"
