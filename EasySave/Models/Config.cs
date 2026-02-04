@@ -20,7 +20,7 @@ public class Config
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";
     public Languages Language { get => _language; set => _language = value; }
-    public List<SavedJob> SavedJobs { get => _savedJobs; }
+    public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
     
 
     private Config()
@@ -106,7 +106,7 @@ public class Config
     public void UpdateJob(string jobName,SavedJob job)
     {
         
-        SavedJob? jobToUpdate = _savedJobs.FirstOrDefault(j => j.Name == jobName);
+        SavedJob? jobToUpdate = GetJob(jobName);
 
         if (jobToUpdate != null)
         {
@@ -118,7 +118,8 @@ public class Config
     }
     public SavedJob? GetJob(string jobName)
     {
-        return _savedJobs.FirstOrDefault(j => j.Name == jobName);
+        SavedJob? job = _savedJobs.FirstOrDefault(j => j.Name == jobName);
+        return  job is null ? null : new(job);
     }
     public void DeleteJob(SavedJob job)
     {
