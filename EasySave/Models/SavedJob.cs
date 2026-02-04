@@ -17,13 +17,23 @@ public class SavedJob
     {
         _id = -1;
         _name = "";
-        _destination = "";
-        _source = "";
+        _destination = "./";
+        _source = "./";
         
         Id = id;
         Name = name;
         Destination = destination;
         Source = source;
+    }
+    
+    public SavedJob(SavedJob savedJob)
+    {
+        _id = savedJob._id;
+        _name = savedJob._name;
+        _destination = savedJob._destination;
+        _source = savedJob._source;
+        
+        
     }
 
     public void SetDestination(string destination)
