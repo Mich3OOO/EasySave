@@ -4,9 +4,5 @@ namespace EasySave.Interfaces;
 
 public interface IBackup
 {
-    
     public void ExecuteBackup();
-  
-
-
 }
