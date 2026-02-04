@@ -1,4 +1,4 @@
-/.idea/
-/EasySave/obj/
-/EasySave/bin/
-
+.idea/
+obj/
+bin/
+.vs/
