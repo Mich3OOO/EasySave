@@ -8,18 +8,22 @@ public class LanguageViewModel
     private readonly string _dictionaryPath;
     private Dictionary<string, Dictionary<Languages, string>> _dictionary;
     private Languages _currentLanguage;
+    Config _conf ;
 
     public LanguageViewModel(string dictionaryPath)
     {
+        _conf = Config.S_GetInstance();
         _dictionaryPath = dictionaryPath;
         _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
-        _currentLanguage = Languages.EN; // Langue par défaut
+        _currentLanguage = _conf.Language;
         _loadDictionary();
     }
 
     public void SetLanguage(Languages language)
     {
         _currentLanguage = language;
+        _conf.Language = language;
+        _conf.SaveConfig();
     }
 
     public Languages GetCurrentLanguage()
