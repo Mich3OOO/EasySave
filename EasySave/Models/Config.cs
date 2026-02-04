@@ -120,6 +120,12 @@ public class Config
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Name == jobName);
         return  job is null ? null : new(job);
     }
+    
+    public SavedJob? GetJob(int id)
+    {
+        SavedJob? job = _savedJobs.FirstOrDefault(j => j.Id == id);
+        return  job is null ? null : new(job);
+    }
     public void DeleteJob(SavedJob job)
     {
         _savedJobs.Remove(job);
