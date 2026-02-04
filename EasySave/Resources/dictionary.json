@@ -1,0 +1,102 @@
+﻿{
+    "welcome":  {
+                    "en":  "Welcome",
+                    "fr":  "Bienvenue"
+                },
+    "backup":  {
+                   "en":  "Backup",
+                   "fr":  "Sauvegarde"
+               },
+    "settings":  {
+                     "en":  "Settings",
+                     "fr":  "Paramètres"
+                 },
+    "exit":  {
+                 "en":  "Exit",
+                 "fr":  "Quitter"
+             },
+    "name":  {
+                 "en":  "Name",
+                 "fr":  "Nom"
+             },
+    "source":  {
+                   "en":  "Source",
+                   "fr":  "Source"
+               },
+    "destination":  {
+                        "en":  "Destination",
+                        "fr":  "Destination"
+                    },
+    "language":  {
+                     "en":  "Language",
+                     "fr":  "Langue"
+                 },
+    "save":  {
+                 "en":  "Save",
+                 "fr":  "Enregistrer"
+             },
+    "cancel":  {
+                   "en":  "Cancel",
+                   "fr":  "Annuler"
+               },
+    "create":  {
+                   "en":  "Create",
+                   "fr":  "Créer"
+               },
+    "delete":  {
+                   "en":  "Delete",
+                   "fr":  "Supprimer"
+               },
+    "edit":  {
+                 "en":  "Edit",
+                 "fr":  "Modifier"
+             },
+    "start":  {
+                  "en":  "Start",
+                  "fr":  "Démarrer"
+              },
+    "stop":  {
+                 "en":  "Stop",
+                 "fr":  "Arrêter"
+             },
+    "complete":  {
+                     "en":  "Complete",
+                     "fr":  "Terminé"
+                 },
+    "error":  {
+                  "en":  "Error",
+                  "fr":  "Erreur"
+              },
+    "success":  {
+                    "en":  "Success",
+                    "fr":  "Succès"
+                },
+    "loading":  {
+                    "en":  "Loading",
+                    "fr":  "Chargement"
+                },
+    "confirm":  {
+                    "en":  "Confirm",
+                    "fr":  "Confirmer"
+                },
+    "language_changed":  {
+                             "en":  "Language changed to",
+                             "fr":  "Langue changée en"
+                         },
+    "invalid_language":  {
+                             "en":  "Invalid language. Use en or fr",
+                             "fr":  "Langue invalide. Utilisez en ou fr"
+                         },
+    "unknown_command":  {
+                            "en":  "Unknown command",
+                            "fr":  "Commande inconnue"
+                        },
+    "press_key":  {
+                      "en":  "Press any key to continue...",
+                      "fr":  "Appuyez sur une touche pour continuer..."
+                  },
+    "commands":  {
+                     "en":  "Commands",
+                     "fr":  "Commandes"
+                 }
+}
