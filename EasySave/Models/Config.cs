@@ -105,7 +105,7 @@ public class Config
     public void UpdateJob(string jobName,SavedJob job)
     {
         
-        SavedJob? jobToUpdate = GetJob(jobName);
+        SavedJob? jobToUpdate = _savedJobs.FirstOrDefault(j => j.Name == jobName);
 
         if (jobToUpdate != null)
         {
@@ -128,7 +128,7 @@ public class Config
     }
     public void DeleteJob(SavedJob job)
     {
-        _savedJobs.Remove(job);
+        _savedJobs.RemoveAll(j => j.Id == job.Id);
     }
 
     
