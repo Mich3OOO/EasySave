@@ -4,7 +4,7 @@ namespace EasySave.Models;
 
 public class DiffBackup:Backup,IBackup
 { 
-    public void Run()
+    public void ExecuteBackup()
     {
         throw new NotImplementedException();
     }

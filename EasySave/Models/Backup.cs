@@ -3,7 +3,7 @@ namespace EasySave.Models;
 public abstract class Backup
 {
 
-    protected Job _job;
+    protected SavedJob SavedJob;
     protected BackupInfo _backupInfo;
 
 
@@ -14,7 +14,7 @@ public abstract class Backup
 
     protected abstract string[] _getFilesList();
 
-    protected void _updateStatus(Step newStep)
+    protected void _updateStatus(CopyInfo newCopyInfo)
     {
         throw new NotImplementedException();
     }

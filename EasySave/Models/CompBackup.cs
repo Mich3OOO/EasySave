@@ -3,7 +3,7 @@ namespace EasySave.Models;
 
 public class CompBackup:Backup,IBackup
 { 
-    public void Run()
+    public void ExecuteBackup()
     {
         throw new NotImplementedException();
     }

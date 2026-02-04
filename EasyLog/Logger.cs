@@ -9,7 +9,7 @@ public class Logger
     {
         throw new NotImplementedException();
     }
-    private void _log (LogLevel level,string message)
+    public void Log (LogLevel level,string message)
     {
         throw new NotImplementedException();
     }
@@ -21,16 +21,5 @@ public class Logger
     {
         throw new NotImplementedException();
     }
-    public void LogInfo(string message)
-    {
-        throw new NotImplementedException();
-    }
-    public void LogWarning(string message)
-    {
-        throw new NotImplementedException();
-    }
-    public void LogError(string message)
-    {
-        throw new NotImplementedException();
-    }
+   
 }

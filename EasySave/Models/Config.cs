@@ -4,7 +4,7 @@ public class Config
 {
     private string _language;
     private static Config _instance;
-    private List<Job> _savedJobs;
+    private List<SavedJob> _savedJobs;
     private readonly string _confPath;
 
     private Config()

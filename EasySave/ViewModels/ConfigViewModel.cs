@@ -34,7 +34,7 @@ public class ConfigViewModel
     {
         throw new NotImplementedException();
     }
-    public Job GetJob(string name)
+    public SavedJob GetJob(string name)
     {
         throw new NotImplementedException();
     }

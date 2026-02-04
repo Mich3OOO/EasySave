@@ -1,6 +1,6 @@
 namespace EasySave.Models;
 
-public class Job
+public class SavedJob
 {
     private int _id;
     private string _name;
