@@ -25,6 +25,14 @@ public class SavedJob
         Destination = destination;
         Source = source;
     }
+
+    public SavedJob()
+    {
+        _id = -1;
+        _name = "";
+        _destination = "./";
+        _source = "./";
+    }
     
     public SavedJob(SavedJob savedJob)
     {
