@@ -1,52 +1,22 @@
 using EasySave.Interfaces;
-using System.IO;
 
 namespace EasySave.Models;
 
-public class CompBackup : Backup, IBackup
+public class CompBackup : Backup
 {
     public CompBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }
 
-    public void ExecuteBackup()
+
+    public override void ExecuteBackup()
     {
-        // Access public properties 'Source' and 'Destination' from SavedJob
-        DirectoryInfo sourceDir = new DirectoryInfo(SavedJob.Source);
-        DirectoryInfo destinationDir = new DirectoryInfo(SavedJob.Destination);
+        // Get the list of files (Strategy specific logic)
+        string[] files = _getFilesList();
 
-        // Check if the source directory exists
-        if (!sourceDir.Exists)
+        // Loop through the files
+        foreach (string file in files)
         {
-            throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}");
+            // Call the parent class
+            _backupFile(file);
         }
-
-        // Create destination directory if it doesn't exist
-        if (!destinationDir.Exists)
-        {
-            destinationDir.Create();
-        }
-
-        // Get all files from source
-        foreach (FileInfo file in sourceDir.GetFiles("*", SearchOption.AllDirectories))
-        {
-            // Maintain directory structure by calculating the relative path
-            string relativePath = Path.GetRelativePath(sourceDir.FullName, file.FullName);
-            string targetFilePath = Path.Combine(destinationDir.FullName, relativePath);
-
-            // Create necessary subdirectories in the destination
-            string? targetDirectory = Path.GetDirectoryName(targetFilePath);
-            if (targetDirectory != null)
-            {
-                Directory.CreateDirectory(targetDirectory);
-            }
-
-            // Copy file and overwrite if it already exists
-            file.CopyTo(targetFilePath, true);
-        }
-    }
-
-    protected override string[] _getFilesList()
-    {
-        // Return the list of all files to be backed up
-        return Directory.GetFiles(SavedJob.Source, "*", SearchOption.AllDirectories);
     }
 }
