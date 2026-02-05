@@ -4,8 +4,8 @@ public class SavedJob
 {
     private int _id;
     private string _name;
-    private string _destination;
     private string _source;
+    private string _destination;
 
 
     public string getName()
@@ -27,35 +27,34 @@ public class SavedJob
     public string Source  { get => _source; set => _source = value; }
 
 
-    public SavedJob(int id, string name, string destination, string source)
+    public SavedJob(int id, string name, string source, string destination)
     {
         _id = -1;
         _name = "";
-        _destination = "./";
         _source = "./";
-        
+        _destination = "./";
+
         Id = id;
         Name = name;
-        Destination = destination;
         Source = source;
+        Destination = destination;
     }
 
     public SavedJob()
     {
         _id = -1;
         _name = "";
-        _destination = "./";
         _source = "./";
+        _destination = "./";
     }
     
     public SavedJob(SavedJob savedJob)
     {
         _id = savedJob._id;
         _name = savedJob._name;
-        _destination = savedJob._destination;
         _source = savedJob._source;
-        
-        
+        _destination = savedJob._destination;
+
     }
 
     public void SetDestination(string destination)

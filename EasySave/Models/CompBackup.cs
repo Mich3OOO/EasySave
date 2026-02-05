@@ -13,6 +13,7 @@ public class CompBackup : Backup
         string[] files = _getFilesList();
 
         // Loop through the files
+
         foreach (string file in files)
         {
             // Call the parent class

@@ -22,9 +22,10 @@ public class BackupViewModel
         }
         else if (backupType == BackupType.Complete)
         {
-            backup = new CompBackup(savedJob, backupInfo);
+            IBackup backup = new CompBackup(savedJob, backupInfo);
             backup.ExecuteBackup();
-            Console.WriteLine($"Backup for job ID '{jobId}' from source '{savedJob.Source}' was successfully copied to '{savedJob.Destination}'");
+            Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
+
         }
     }
 
