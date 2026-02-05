@@ -20,10 +20,11 @@ public class LogsManager : IEventListener
     // Transform BackupInfo data into a JSON string
     private string _toJson(BackupInfo data)
     {
+        // TODO : Throw error if data is not in good format
         return $@"{{
            ""Name"": ""{data.SavedJobInfo.getName()}"",
-           ""FileSource"": ""{data.CurrentCopyInfo.Source.Replace(@"", @"\")}"",
-           ""FileTarget"": ""{data.CurrentCopyInfo.Destination.Replace(@"", @"\")}"",
+           ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
+           ""FileTarget"": ""{data.CurrentCopyInfo.Destination}"",
            ""FileSize"": {data.CurrentCopyInfo.Size},
            ""FileTransferTime"": {(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds},
            ""Time"": ""{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}""
