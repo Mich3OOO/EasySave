@@ -53,3 +53,12 @@ Le tableau suivant détaille l'évolution des fonctionnalités à travers les di
 * Composants externes :
 * `EasyLog.dll` : Librairie de gestion des logs.
 * `CryptoSoft` : Logiciel de cryptage tiers (Mono-instance en V3).
+
+---
+
+## Use of EasyLog.dll
+
+In order to use the library `EasyLog.dll`, you need a `LogsManager` object which calls Logger.GetInstance().Log(); with either :
+
+- a signle string, which will create a JSON file and write the string in it
+- a level (enum in EasyLog.dll) and a message, which won't create anything because not implemented yet
