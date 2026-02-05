@@ -10,12 +10,11 @@ public class BackupViewModel
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
-        Config config = Config.S_GetInstance(); //get the singleton instance of the Config class to access the saved jobs
-
-        SavedJob savedJob = config.GetJob(jobId);   //get the saved job with the given job ID
-
-        BackupInfo backupInfo = new BackupInfo();   //create a new BackupInfo object to store information about the backup
-        
+        Config config = Config.S_GetInstance();
+        SavedJob savedJob = config.GetJob(jobId);
+        BackupInfo backupInfo = new BackupInfo();
+        backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
+        IBackup backup;
 
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
         {
@@ -28,8 +27,6 @@ public class BackupViewModel
             Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
 
         }
-
-        throw new NotImplementedException();
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
@@ -47,8 +44,6 @@ public class BackupViewModel
             // Handle exceptions (e.g., log the error, show a message to the user, etc.)
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
-
-        throw new NotImplementedException();
     }
 
     private int[] _getJobIdsToBackup(string range) //private method to parse the range string and return an array of job IDs to backup (e.g., "1-3" returns [1,2,3], "1;3" returns [1,3])
@@ -94,7 +89,5 @@ public class BackupViewModel
                 throw new ArgumentException($"Invalid job ID: '{range}'. Expected an integer.");
             }
         }
-
-        throw new NotImplementedException();
     }
 }

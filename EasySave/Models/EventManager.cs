@@ -28,13 +28,13 @@ public class EventManager
     // Add the object in parameter to the subscribers list
     public void Subscribe(IEventListener listener)
     {
-        this. _subscribers.Add(listener);
+        this._subscribers.Add(listener);
     }
 
     // Notify all subscribers with BackupInfo
     public void Update(BackupInfo data)
     {
-        foreach(IEventListener listener in _subscribers)
+        foreach (IEventListener listener in _subscribers)
         {
             listener.Update(data);
         }

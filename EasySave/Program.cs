@@ -6,6 +6,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        LogsManager logsManager = new LogsManager(); // Initialization of the LogsManager, needed for backup logging (called by EventManager)
         // 1. Setup Encoding for accents
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 

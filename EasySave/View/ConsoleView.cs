@@ -115,13 +115,14 @@ public class ConsoleView
         string name = _ask("input_name");
         string source = _ask("input_source");
         string target = _ask("input_target");
-        //gérer le cas ou le name est deja pris
+        // If there is 2 saveJob with the same name
         if (_configViewModel.GetJob(name) != null)
         {
             Console.WriteLine(_languageViewModel.GetTranslation("error_job_exists"));
             Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
             Console.ReadKey();
             return;
+
         }
         if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
         {

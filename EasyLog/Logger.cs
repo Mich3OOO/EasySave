@@ -4,7 +4,7 @@ public class Logger
 {
     private static Logger _instance;
     private readonly string _logsPath = "./logs";
-    
+
     private Logger()
     {
         //throw new NotImplementedException();
@@ -12,7 +12,7 @@ public class Logger
 
     // Allows to create logs as a text file with "[level] - message"
     // Is not used by EasySave because logs are requested in JSON
-    public void Log (LogLevel level,string message)
+    public void Log(LogLevel level, string message)
     {
         throw new NotImplementedException();
     }
@@ -41,7 +41,7 @@ public class Logger
     {
         System.IO.Directory.CreateDirectory(_logsPath); // Create the logs directory if it doesn't exist
         string _nomFichier = DateTime.Now.ToString("yyyy-MM-dd") + "_log.json"; // Assemble the file name based on the current date
-        return System.IO.Path.Combine(_logsPath, _nomFichier); // Assemble the path with the file name (better than a concatenation because it handles / and \)
+        return System.IO.Path.Combine(_logsPath, _nomFichier); // Assemble the path with the file name (better than a concatenation because it handles / and )
     }
-   
+
 }
