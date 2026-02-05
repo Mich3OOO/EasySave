@@ -1,10 +1,23 @@
 namespace EasySave.Models;
 
-public class CopyInfo
+public class CopyInfo   // Class representing information about a file copy operation, used for event updates
 {
     public string Source;
     public string Destination;
     public DateTime StartTime;
-    public int Size;
+    public long Size;
     public DateTime EndTime;
+
+    public CopyInfo()
+    {
+        // Empty constructor
+    }
+    public CopyInfo(string source, string destination, DateTime startTime, int size, DateTime endTime)
+    {
+        this.Source = source;
+        this.Destination = destination;
+        this.StartTime = startTime;
+        this.Size = size;
+        this.EndTime = endTime;
+    }
 }

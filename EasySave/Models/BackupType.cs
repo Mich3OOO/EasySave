@@ -1,7 +1,8 @@
 namespace EasySave.Models;
 
-public enum BackupType
+public enum BackupType  // Enum representing the type of backup operation, either Differential or Complete
 {
-    Incremential,
-    Complete
+    Differential,
+    Complete,
+    
 }

@@ -1,41 +1,75 @@
 using EasySave.Models;
 
-namespace EasySave.View;
+namespace EasySave.ViewModels;
 
-public class ConfigViewModel
+public class ConfigViewModel    // Class representing the config view model, it is responsible for managing the configuration of the application, such as the language and the saved jobs
 {
     private Config _config;
 
-    public void SaveConfig()
+
+    public ConfigViewModel()    // Constructor
     {
-        throw new NotImplementedException();
+        _config = Config.S_GetInstance();
     }
-    public void SetLanguage(string lang)
+    
+    public void SaveConfig()    // Method to save the current configuration, it calls the SaveConfig method of the Config class
     {
-        throw new NotImplementedException();
+        _config.SaveConfig();
     }
-    public void ChangeJobSource(string jobSource, string newJobSource)
+    public void SetLanguage(Languages lang) // Method to change the selected language, it updates the Language property of the Config class
     {
-        throw new NotImplementedException();
+        _config.Language = lang;
     }
-    public void ChangeJobName(string oldJobName, string newJobName)
+    public void ChangeJobSource(string jobName, string newJobSource)    // Method to change the source of a saved job, it takes the name of the job to update and the new source
     {
-        throw new NotImplementedException();
+        SavedJob? job = _config.GetJob(jobName);
+        if (job != null)
+        { 
+            job.Source = newJobSource;
+            _config.UpdateJob(jobName,job); 
+        }
+       
     }
-    public void ChangeJobDestination(string jobName, string newDestination)
+    public void ChangeJobName(string oldJobName, string newJobName) // Method to change the name of a saved job, it takes the old name of the job to update and the new name
     {
-        throw new NotImplementedException();
+        SavedJob? job = _config.GetJob(oldJobName);
+        if (job != null)
+        { 
+            job.Name = newJobName;
+            _config.UpdateJob(oldJobName,job); 
+        }
     }
-    public void CreateJob(string name, string source, string destination)
+    public void ChangeJobDestination(string jobName, string newDestination) // Method to change the destination of a saved job, it takes the name of the job to update and the new destination
     {
-        throw new NotImplementedException();
+        SavedJob? job = _config.GetJob(jobName);
+        if (job != null)
+        { 
+            job.Destination = newDestination;
+            _config.UpdateJob(jobName,job); 
+        }
     }
-    public string[] GetJobsNames()
+    public bool CreateJob(string name, string source, string destination) //    Method to create a new saved job, it takes the name, source and destination of the new job, it creates a new SavedJob object with the given values and adds it to the configuration using the AddJob method of the Config class, it returns true if the job was added successfully, false otherwise (e.g., if a job with the same name already exists)
     {
-        throw new NotImplementedException();
+        List<SavedJob> savedJobs = _config.SavedJobs;
+        return _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));
+
     }
-    public SavedJob GetJob(string name)
+    public string[] GetJobsNames()  // Method to get the names of all saved jobs, it returns an array of strings containing the names of the saved jobs
     {
-        throw new NotImplementedException();
+        
+        return _config.SavedJobs.Select(s => s.Name).ToArray();
+    }
+    public SavedJob? GetJob(string name)    // Method to get a saved job by its name, it takes the name of the job to get and returns a copy of it if found, otherwise it returns null
+    {
+        return _config.GetJob(name);
+    }
+    
+    public void DeleteJob(string name)  // Method to delete a saved job by its name, it takes the name of the job to delete, it searches for the job with the given name and deletes it if found
+    {
+        SavedJob? job = _config.GetJob(name);
+        if (job != null)
+        { 
+            _config.DeleteJob(job);
+        }
     }
 }
