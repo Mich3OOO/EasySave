@@ -3,7 +3,7 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public class EventManager
+public class EventManager   // Class representing the event manager, implementing the IEventManager interface, it is a singleton class that manages the subscribers and notifies them with BackupInfo updates
 {
     private static EventManager _instance;
     private List<IEventListener> _subscribers;

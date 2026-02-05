@@ -1,6 +1,6 @@
 namespace EasySave.Models;
 
-public class BackupInfo
+public class BackupInfo // Class representing information about a backup operation, used for event updates
 {
     public SavedJob SavedJobInfo;
     public CopyInfo LastCopyInfo;

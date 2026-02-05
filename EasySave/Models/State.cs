@@ -1,6 +1,6 @@
 namespace EasySave.Models;
 
-public abstract class State
+public abstract class State // Abstract class representing the state of a backup job
 {
     public string JobName;
     public DateTime LastCompleteSave;

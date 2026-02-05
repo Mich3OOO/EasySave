@@ -122,33 +122,45 @@ public class ConsoleView
         string name = _ask("input_name");
         string source = _ask("input_source");
         string target = _ask("input_target");
-        // If there is 2 saveJob with the same name
+
+        //Handle the case where a job with the same name already exists
         if (_configViewModel.GetJob(name) != null)
         {
-            Console.WriteLine(Translate("error_job_exists")); // Assure-toi d'avoir cette clé dans ton JSON
+            Console.WriteLine(Translate("error_job_exists"));
             Console.WriteLine(Translate("press_key"));
             Console.ReadKey();
             return;
-
         }
-        if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
-        {
-            Console.WriteLine(Translate("success_job_created"));
-            _configViewModel.SaveConfig();
 
-            // Récupérer le job créé
-            var job = _configViewModel.GetJob(name);
-            if (job != null)
+        
+        try
+        {
+            if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
             {
-                // UTILISATION DE TRANSLATE POUR LES LABELS + VARIABLE
-                Console.WriteLine($"{Translate("id_label")}: {job.Id}"); // Ajoute "id_label": "ID" dans le JSON
-                Console.WriteLine($"{Translate("name_label")}: {job.Name}"); // Ajoute "name_label": "Nom"
-                Console.WriteLine($"{Translate("source_label")}: {job.Source}"); // Ajoute "source_label": "Source"
-                Console.WriteLine($"{Translate("destination_label")}: {job.Destination}"); // Ajoute "destination_label": "Destination"
+                Console.WriteLine(Translate("success_job_created"));
+                _configViewModel.SaveConfig();
+
+                // Catch the created job to display its details, using the LanguageViewModel to translate the labels for each property
+                var job = _configViewModel.GetJob(name);
+                if (job != null)
+                {
+                    Console.WriteLine($"{Translate("id_label")}: {job.Id}");
+                    Console.WriteLine($"{Translate("name_label")}: {job.Name}");
+                    Console.WriteLine($"{Translate("source_label")}: {job.Source}");
+                    Console.WriteLine($"{Translate("destination_label")}: {job.Destination}");
+                }
+            }
+            else
+            {
+                Console.WriteLine(Translate("error_job_limit"));
             }
         }
-        else
-            Console.WriteLine(Translate("error_job_limit"));
+        catch (Exception ex)
+        {
+            // If the source or target path is invalid during job creation, we catch it here
+            Console.WriteLine($"{Translate("error_execution")}: {ex.Message}");
+        }
+
         Console.WriteLine(Translate("press_key"));
         Console.ReadKey();
     }
@@ -171,10 +183,10 @@ public class ConsoleView
     /// <summary>
     /// Parses the command string to identify ranges or lists of jobs to run.
     /// </summary>
-    private void ProcessDirectCommand(string command, BackupType type)  // Exécute une commande de sauvegarde directement (utilisée pour les commandes passées en argument ou pour les sauvegardes sélectionnées dans le menu)
+    private void ProcessDirectCommand(string command, BackupType type)  // Parses the command string to identify ranges or lists of jobs to run, then calls RunRangeBackup from the BackupViewModel to execute the specified backup jobs, handling any exceptions that may occur during execution and displaying appropriate messages to the user
     {
         try { _backupViewModel.RunRangeBackup(command, type); }
-        catch (Exception ex) { Console.WriteLine($"{Translate("error_execution")}: {ex.Message}"); }    // On utilise RunRangeBackup du BackupViewModel pour exécuter la sauvegarde avec l'ID et le type spécifiés, puis on affiche un message de succès ou d'erreur selon le résultat
+        catch (Exception ex) { Console.WriteLine($"{Translate("error_execution")}: {ex.Message}"); }    // If an error occurs during backup execution (e.g., invalid job ID, file access issues), we catch it here and display an error message to the user using the LanguageViewModel for translation
     }
 
     /// <summary>
@@ -256,17 +268,17 @@ public class ConsoleView
         var jobsNames = _configViewModel.GetJobsNames();
         if (jobsNames.Length == 0)
         {
-            Console.WriteLine(Translate("no_jobs_registered")); // Ajoute cette clé
+            Console.WriteLine(Translate("no_jobs_registered")); 
         }
         else
         {
-            Console.WriteLine(Translate("jobs_list_title")); // Ajoute cette clé "Liste des jobs"
+            Console.WriteLine(Translate("jobs_list_title")); 
             foreach (var name in jobsNames)
             {
                 var job = _configViewModel.GetJob(name);
                 if (job != null)
                 {
-                    // ICI ON REMPLACE _ask PAR Translate + Variable
+                    // We display the details of each job, using the LanguageViewModel to translate the labels for each property
                     Console.WriteLine($"{Translate("id_label")}: {job.Id}");
                     Console.WriteLine($"{Translate("name_label")}: {job.Name}");
                     Console.WriteLine($"{Translate("source_label")}: {job.Source}");
@@ -290,11 +302,11 @@ public class ConsoleView
         {
             _configViewModel.DeleteJob(name);
             _configViewModel.SaveConfig();
-            Console.WriteLine($"{Translate("job_deleted_success")} '{name}'."); // Ajoute cette clé
+            Console.WriteLine($"{Translate("job_deleted_success")} '{name}'.");
         }
         else
         {
-            Console.WriteLine($"{Translate("error_job_not_found")} '{name}'."); // Ajoute cette clé
+            Console.WriteLine($"{Translate("error_job_not_found")} '{name}'.");
         }
         Console.WriteLine(Translate("press_key"));
         Console.ReadKey();
@@ -312,11 +324,21 @@ public class ConsoleView
             string newName = _ask("input_new_name");
             string newSource = _ask("input_new_source");
             string newDestination = _ask("input_new_destination");
-            _configViewModel.ChangeJobName(name, newName);
-            _configViewModel.ChangeJobSource(newName, newSource);
-            _configViewModel.ChangeJobDestination(newName, newDestination);
-            _configViewModel.SaveConfig();
-            Console.WriteLine($"{Translate("job_modified_success")} '{name}'."); // Ajoute cette clé
+
+            
+            try
+            {
+                _configViewModel.ChangeJobName(name, newName);
+                _configViewModel.ChangeJobSource(newName, newSource);
+                _configViewModel.ChangeJobDestination(newName, newDestination);
+                _configViewModel.SaveConfig();
+                Console.WriteLine($"{Translate("job_modified_success")} '{name}'.");
+            }
+            catch (Exception ex)
+            {
+                //If the new source or destination path is invalid during job modification, we catch it here and display an error message to the user using the LanguageViewModel for translation
+                Console.WriteLine($"{Translate("error_execution")}: {ex.Message}");
+            }
         }
         else
         {

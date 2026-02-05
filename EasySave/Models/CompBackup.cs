@@ -2,12 +2,12 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public class CompBackup : Backup
+public class CompBackup : Backup    // Class representing a complete backup operation, inheriting from the abstract Backup class
 {
-    public CompBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }
+    public CompBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }    //Constructor
 
 
-    public override void ExecuteBackup()
+    public override void ExecuteBackup()    // Override the ExecuteBackup method to perform a complete backup
     {
         // Get the list of files (Strategy specific logic)
         string[] files = _getFilesList();

@@ -2,19 +2,19 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public abstract class Backup : IBackup
+public abstract class Backup : IBackup  // Abstract class representing a backup operation, implementing the IBackup interface
 {
 
     protected SavedJob _savedJob;
     protected BackupInfo _backupInfo;
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo)
+    public Backup(SavedJob savedJob, BackupInfo backupInfo) // Constructor 
     {
         _savedJob = savedJob;
         _backupInfo = backupInfo;
     }
 
-    public abstract void ExecuteBackup();
+    public abstract void ExecuteBackup();   // Abstract method to execute the backup
     protected void _backupFile(string sourceFilePath)
     {
         try
@@ -54,11 +54,11 @@ public abstract class Backup : IBackup
         }
     }
 
-    protected virtual string[] _getFilesList() {
+    protected virtual string[] _getFilesList() {    // Get the list of all files in the source directory and its subdirectories
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
 
-    protected void _updateStatus(CopyInfo newCopyInfo)
+    protected void _updateStatus(CopyInfo newCopyInfo)  // Update the backup information and notify the EventManager
     {
         // Set backupInfo information
         _backupInfo.SavedJobInfo = _savedJob;

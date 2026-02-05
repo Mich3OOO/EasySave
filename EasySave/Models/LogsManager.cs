@@ -3,7 +3,7 @@ using EasyLog;
 
 namespace EasySave.Models;
 
-public class LogsManager : IEventListener
+public class LogsManager : IEventListener   // Class representing the logs manager, implementing the IEventListener interface
 {
     // Constructor that automatically subscribes to EventManager
     public LogsManager()

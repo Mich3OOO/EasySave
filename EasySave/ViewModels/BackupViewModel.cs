@@ -3,7 +3,7 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class BackupViewModel
+public class BackupViewModel    // Class representing the backup view model, it is responsible for running backups based on a given range of job IDs and backup type
 {
     private StatesManager _statesManager;
     private Config _config;

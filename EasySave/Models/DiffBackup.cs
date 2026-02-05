@@ -2,7 +2,7 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public class DiffBackup
+public class DiffBackup // Class representing a differential backup operation, inheriting from the abstract Backup class
 { 
     public void ExecuteBackup()
     {
