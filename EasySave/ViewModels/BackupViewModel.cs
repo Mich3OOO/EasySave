@@ -10,13 +10,23 @@ public class BackupViewModel
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
+        Config config = Config.S_GetInstance(); //get the singleton instance of the Config class to access the saved jobs
+
+        SavedJob savedJob = config.GetJob(jobId);   //get the saved job with the given job ID
+
+        BackupInfo backupInfo = new BackupInfo();   //create a new BackupInfo object to store information about the backup
+        
+
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
         {
             //IBackup backup = new DiffBackup();
         }
         else if (backupType == BackupType.Complete)
         {
-            //IBackup backup = new CompBackup(savedJob, backupInfo);
+            IBackup backup = new CompBackup(savedJob, backupInfo);
+            backup.ExecuteBackup();
+            Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
+
         }
 
         throw new NotImplementedException();
