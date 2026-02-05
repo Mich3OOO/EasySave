@@ -4,7 +4,7 @@ public class BackupInfo // Class representing information about a backup operati
 {
     public SavedJob SavedJobInfo;
     public CopyInfo LastCopyInfo;
-    public CopyInfo CurrentCopyInfo;
+    public CopyInfo? CurrentCopyInfo;
     public int TotalFiles;
     public int CurrentFile;
 }

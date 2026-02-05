@@ -1,27 +1,26 @@
 using EasySave.Interfaces;
+using System.Text.Json;
+using System.Text;
 
 namespace EasySave.Models;
 
 public class StateManager: IEventListener
 {
     private List<StateInfo> _states;
-
-    private readonly string _stateDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "state");
-    private readonly string _stateFilePath;
+    
+    private readonly string _stateFilePath = "./states.json";
 
     public StateManager()
     {
         EventManager.GetInstance().Subscribe(this);
 
-        _stateFilePath = Path.Combine(_stateDirectory, "state.json");
+        _states = new List<StateInfo>();
 
-        _states = new List<StateInfo>()
-
-        if (File.Exists(_statePath))
+        if (File.Exists(_stateFilePath))
         {
             try
             {
-                string json = File.ReadAllText(_statePath);
+                string json = File.ReadAllText(_stateFilePath);
                 _states = JsonSerializer.Deserialize<List<StateInfo>>(json) ?? new List<StateInfo>();
             }
             catch
@@ -31,49 +30,56 @@ public class StateManager: IEventListener
         }
     }
     
-    public void Update(StateInfo data)
+    public void Update(BackupInfo data)
     {
-        string json = _toJson(data);
-        this.Save(json);
-    }
+        Console.WriteLine("update state");
+        StateInfo? editedJobState = _states.FirstOrDefault(s => s.Name == data.SavedJobInfo.Name);
 
-    private void Save(string json)
-    {
-        string _path = _getFileName();
-        System.IO.File.Replace(_path, json + System.Environment.NewLine);
-    }
-
-    // Serializes the StateInfo object to a 'JSON' string format.
-    private string _toJson(StateInfo data)
-    {
-        if (data == null)
+        if (editedJobState == null)
         {
-            throw new ArgumentNullException(nameof(data), "Backup job data cannot be null.");
+            editedJobState = new()
+            {
+                Name = data.SavedJobInfo.Name,
+            };
+            _states.Add(editedJobState);
         }
 
-        int progression = 0;
-        if (data.TotalBackupSize > 0)
+        if (data.CurrentCopyInfo != null)
         {
-            // how much has been copied so far
+            editedJobState.SourceFilePath = data.CurrentCopyInfo.Source;
+            editedJobState.TargetFilePath = data.CurrentCopyInfo.Destination;
+            editedJobState.State = StateLevel.Active;
+            editedJobState.TotalFilesToCopy = data.TotalFiles;
+            editedJobState.TotalFilesSize = editedJobState.TotalFilesSize + data.CurrentCopyInfo.Size;
+            editedJobState.NbFilesLeftToDo = data.TotalFiles - data.CurrentFile;
+            editedJobState.Progression = ((float)data.CurrentFile/data.TotalFiles) * 100f;
+        }
+        else
+        {
+            editedJobState.SourceFilePath = "";
+            editedJobState.TargetFilePath = "";
+            editedJobState.State = StateLevel.End;
+            editedJobState.TotalFilesToCopy = 0;
+            editedJobState.TotalFilesSize = 0;
+            editedJobState.NbFilesLeftToDo = 0;
+            editedJobState.Progression = 0;
         }
 
-        return $@"{{
-        ""Name"": ""{data.JobName}"",
-        ""SourceFilePath"": ""{data.CurrentFileSource}"",
-        ""TargetFilePath"": ""{data.CurrentFileDestination}"",
-        ""State"": ""{data.Status.ToString().ToUpper()}"", 
-        ""TotalFilesToCopy"": {data.RemainingFiles}, 
-        ""TotalFilesSize"": {data.TotalBackupSize},
-        ""NbFilesLeftToDo"": {data.RemainingFiles},
-        ""Progression"": {progression}
-    }}";
+        _save();
     }
 
-    // Return the path of the current log file (based on the current date)
-    private string _getFileName()
+    private void _save()
     {
-        System.IO.Directory.CreateDirectory(_statePath); // Create the logs directory if it doesn't exist
-        string _fileName = DateTime.Now.ToString("state.json"; // Assemble the file name based on the current date
-        return System.IO.Path.Combine(_logsPath, _fileName); // Assemble the path with the file name (better than a concatenation because it handles / and )
+        if (File.Exists(_stateFilePath)) File.Delete(_stateFilePath);
+        using(FileStream fs = File.Open(_stateFilePath, FileMode.CreateNew, FileAccess.Write))
+        {
+            fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(_states)));
+        }
     }
+
+    public StateInfo? GetStateFrom(string savedJobName)
+    {
+        return _states.FirstOrDefault(s => s.Name == savedJobName);
+    }
+
 }

@@ -1,14 +1,25 @@
+using System.Text.Json.Serialization;
+
 namespace EasySave.Models;
 
-public abstract class State // Abstract class representing the state of a backup job
+public class StateInfo
 {
-    public string JobName;
-    public DateTime LastCompleteSave;
-    public bool IsActive;
-    public int TotalBackupSize;
-    public int RemainingFiles;
-    public int RemainingSize;
-    public string CurrentFileSource;
-    public string CurrentFileDestination;
+    [JsonInclude]
+    public string Name = "";
+    [JsonInclude]
+    public string SourceFilePath = "";
+    [JsonInclude]
+    public string TargetFilePath= "";
+    [JsonInclude]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public StateLevel State = StateLevel.Inactive;
+    [JsonInclude]
+    public int TotalFilesToCopy = 0;
+    [JsonInclude]
+    public long TotalFilesSize = 0;
+    [JsonInclude]
+    public int NbFilesLeftToDo = 0;
+    [JsonInclude]
+    public float Progression = 0;
     
 }
