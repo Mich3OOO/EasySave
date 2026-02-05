@@ -13,6 +13,7 @@ public class BackupViewModel
         Config config = Config.S_GetInstance();
         SavedJob savedJob = config.GetJob(jobId);
         BackupInfo backupInfo = new BackupInfo();
+        backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
         IBackup backup;
 
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
