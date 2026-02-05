@@ -7,6 +7,12 @@ public class BackupViewModel
 {
     private StatesManager _statesManager;
     private Config _config;
+    private LanguageViewModel _languageViewModel;
+
+    public BackupViewModel(LanguageViewModel languageViewModel)
+    {
+        _languageViewModel = languageViewModel;
+    }
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
@@ -35,7 +41,7 @@ public class BackupViewModel
         catch (Exception ex)
         {
             // Handle exceptions (e.g., log the error, show a message to the user, etc.)
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("error_occurred"), ex.Message));
         }
 
         throw new NotImplementedException();
@@ -48,12 +54,12 @@ public class BackupViewModel
             string[] parts = range.Split('-');
             if (parts.Length == 2 && int.TryParse(parts[0], out int start) && int.TryParse(parts[1], out int end))
             {
-                if (start > end) throw new ArgumentException("Start of range must be less than or equal to end.");
+                if (start > end) throw new ArgumentException(_languageViewModel.GetTranslation("error_start_greater_than_end"));
                 return Enumerable.Range(start, end - start + 1).ToArray();
             }
             else
             {
-                throw new ArgumentException("Invalid range format. Expected format: 'start-end'.");
+                throw new ArgumentException(_languageViewModel.GetTranslation("error_invalid_range_format"));
             }
         }
         else if (range.Contains(";"))    //if the range contains a ";", we split it and parse each part as a separate job ID
@@ -68,7 +74,7 @@ public class BackupViewModel
                 }
                 else
                 {
-                    throw new ArgumentException($"Invalid job ID: '{part}'. Expected an integer.");
+                    throw new ArgumentException(string.Format(_languageViewModel.GetTranslation("error_invalid_job_id"), part));
                 }
             }
             return jobIds.ToArray();
@@ -81,7 +87,7 @@ public class BackupViewModel
             }
             else
             {
-                throw new ArgumentException($"Invalid job ID: '{range}'. Expected an integer.");
+                throw new ArgumentException(string.Format(_languageViewModel.GetTranslation("error_invalid_job_id"), range));
             }
         }
 

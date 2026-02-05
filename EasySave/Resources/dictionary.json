@@ -1,78 +1,250 @@
 ﻿{
-    "welcome": {
-        "en": "Welcome to EasySave",
-        "fr": "Bienvenue sur EasySave"
-    },
-    "menu_create": {
-        "en": "Create a backup job",
-        "fr": "Créer un travail de sauvegarde"
-    },
-    "menu_run": {
-        "en": "Execute backup jobs",
-        "fr": "Exécuter des travaux de sauvegarde"
-    },
-    "menu_exit": {
-        "en": "Exit application",
-        "fr": "Quitter l'application"
-    },
-    "menu_choice": {
-        "en": "Please enter your choice",
-        "fr": "Veuillez entrer votre choix"
-    },
-    "title_new_job": {
-        "en": "Create a New Backup Job",
-        "fr": "Création d'un nouveau travail"
-    },
-    "input_name": {
-        "en": "Enter backup job name",
-        "fr": "Entrez le nom du travail"
-    },
-    "input_source": {
-        "en": "Enter source directory path",
-        "fr": "Entrez le chemin du répertoire source"
-    },
-    "input_target": {
-        "en": "Enter destination directory path",
-        "fr": "Entrez le chemin du répertoire de destination"
-    },
-    "input_type": {
-        "en": "Select type (1 or 2)",
-        "fr": "Sélectionnez le type (1 ou 2)"
-    },
-    "input_run_id": {
-        "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
-        "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
-    },
-    "success_job_created": {
-        "en": "Backup job created successfully!",
-        "fr": "Travail de sauvegarde créé avec succès !"
-    },
-    "error_job_limit": {
-        "en": "Error: You cannot create more than 5 jobs.",
-        "fr": "Erreur : Impossible de créer plus de 5 travaux."
-    },
-    "error_invalid_choice": {
-        "en": "Invalid choice. Please try again.",
-        "fr": "Choix invalide. Veuillez réessayer."
-    },
-    "error_execution": {
-        "en": "Execution Error",
-        "fr": "Erreur d'exécution"
-    },
-    "backup": {
-        "en": "Backup",
-        "fr": "Sauvegarde"
-    },
-    "settings": {
-        "en": "Settings",
-        "fr": "Paramètres"
-    },
-    "complete": {
-        "en": "Complete",
-        "fr": "Complète"
-    },
-    "differential": {
-        "en": "Differential",
-        "fr": "Différentielle"
-    }
+  "welcome": {
+    "en": "Welcome to EasySave",
+    "fr": "Bienvenue sur EasySave"
+  },
+  "version_header": {
+    "en": "--- EasySave Version 1.0 ---",
+    "fr": "--- EasySave Version 1.0 ---"
+  },
+  "menu_create": {
+    "en": "Create a backup job",
+    "fr": "Créer un travail de sauvegarde"
+  },
+  "menu_list": {
+    "en": "List all jobs",
+    "fr": "Lister tous les travaux"
+  },
+  "menu_delete": {
+    "en": "Delete a job by name",
+    "fr": "Supprimer un travail par le nom"
+  },
+  "menu_edit": {
+    "en": "Edit a job by name",
+    "fr": "Modifier un travail par le nom"
+  },
+  "menu_run": {
+    "en": "Execute backup jobs",
+    "fr": "Exécuter des travaux de sauvegarde"
+  },
+  "menu_settings": {
+    "en": "Settings / Language",
+    "fr": "Paramètres / Langue"
+  },
+  "menu_exit": {
+    "en": "Exit application",
+    "fr": "Quitter l'application"
+  },
+  "menu_choice": {
+    "en": "Please enter your choice",
+    "fr": "Veuillez entrer votre choix"
+  },
+  "title_new_job": {
+    "en": "Create a New Backup Job",
+    "fr": "Création d'un nouveau travail"
+  },
+  "input_name": {
+    "en": "Enter backup job name",
+    "fr": "Entrez le nom du travail"
+  },
+  "input_source": {
+    "en": "Enter source directory path",
+    "fr": "Entrez le chemin du répertoire source"
+  },
+  "input_target": {
+    "en": "Enter destination directory path",
+    "fr": "Entrez le chemin du répertoire de destination"
+  },
+  "input_type": {
+    "en": "Select type (1 or 2)",
+    "fr": "Sélectionnez le type (1 ou 2)"
+  },
+  "input_run_id": {
+    "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
+    "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
+  },
+  "input_new_name": {
+    "en": "Enter new job name",
+    "fr": "Entrez le nouveau nom du travail"
+  },
+  "input_new_source": {
+    "en": "Enter new source directory path",
+    "fr": "Entrez le nouveau chemin du répertoire source"
+  },
+  "input_new_destination": {
+    "en": "Enter new destination directory path",
+    "fr": "Entrez le nouveau chemin du répertoire de destination"
+  },
+  "success_job_created": {
+    "en": "Backup job created successfully!",
+    "fr": "Travail de sauvegarde créé avec succès !"
+  },
+  "success_job_deleted": {
+    "en": "Job '{0}' deleted.",
+    "fr": "Travail '{0}' supprimé."
+  },
+  "success_job_modified": {
+    "en": "Job '{0}' modified.",
+    "fr": "Travail '{0}' modifié."
+  },
+  "error_job_limit": {
+    "en": "Error: You cannot create more than 5 jobs.",
+    "fr": "Erreur : Impossible de créer plus de 5 travaux."
+  },
+  "error_invalid_choice": {
+    "en": "Invalid choice. Please try again.",
+    "fr": "Choix invalide. Veuillez réessayer."
+  },
+  "error_execution": {
+    "en": "Execution Error",
+    "fr": "Erreur d'exécution"
+  },
+  "error_job_not_found": {
+    "en": "No job found with the name '{0}'.",
+    "fr": "Aucun travail trouvé avec le nom '{0}'."
+  },
+  "error_invalid_path": {
+    "en": "Invalid path",
+    "fr": "Chemin invalide"
+  },
+  "error_must_be_absolute": {
+    "en": "The path must be absolute (e.g., C:\\folder or /folder)",
+    "fr": "Le chemin doit être absolu (ex: C:\\dossier ou /dossier)"
+  },
+  "backup": {
+    "en": "Backup",
+    "fr": "Sauvegarde"
+  },
+  "settings": {
+    "en": "Settings",
+    "fr": "Paramètres"
+  },
+  "language": {
+    "en": "Language",
+    "fr": "Langue"
+  },
+  "language_changed": {
+    "en": "Language changed to",
+    "fr": "Langue changée en"
+  },
+  "invalid_language": {
+    "en": "Invalid language. Please choose 'en' or 'fr'.",
+    "fr": "Langue invalide. Veuillez choisir 'en' ou 'fr'."
+  },
+  "complete": {
+    "en": "Complete",
+    "fr": "Complète"
+  },
+  "differential": {
+    "en": "Differential",
+    "fr": "Différentielle"
+  },
+  "press_key": {
+    "en": "Press any key to continue...",
+    "fr": "Appuyez sur une touche pour continuer..."
+  },
+  "no_jobs": {
+    "en": "No jobs registered.",
+    "fr": "Aucun travaux enregistré."
+  },
+  "jobs_list_header": {
+    "en": "--- Jobs List ---",
+    "fr": "--- Liste des travaux ---"
+  },
+  "job_id": {
+    "en": "ID",
+    "fr": "ID"
+  },
+  "job_name": {
+    "en": "Name",
+    "fr": "Nom"
+  },
+  "job_source": {
+    "en": "Source",
+    "fr": "Source"
+  },
+  "job_destination": {
+    "en": "Destination",
+    "fr": "Destination"
+  },
+  "separator": {
+    "en": "---",
+    "fr": "---"
+  },
+  "error_copying_file": {
+    "en": "Error copying file {0}: {1}",
+    "fr": "Erreur lors de la copie du fichier {0} : {1}"
+  },
+  "error_occurred": {
+    "en": "An error occurred: {0}",
+    "fr": "Une erreur s'est produite : {0}"
+  },
+  "error_invalid_range_format": {
+    "en": "Invalid range format. Expected format: 'start-end'.",
+    "fr": "Format de plage invalide. Format attendu : 'début-fin'."
+  },
+  "error_start_greater_than_end": {
+    "en": "Start of range must be less than or equal to end.",
+    "fr": "Le début de la plage doit être inférieur ou égal à la fin."
+  },
+  "error_invalid_job_id": {
+    "en": "Invalid job ID: '{0}'. Expected an integer.",
+    "fr": "ID de travail invalide : '{0}'. Un entier est attendu."
+  },
+  "error_not_implemented": {
+    "en": "This feature is not yet implemented.",
+    "fr": "Cette fonctionnalité n'est pas encore implémentée."
+  },
+  "backup_in_progress": {
+    "en": "Backup in progress...",
+    "fr": "Sauvegarde en cours..."
+  },
+  "backup_completed": {
+    "en": "Backup completed successfully!",
+    "fr": "Sauvegarde terminée avec succès !"
+  },
+  "file_copied": {
+    "en": "File copied: {0}",
+    "fr": "Fichier copié : {0}"
+  },
+  "copying_file": {
+    "en": "Copying: {0}",
+    "fr": "Copie en cours : {0}"
+  },
+  "job_type": {
+    "en": "Type",
+    "fr": "Type"
+  },
+  "creating_directory": {
+    "en": "Creating directory: {0}",
+    "fr": "Création du répertoire : {0}"
+  },
+  "directory_exists": {
+    "en": "Directory already exists: {0}",
+    "fr": "Le répertoire existe déjà : {0}"
+  },
+  "source_not_found": {
+    "en": "Source directory not found: {0}",
+    "fr": "Répertoire source introuvable : {0}"
+  },
+  "destination_not_writable": {
+    "en": "Destination is not writable: {0}",
+    "fr": "La destination n'est pas accessible en écriture : {0}"
+  },
+  "total_files": {
+    "en": "Total files: {0}",
+    "fr": "Nombre total de fichiers : {0}"
+  },
+  "files_remaining": {
+    "en": "Files remaining: {0}",
+    "fr": "Fichiers restants : {0}"
+  },
+  "progress": {
+    "en": "Progress: {0}%",
+    "fr": "Progression : {0} %"
+  },
+  "error_loading_dictionary": {
+    "en": "Error loading dictionary: {0}",
+    "fr": "Erreur lors du chargement du dictionnaire : {0}"
+  }
 }

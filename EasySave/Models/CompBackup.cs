@@ -1,10 +1,11 @@
 using EasySave.Interfaces;
+using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
 public class CompBackup : Backup
 {
-    public CompBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }
+    public CompBackup(SavedJob savedJob, BackupInfo backupInfo, LanguageViewModel languageViewModel) : base(savedJob, backupInfo, languageViewModel) { }
 
 
     public override void ExecuteBackup()

@@ -74,15 +74,15 @@ public class ConsoleView
             // Calling the method to display the logo with a rainbow gradient
             WriteRainbowGradient(easySaveLogo);
 
-            Console.WriteLine("\n--- EasySave Version 1.0 ---");
+            Console.WriteLine($"\n{_languageViewModel.GetTranslation("version_header")}");
 
             // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {_languageViewModel.GetTranslation("menu_create")}");
-            Console.WriteLine($"2. Lister tous les jobs");
-            Console.WriteLine($"3. Supprimer un job par le nom");
-            Console.WriteLine($"4. Modifier un job par le nom");
+            Console.WriteLine($"2. {_languageViewModel.GetTranslation("menu_list")}");
+            Console.WriteLine($"3. {_languageViewModel.GetTranslation("menu_delete")}");
+            Console.WriteLine($"4. {_languageViewModel.GetTranslation("menu_edit")}");
             Console.WriteLine($"5. {_languageViewModel.GetTranslation("menu_run")}");
-            Console.WriteLine($"6. {_languageViewModel.GetTranslation("settings")} / {_languageViewModel.GetTranslation("language")}");
+            Console.WriteLine($"6. {_languageViewModel.GetTranslation("menu_settings")}");
             Console.WriteLine($"7. {_languageViewModel.GetTranslation("menu_exit")}");
 
             string choice = _ask("menu_choice");    //We catch the user's choice
@@ -113,8 +113,25 @@ public class ConsoleView
     {
         Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("title_new_job")} ---");
         string name = _ask("input_name");
-        string source = _ask("input_source");
-        string target = _ask("input_target");
+        
+        string source;
+        while (true)
+        {
+            source = _ask("input_source");
+            if (Path.IsPathRooted(source))
+                break;
+            Console.WriteLine($"❌ {_languageViewModel.GetTranslation("error_invalid_path")}: '{source}'. {_languageViewModel.GetTranslation("error_must_be_absolute")}");
+        }
+        
+        string target;
+        while (true)
+        {
+            target = _ask("input_target");
+            if (Path.IsPathRooted(target))
+                break;
+            Console.WriteLine($"❌ {_languageViewModel.GetTranslation("error_invalid_path")}: '{target}'. {_languageViewModel.GetTranslation("error_must_be_absolute")}");
+        }
+        
         if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
         {
             Console.WriteLine(_languageViewModel.GetTranslation("success_job_created"));
@@ -124,10 +141,10 @@ public class ConsoleView
             var job = _configViewModel.GetJob(name);
             if (job != null)
             {
-                Console.WriteLine($"ID: {job.Id}");
-                Console.WriteLine($"Nom: {job.Name}");
-                Console.WriteLine($"Source: {job.Source}");
-                Console.WriteLine($"Destination: {job.Destination}");
+                Console.WriteLine($"{_languageViewModel.GetTranslation("job_id")}: {job.Id}");
+                Console.WriteLine($"{_languageViewModel.GetTranslation("job_name")}: {job.Name}");
+                Console.WriteLine($"{_languageViewModel.GetTranslation("job_source")}: {job.Source}");
+                Console.WriteLine($"{_languageViewModel.GetTranslation("job_destination")}: {job.Destination}");
             }
         }
         else
@@ -165,7 +182,8 @@ public class ConsoleView
     /// </summary>
     private void ChangeLanguageMenu()   // Displays the language options and allows the user to change the application's language using the LanguageViewModel
     {
-        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---\nen - English\nfr - Français");
+        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---");
+        Console.WriteLine("en - English\nfr - Français");
         string lang = _ask("language");
 
         Languages newLanguage;
@@ -239,21 +257,21 @@ public class ConsoleView
         var jobsNames = _configViewModel.GetJobsNames();
         if (jobsNames.Length == 0)
         {
-            Console.WriteLine("Aucun job enregistré.");
+            Console.WriteLine(_languageViewModel.GetTranslation("no_jobs"));
         }
         else
         {
-            Console.WriteLine("\n--- Liste des jobs ---");
+            Console.WriteLine($"\n{_languageViewModel.GetTranslation("jobs_list_header")}");
             foreach (var name in jobsNames)
             {
                 var job = _configViewModel.GetJob(name);
                 if (job != null)
                 {
-                    Console.WriteLine($"ID: {job.Id}");
-                    Console.WriteLine($"Nom: {job.Name}");
-                    Console.WriteLine($"Source: {job.Source}");
-                    Console.WriteLine($"Destination: {job.Destination}");
-                    Console.WriteLine("---");
+                    Console.WriteLine($"{_languageViewModel.GetTranslation("job_id")}: {job.Id}");
+                    Console.WriteLine($"{_languageViewModel.GetTranslation("job_name")}: {job.Name}");
+                    Console.WriteLine($"{_languageViewModel.GetTranslation("job_source")}: {job.Source}");
+                    Console.WriteLine($"{_languageViewModel.GetTranslation("job_destination")}: {job.Destination}");
+                    Console.WriteLine(_languageViewModel.GetTranslation("separator"));
                 }
             }
         }
@@ -272,11 +290,11 @@ public class ConsoleView
         {
             _configViewModel.DeleteJob(name);
             _configViewModel.SaveConfig();
-            Console.WriteLine($"Job '{name}' supprimé.");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("success_job_deleted"), name));
         }
         else
         {
-            Console.WriteLine($"Aucun job trouvé avec le nom '{name}'.");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("error_job_not_found"), name));
         }
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
         Console.ReadKey();
@@ -292,17 +310,34 @@ public class ConsoleView
         if (job != null)
         {
             string newName = _ask("input_new_name");
-            string newSource = _ask("input_new_source");
-            string newDestination = _ask("input_new_destination");
+            
+            string newSource;
+            while (true)
+            {
+                newSource = _ask("input_new_source");
+                if (string.IsNullOrWhiteSpace(newSource) || Path.IsPathRooted(newSource))
+                    break;
+                Console.WriteLine($"❌ {_languageViewModel.GetTranslation("error_invalid_path")}: '{newSource}'. {_languageViewModel.GetTranslation("error_must_be_absolute")}");
+            }
+            
+            string newDestination;
+            while (true)
+            {
+                newDestination = _ask("input_new_destination");
+                if (string.IsNullOrWhiteSpace(newDestination) || Path.IsPathRooted(newDestination))
+                    break;
+                Console.WriteLine($"❌ {_languageViewModel.GetTranslation("error_invalid_path")}: '{newDestination}'. {_languageViewModel.GetTranslation("error_must_be_absolute")}");
+            }
+            
             _configViewModel.ChangeJobName(name, newName);
             _configViewModel.ChangeJobSource(newName, newSource);
             _configViewModel.ChangeJobDestination(newName, newDestination);
             _configViewModel.SaveConfig();
-            Console.WriteLine($"Job '{name}' modifié.");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("success_job_modified"), name));
         }
         else
         {
-            Console.WriteLine($"Aucun job trouvé avec le nom '{name}'.");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("error_job_not_found"), name));
         }
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
         Console.ReadKey();

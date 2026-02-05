@@ -1,4 +1,5 @@
 using EasySave.Interfaces;
+using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
@@ -7,11 +8,13 @@ public abstract class Backup : IBackup
 
     protected SavedJob _savedJob;
     protected BackupInfo _backupInfo;
+    protected LanguageViewModel _languageViewModel;
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo)
+    public Backup(SavedJob savedJob, BackupInfo backupInfo, LanguageViewModel languageViewModel)
     {
         _savedJob = savedJob;
         _backupInfo = backupInfo;
+        _languageViewModel = languageViewModel;
     }
 
     public abstract void ExecuteBackup();
@@ -50,7 +53,7 @@ public abstract class Backup : IBackup
         catch (Exception ex)
         {
             // If ther is an error
-            Console.WriteLine($"Error copying file {sourceFilePath}: {ex.Message}");
+            Console.WriteLine(string.Format(_languageViewModel.GetTranslation("error_copying_file"), sourceFilePath, ex.Message));
         }
     }
 

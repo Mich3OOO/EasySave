@@ -21,7 +21,7 @@ internal class Program
         // Note: Make sure LanguageViewModel constructor accepts the path!
         LanguageViewModel langVM = new LanguageViewModel(dictionaryPath);
         ConfigViewModel configVM = new ConfigViewModel();
-        BackupViewModel backupVM = new BackupViewModel(); // Assure-toi que le constructeur est vide ou géré
+        BackupViewModel backupVM = new BackupViewModel(langVM); // Pass LanguageViewModel to BackupViewModel
 
         // 4. Create the View with the ViewModels
         ConsoleView view = new ConsoleView(langVM, configVM, backupVM);

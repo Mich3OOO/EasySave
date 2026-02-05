@@ -60,6 +60,7 @@ public class LanguageViewModel
         }
         catch (Exception ex)
         {
+            // Fallback if dictionary cannot be loaded - use hardcoded English message
             Console.WriteLine($"Error loading dictionary: {ex.Message}");
             _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
         }
