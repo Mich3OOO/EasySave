@@ -5,7 +5,7 @@ public class CopyInfo
     public string Source;
     public string Destination;
     public DateTime StartTime;
-    public int Size;
+    public long Size;
     public DateTime EndTime;
 
     public CopyInfo(string source, string destination, DateTime startTime, int size, DateTime endTime)
