@@ -20,6 +20,7 @@ public class LogsManager : IEventListener
     // Transform BackupInfo data into a JSON string
     private string _toJson(BackupInfo data)
     {
+        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
@@ -28,7 +29,7 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-
+        // Create 'JSON' string with infos from data
         return $@"{{
            ""Name"": ""{data.SavedJobInfo.getName()}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
