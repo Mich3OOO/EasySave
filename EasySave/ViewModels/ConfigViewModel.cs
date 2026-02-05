@@ -52,6 +52,7 @@ public class ConfigViewModel
     {
         List<SavedJob> savedJobs = _config.SavedJobs;
         return _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));
+
     }
     public string[] GetJobsNames()
     {

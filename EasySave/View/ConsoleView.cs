@@ -78,18 +78,24 @@ public class ConsoleView
 
             // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {_languageViewModel.GetTranslation("menu_create")}");
-            Console.WriteLine($"2. {_languageViewModel.GetTranslation("menu_run")}");
-            Console.WriteLine($"3. {_languageViewModel.GetTranslation("settings")} / {_languageViewModel.GetTranslation("language")}");
-            Console.WriteLine($"4. {_languageViewModel.GetTranslation("menu_exit")}");
+            Console.WriteLine($"2. Lister tous les jobs");
+            Console.WriteLine($"3. Supprimer un job par le nom");
+            Console.WriteLine($"4. Modifier un job par le nom");
+            Console.WriteLine($"5. {_languageViewModel.GetTranslation("menu_run")}");
+            Console.WriteLine($"6. {_languageViewModel.GetTranslation("settings")} / {_languageViewModel.GetTranslation("language")}");
+            Console.WriteLine($"7. {_languageViewModel.GetTranslation("menu_exit")}");
 
             string choice = _ask("menu_choice");    //We catch the user's choice
 
             switch (choice)
             {
                 case "1": CreateBackupJob(); break;
-                case "2": RunBackupSelection(); break;
-                case "3": ChangeLanguageMenu(); break;
-                case "4": exit = true; break;
+                case "2": ListAllJobs(); break;
+                case "3": DeleteJobByName(); break;
+                case "4": EditJobByName(); break;
+                case "5": RunBackupSelection(); break;
+                case "6": ChangeLanguageMenu(); break;
+                case "7": exit = true; break;
                 default:
                     Console.WriteLine(_languageViewModel.GetTranslation("error_invalid_choice"));
                     Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
@@ -110,7 +116,20 @@ public class ConsoleView
         string source = _ask("input_source");
         string target = _ask("input_target");
         if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
+        {
             Console.WriteLine(_languageViewModel.GetTranslation("success_job_created"));
+            _configViewModel.SaveConfig();
+
+            // Récupérer le job créé
+            var job = _configViewModel.GetJob(name);
+            if (job != null)
+            {
+                Console.WriteLine($"ID: {job.Id}");
+                Console.WriteLine($"Nom: {job.Name}");
+                Console.WriteLine($"Source: {job.Source}");
+                Console.WriteLine($"Destination: {job.Destination}");
+            }
+        }
         else
             Console.WriteLine(_languageViewModel.GetTranslation("error_job_limit"));
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
@@ -123,9 +142,10 @@ public class ConsoleView
     /// </summary>
     private void RunBackupSelection()   // Displays the list of existing backup jobs and ask the user to select one
     {
+        ListAllJobs();
         string id = _ask("input_run_id");
         Console.WriteLine($"1. {_languageViewModel.GetTranslation("complete")}\n2. {_languageViewModel.GetTranslation("differential")}");   // We ask the user to choose the type of backup (complete or differential) using the LanguageViewModel to translate the options
-        string typeInput = _ask("input_type");
+        string typeInput = _ask("input_type");  //Complete / DIfferential choice
         ProcessDirectCommand(id, (typeInput == "2") ? BackupType.Differential : BackupType.Complete);   // We use ProcessDirectCommand to execute the selected backup job with the chosen type, then we display a message to press a key to return to the menu
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
         Console.ReadKey();
@@ -149,10 +169,10 @@ public class ConsoleView
         string lang = _ask("language");
 
         Languages newLanguage;
-        
+
         if (Languages.TryParse(lang.ToUpper(), out newLanguage))
         {
-            _languageViewModel.SetLanguage(newLanguage);
+            _languageViewModel.SetLanguage(newLanguage);    //We call the SetLanguage method from the LanguageViewModel
             Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}");
         }
         else
@@ -160,12 +180,12 @@ public class ConsoleView
             Console.WriteLine(_languageViewModel.GetTranslation("invalid_language"));
         }
 
-            
+
         System.Threading.Thread.Sleep(1000);
     }
 
     /// <summary>
-    /// Displays the provided text with a rainbow gradient effect in the console.
+    /// Displays the provided text with a rainbow gradient effect in the console. PURELY ESTETHIC, IGNORE PLS Fabien :)
     /// </summary>
     private void WriteRainbowGradient(string text)
     {
@@ -209,5 +229,82 @@ public class ConsoleView
             4 => (t, p, vInt),
             _ => (vInt, p, q)
         };
+    }
+
+    /// <summary>
+    /// Displays all configured backup jobs, listing their details such as ID, Name, Source, and Destination.
+    /// </summary>
+    private void ListAllJobs()
+    {
+        var jobsNames = _configViewModel.GetJobsNames();
+        if (jobsNames.Length == 0)
+        {
+            Console.WriteLine("Aucun job enregistré.");
+        }
+        else
+        {
+            Console.WriteLine("\n--- Liste des jobs ---");
+            foreach (var name in jobsNames)
+            {
+                var job = _configViewModel.GetJob(name);
+                if (job != null)
+                {
+                    Console.WriteLine($"ID: {job.Id}");
+                    Console.WriteLine($"Nom: {job.Name}");
+                    Console.WriteLine($"Source: {job.Source}");
+                    Console.WriteLine($"Destination: {job.Destination}");
+                    Console.WriteLine("---");
+                }
+            }
+        }
+        Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+        Console.ReadKey();
+    }
+
+    /// <summary>
+    /// Logic to delete a backup job by its name.
+    /// </summary>
+    private void DeleteJobByName()
+    {
+        string name = _ask("input_name");
+        var job = _configViewModel.GetJob(name);
+        if (job != null)
+        {
+            _configViewModel.DeleteJob(name);
+            _configViewModel.SaveConfig();
+            Console.WriteLine($"Job '{name}' supprimé.");
+        }
+        else
+        {
+            Console.WriteLine($"Aucun job trouvé avec le nom '{name}'.");
+        }
+        Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+        Console.ReadKey();
+    }
+
+    /// <summary>
+    /// Logic to edit an existing backup job.
+    /// </summary>
+    private void EditJobByName()
+    {
+        string name = _ask("input_name");
+        var job = _configViewModel.GetJob(name);
+        if (job != null)
+        {
+            string newName = _ask("input_new_name");
+            string newSource = _ask("input_new_source");
+            string newDestination = _ask("input_new_destination");
+            _configViewModel.ChangeJobName(name, newName);
+            _configViewModel.ChangeJobSource(newName, newSource);
+            _configViewModel.ChangeJobDestination(newName, newDestination);
+            _configViewModel.SaveConfig();
+            Console.WriteLine($"Job '{name}' modifié.");
+        }
+        else
+        {
+            Console.WriteLine($"Aucun job trouvé avec le nom '{name}'.");
+        }
+        Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
+        Console.ReadKey();
     }
 }
