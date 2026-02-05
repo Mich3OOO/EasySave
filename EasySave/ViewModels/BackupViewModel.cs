@@ -86,6 +86,11 @@ public class BackupViewModel : ViewModelBase
         System.Diagnostics.Debug.WriteLine($"Deleted job: {job.Name}");
     }
 
+    public BackupViewModel(LanguageViewModel languageViewModel)
+    {
+        _languageViewModel = languageViewModel;
+    }
+
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
         SavedJob? savedJob = _config.GetJob(jobId);
