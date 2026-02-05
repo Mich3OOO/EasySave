@@ -2,14 +2,14 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-public class DiffBackup:Backup,IBackup
+public class DiffBackup
 { 
     public void ExecuteBackup()
     {
         throw new NotImplementedException();
     }
 
-    protected override string[] _getFilesList()
+    protected  string[] _getFilesList()
     {
         throw new NotImplementedException();
     }
