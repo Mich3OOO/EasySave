@@ -10,43 +10,38 @@ public class ConsoleView
     private readonly ConfigViewModel _configViewModel;
     private readonly BackupViewModel _backupViewModel;
 
-    // Constructor to inject ViewModels
-    public ConsoleView(LanguageViewModel langVM, ConfigViewModel configVM, BackupViewModel backupVM)
+    public ConsoleView(LanguageViewModel langVM, ConfigViewModel configVM, BackupViewModel backupVM)        // Constructor to inject ViewModels
     {
         _languageViewModel = langVM;
         _configViewModel = configVM;
         _backupViewModel = backupVM;
     }
 
+
     /// <summary>
     /// Centralized method to ask a question to the user.
     /// Uses the LanguageViewModel to handle internationalization.
     /// </summary>
-    private string _ask(string questionKey)
+    private string _ask(string questionKey) // Display a question to the user and get input, using the LanguageViewModel to translate the question
     {
-        // Fetch the translated text from the dictionary
-        string translatedQuestion = _languageViewModel.GetTranslation(questionKey);
-
+        string translatedQuestion = _languageViewModel.GetTranslation(questionKey); //We use GetTranslation from the LanguageViewModel to get the translated question based on the provided key fr/en
         Console.Write($"{translatedQuestion} > ");
         string? input = Console.ReadLine();
-
         return input ?? string.Empty;
     }
 
-    /// <summary>
+
+    // <summary>
     /// Entry point for commands. Handles both interactive menu and CLI arguments.
     /// </summary>
-    public void RunCommand(string? command, string[] args)
+    public void RunCommand(string? command, string[] args)  // If a command is passed as an argument, executes directly
     {
-        // If no command is provided, launch the interactive menu
         if (string.IsNullOrEmpty(command))
         {
-            ShowMainMenu();
+            ShowMainMenu(); // Display the main menu for interactive mode if no command is provided as an argument
         }
         else
         {
-            // Process CLI arguments (Requirement: EasySave.exe 1-3)
-            // Default to Complete backup for CLI to avoid blocking
             ProcessDirectCommand(command, BackupType.Complete);
         }
     }
@@ -56,36 +51,45 @@ public class ConsoleView
     /// </summary>
     private void ShowMainMenu()
     {
-        bool exit = false;
+        bool exit = false;  // Main menu loop, continues until the user chooses to exit
         while (!exit)
         {
-            // Clear console for a cleaner look
             Console.Clear();
+
+
+            // Logo ASCII
+            string easySaveLogo = @"
+ /$$$$$$$$                                     /$$$$$$                            
+| $$_____/                                    /$$__  $$                           
+| $$        /$$$$$$  /$$$$$$$ /$$   /$$      | $$  \__/  /$$$$$$  /$$    /$$ /$$$$$$ 
+| $$$$$    |____  $$ /$$_____/| $$  | $$      |  $$$$$$  |____  $$|  $$  /$$//$$__  $$
+| $$__/     /$$$$$$$|  $$$$$$ | $$  | $$       \____  $$  /$$$$$$$ \  $$/$$/| $$$$$$$$
+| $$       /$$__  $$ \____  $$| $$  | $$       /$$  \ $$ /$$__  $$  \  $$$/ | $$_____/
+| $$$$$$$$|  $$$$$$$ /$$$$$$$/|  $$$$$$$      |  $$$$$$/|  $$$$$$$   \  $/  |  $$$$$$$
+|________/ \_______/|_______/  \____  $$       \______/  \_______/    \_/    \_______/
+                               /$$  | $$                                              
+                              |  $$$$$$/                                              
+                               \______/                                               
+";
+            // Calling the method to display the logo with a rainbow gradient
+            WriteRainbowGradient(easySaveLogo);
+
             Console.WriteLine("\n--- EasySave Version 1.0 ---");
 
-            // Display menu options using translations
-
+            // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {_languageViewModel.GetTranslation("menu_create")}");
             Console.WriteLine($"2. {_languageViewModel.GetTranslation("menu_run")}");
             Console.WriteLine($"3. {_languageViewModel.GetTranslation("settings")} / {_languageViewModel.GetTranslation("language")}");
             Console.WriteLine($"4. {_languageViewModel.GetTranslation("menu_exit")}");
 
-            string choice = _ask("menu_choice");
+            string choice = _ask("menu_choice");    //We catch the user's choice
 
             switch (choice)
             {
-                case "1":
-                    CreateBackupJob();
-                    break;
-                case "2":
-                    RunBackupSelection();
-                    break;
-                case "3":
-                    ChangeLanguageMenu();
-                    break;
-                case "4":
-                    exit = true;
-                    break;
+                case "1": CreateBackupJob(); break;
+                case "2": RunBackupSelection(); break;
+                case "3": ChangeLanguageMenu(); break;
+                case "4": exit = true; break;
                 default:
                     Console.WriteLine(_languageViewModel.GetTranslation("error_invalid_choice"));
                     Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
@@ -95,48 +99,34 @@ public class ConsoleView
         }
     }
 
+
     /// <summary>
     /// Logic to create a new backup job.
     /// </summary>
-    private void CreateBackupJob()
+    private void CreateBackupJob()  // Displays the prompts to create a new backup job and uses the ConfigViewModel to create it
     {
         Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("title_new_job")} ---");
-
         string name = _ask("input_name");
         string source = _ask("input_source");
         string target = _ask("input_target");
-
-        // Create the job via the ConfigViewModel
-        bool success = _configViewModel.CreateJob(name, source, target);
-
-        if (success)
+        if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
             Console.WriteLine(_languageViewModel.GetTranslation("success_job_created"));
         else
             Console.WriteLine(_languageViewModel.GetTranslation("error_job_limit"));
-
-        // Pause to let user read the message
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
         Console.ReadKey();
     }
 
+
     /// <summary>
     /// Handles the manual execution of jobs from the menu.
     /// </summary>
-    private void RunBackupSelection()
+    private void RunBackupSelection()   // Displays the list of existing backup jobs and ask the user to select one
     {
         string id = _ask("input_run_id");
-
-        // Ask for the type using translations
-        Console.WriteLine($"1. {_languageViewModel.GetTranslation("complete")}");
-        Console.WriteLine($"2. {_languageViewModel.GetTranslation("differential")}");
-
+        Console.WriteLine($"1. {_languageViewModel.GetTranslation("complete")}\n2. {_languageViewModel.GetTranslation("differential")}");   // We ask the user to choose the type of backup (complete or differential) using the LanguageViewModel to translate the options
         string typeInput = _ask("input_type");
-
-        BackupType selectedType = (typeInput == "2") ? BackupType.Differential : BackupType.Complete;
-
-        // Call the execution logic
-        ProcessDirectCommand(id, selectedType);
-
+        ProcessDirectCommand(id, (typeInput == "2") ? BackupType.Differential : BackupType.Complete);   // We use ProcessDirectCommand to execute the selected backup job with the chosen type, then we display a message to press a key to return to the menu
         Console.WriteLine(_languageViewModel.GetTranslation("press_key"));
         Console.ReadKey();
     }
@@ -144,39 +134,71 @@ public class ConsoleView
     /// <summary>
     /// Parses the command string to identify ranges or lists of jobs to run.
     /// </summary>
-    private void ProcessDirectCommand(string command, BackupType type)
+    private void ProcessDirectCommand(string command, BackupType type)  // Exécute une commande de sauvegarde directement (utilisée pour les commandes passées en argument ou pour les sauvegardes sélectionnées dans le menu)
     {
-        try
-        {
-            _backupViewModel.RunRangeBackup(command, type);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"{_languageViewModel.GetTranslation("error_execution")}: {ex.Message}");
-        }
+        try { _backupViewModel.RunRangeBackup(command, type); }
+        catch (Exception ex) { Console.WriteLine($"{_languageViewModel.GetTranslation("error_execution")}: {ex.Message}"); }    // On utilise RunRangeBackup du BackupViewModel pour exécuter la sauvegarde avec l'ID et le type spécifiés, puis on affiche un message de succès ou d'erreur selon le résultat
     }
 
     /// <summary>
     /// method to handle language switching
     /// </summary>
-    private void ChangeLanguageMenu()
+    private void ChangeLanguageMenu()   // Displays the language options and allows the user to change the application's language using the LanguageViewModel
     {
-        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---");
-        Console.WriteLine("en - English");
-        Console.WriteLine("fr - Français");
-
+        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---\nen - English\nfr - Français");
         string lang = _ask("language");
-
         if (lang == "en" || lang == "fr")
         {
             _languageViewModel.SetLanguage(lang);
-            Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}");
+            Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}"); // We use SetLanguage from the LanguageViewModel to change the language, then we display a confirmation message using GetTranslation to ensure it's in the correct language
         }
-        else
-        {
-            Console.WriteLine(_languageViewModel.GetTranslation("invalid_language"));
-        }
+        System.Threading.Thread.Sleep(1000);
+    }
 
-        System.Threading.Thread.Sleep(1000); // Small pause
+    /// <summary>
+    /// Displays the provided text with a rainbow gradient effect in the console.
+    /// </summary>
+    private void WriteRainbowGradient(string text)
+    {
+        string[] lines = text.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
+        int maxLen = 0;
+        foreach (var l in lines) if (l.Length > maxLen) maxLen = l.Length;
+
+        for (int y = 0; y < lines.Length; y++)
+        {
+            for (int x = 0; x < lines[y].Length; x++)
+            {
+                // Calcul of the hue based on the position of the character, creating a diagonal gradient effect across the text
+                double hue = ((double)(x + y * 2) / (maxLen + lines.Length)) * 360;
+
+                var (r, g, b) = HsvToRgb(hue % 360, 1.0, 1.0);
+                Console.Write($"\u001b[38;2;{r};{g};{b}m{lines[y][x]}");
+            }
+            Console.WriteLine();
+        }
+        Console.Write("\u001b[0m");
+    }
+
+    /// <summary>
+    /// Convert HSV color values to RGB. Used for the rainbow gradient effect in the console logo.
+    /// </summary>
+    private (int r, int g, int b) HsvToRgb(double h, double s, double v)
+    {
+        int hi = (int)Math.Floor(h / 60) % 6;
+        double f = h / 60 - Math.Floor(h / 60);
+        int p = (int)(v * (1 - s) * 255);
+        int q = (int)(v * (1 - f * s) * 255);
+        int t = (int)(v * (1 - (1 - f) * s) * 255);
+        int vInt = (int)(v * 255);
+
+        return hi switch
+        {
+            0 => (vInt, t, p),
+            1 => (q, vInt, p),
+            2 => (p, vInt, t),
+            3 => (p, q, vInt),
+            4 => (t, p, vInt),
+            _ => (vInt, p, q)
+        };
     }
 }
