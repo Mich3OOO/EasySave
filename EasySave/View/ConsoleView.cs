@@ -134,10 +134,10 @@ public class ConsoleView
     /// <summary>
     /// Parses the command string to identify ranges or lists of jobs to run.
     /// </summary>
-    private void ProcessDirectCommand(string command, BackupType type)  // Exécute une commande de sauvegarde directement (utilisée pour les commandes passées en argument ou pour les sauvegardes sélectionnées dans le menu)
+    private void ProcessDirectCommand(string command, BackupType type)  // ExÃ©cute une commande de sauvegarde directement (utilisÃ©e pour les commandes passÃ©es en argument ou pour les sauvegardes sÃ©lectionnÃ©es dans le menu)
     {
         try { _backupViewModel.RunRangeBackup(command, type); }
-        catch (Exception ex) { Console.WriteLine($"{_languageViewModel.GetTranslation("error_execution")}: {ex.Message}"); }    // On utilise RunRangeBackup du BackupViewModel pour exécuter la sauvegarde avec l'ID et le type spécifiés, puis on affiche un message de succès ou d'erreur selon le résultat
+        catch (Exception ex) { Console.WriteLine($"{_languageViewModel.GetTranslation("error_execution")}: {ex.Message}"); }    // On utilise RunRangeBackup du BackupViewModel pour exÃ©cuter la sauvegarde avec l'ID et le type spÃ©cifiÃ©s, puis on affiche un message de succÃ¨s ou d'erreur selon le rÃ©sultat
     }
 
     /// <summary>
@@ -145,10 +145,20 @@ public class ConsoleView
     /// </summary>
     private void ChangeLanguageMenu()   // Displays the language options and allows the user to change the application's language using the LanguageViewModel
     {
-        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---\nen - English\nfr - Français");
+        Console.WriteLine($"\n--- {_languageViewModel.GetTranslation("settings")} ---\nen - English\nfr - FranÃ§ais");
         string lang = _ask("language");
-        if (lang == "en" || lang == "fr")
+
+        Languages newLanguage;
+        
+        if (Languages.TryParse(lang.ToUpper(), out newLanguage))
         {
+            _languageViewModel.SetLanguage(newLanguage);
+            Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}");
+        }
+        else
+        {
+            Console.WriteLine(_languageViewModel.GetTranslation("invalid_language"));
+        }
             _languageViewModel.SetLanguage(lang);
             Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}"); // We use SetLanguage from the LanguageViewModel to change the language, then we display a confirmation message using GetTranslation to ensure it's in the correct language
         }
