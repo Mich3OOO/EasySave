@@ -7,6 +7,18 @@
         "en": "Create a backup job",
         "fr": "Créer un travail de sauvegarde"
     },
+    "menu_list": {
+        "en": "List all jobs",
+        "fr": "Lister tous les travaux"
+    },
+    "menu_delete": {
+        "en": "Delete a job",
+        "fr": "Supprimer un travail"
+    },
+    "menu_edit": {
+        "en": "Edit a job",
+        "fr": "Modifier un travail"
+    },
     "menu_run": {
         "en": "Execute backup jobs",
         "fr": "Exécuter des travaux de sauvegarde"
@@ -18,6 +30,22 @@
     "menu_choice": {
         "en": "Please enter your choice",
         "fr": "Veuillez entrer votre choix"
+    },
+    "settings": {
+        "en": "Settings",
+        "fr": "Paramètres"
+    },
+    "language": {
+        "en": "Language",
+        "fr": "Langue"
+    },
+    "language_changed": {
+        "en": "Language changed to",
+        "fr": "Langue changée en"
+    },
+    "invalid_language": {
+        "en": "Invalid language (use 'en' or 'fr')",
+        "fr": "Langue invalide (utilisez 'en' ou 'fr')"
     },
     "title_new_job": {
         "en": "Create a New Backup Job",
@@ -35,6 +63,18 @@
         "en": "Enter destination directory path",
         "fr": "Entrez le chemin du répertoire de destination"
     },
+    "input_new_name": {
+        "en": "Enter new name",
+        "fr": "Entrez le nouveau nom"
+    },
+    "input_new_source": {
+        "en": "Enter new source path",
+        "fr": "Entrez le nouveau chemin source"
+    },
+    "input_new_destination": {
+        "en": "Enter new destination path",
+        "fr": "Entrez le nouveau chemin de destination"
+    },
     "input_type": {
         "en": "Select type (1 or 2)",
         "fr": "Sélectionnez le type (1 ou 2)"
@@ -47,9 +87,25 @@
         "en": "Backup job created successfully!",
         "fr": "Travail de sauvegarde créé avec succès !"
     },
+    "job_deleted_success": {
+        "en": "Job deleted successfully:",
+        "fr": "Travail supprimé avec succès :"
+    },
+    "job_modified_success": {
+        "en": "Job modified successfully:",
+        "fr": "Travail modifié avec succès :"
+    },
     "error_job_limit": {
         "en": "Error: You cannot create more than 5 jobs.",
         "fr": "Erreur : Impossible de créer plus de 5 travaux."
+    },
+    "error_job_exists": {
+        "en": "Error: A job with this name already exists.",
+        "fr": "Erreur : Un travail avec ce nom existe déjà."
+    },
+    "error_job_not_found": {
+        "en": "Error: Job not found with name:",
+        "fr": "Erreur : Aucun travail trouvé avec le nom :"
     },
     "error_invalid_choice": {
         "en": "Invalid choice. Please try again.",
@@ -59,13 +115,37 @@
         "en": "Execution Error",
         "fr": "Erreur d'exécution"
     },
+    "no_jobs_registered": {
+        "en": "No jobs registered.",
+        "fr": "Aucun travail enregistré."
+    },
+    "jobs_list_title": {
+        "en": "Jobs List",
+        "fr": "Liste des travaux"
+    },
+    "id_label": {
+        "en": "ID",
+        "fr": "ID"
+    },
+    "name_label": {
+        "en": "Name",
+        "fr": "Nom"
+    },
+    "source_label": {
+        "en": "Source",
+        "fr": "Source"
+    },
+    "destination_label": {
+        "en": "Destination",
+        "fr": "Destination"
+    },
+    "press_key": {
+        "en": "Press any key to continue...",
+        "fr": "Appuyez sur une touche pour continuer..."
+    },
     "backup": {
         "en": "Backup",
         "fr": "Sauvegarde"
-    },
-    "settings": {
-        "en": "Settings",
-        "fr": "Paramètres"
     },
     "complete": {
         "en": "Complete",
