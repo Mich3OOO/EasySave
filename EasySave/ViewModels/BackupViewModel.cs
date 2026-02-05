@@ -25,10 +25,6 @@ public class BackupViewModel
             backup.ExecuteBackup();
             Console.WriteLine($"Backup for job ID '{jobId}' from source '{savedJob.Source}' was successfully copied to '{savedJob.Destination}'");
         }
-
-
-
-        throw new NotImplementedException();
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
@@ -46,8 +42,6 @@ public class BackupViewModel
             // Handle exceptions (e.g., log the error, show a message to the user, etc.)
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
-
-        throw new NotImplementedException();
     }
 
     private int[] _getJobIdsToBackup(string range) //private method to parse the range string and return an array of job IDs to backup (e.g., "1-3" returns [1,2,3], "1;3" returns [1,3])
@@ -93,7 +87,5 @@ public class BackupViewModel
                 throw new ArgumentException($"Invalid job ID: '{range}'. Expected an integer.");
             }
         }
-
-        throw new NotImplementedException();
     }
 }
