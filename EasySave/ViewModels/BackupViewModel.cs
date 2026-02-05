@@ -14,19 +14,18 @@ public class BackupViewModel    // Class representing the backup view model, it 
         SavedJob savedJob = config.GetJob(jobId);
         BackupInfo backupInfo = new BackupInfo();
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
-        IBackup backup;
 
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
         {
-            //IBackup backup = new DiffBackup();
+            IBackup backup = new DiffBackup(savedJob, backupInfo);
+            backup.ExecuteBackup();
         }
         else if (backupType == BackupType.Complete)
         {
             backup = new CompBackup(savedJob, backupInfo);
             backup.ExecuteBackup();
-            Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
-
         }
+        Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
