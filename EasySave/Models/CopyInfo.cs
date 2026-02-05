@@ -10,9 +10,8 @@ public class CopyInfo
 
     public CopyInfo()
     {
-        
+        // Empty constructor
     }
-
     public CopyInfo(string source, string destination, DateTime startTime, int size, DateTime endTime)
     {
         this.Source = source;
