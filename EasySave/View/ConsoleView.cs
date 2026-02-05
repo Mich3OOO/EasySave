@@ -159,9 +159,8 @@ public class ConsoleView
         {
             Console.WriteLine(_languageViewModel.GetTranslation("invalid_language"));
         }
-            _languageViewModel.SetLanguage(lang);
-            Console.WriteLine($"{_languageViewModel.GetTranslation("language_changed")} {lang.ToUpper()}"); // We use SetLanguage from the LanguageViewModel to change the language, then we display a confirmation message using GetTranslation to ensure it's in the correct language
-        }
+
+            
         System.Threading.Thread.Sleep(1000);
     }
 

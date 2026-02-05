@@ -8,6 +8,11 @@ public class CopyInfo
     public long Size;
     public DateTime EndTime;
 
+    public CopyInfo()
+    {
+        
+    }
+
     public CopyInfo(string source, string destination, DateTime startTime, int size, DateTime endTime)
     {
         this.Source = source;
