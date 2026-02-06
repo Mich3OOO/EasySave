@@ -99,6 +99,10 @@
         "en": "Error: You cannot create more than 5 jobs.",
         "fr": "Erreur : Impossible de créer plus de 5 travaux."
     },
+    "error_invalid_path": {
+        "en": "Error: Invalid path. Please enter a valid directory path.",
+        "fr": "Erreur : Chemin invalide. Veuillez entrer un chemin de répertoire valide."
+    },
     "error_job_exists": {
         "en": "Error: A job with this name already exists.",
         "fr": "Erreur : Un travail avec ce nom existe déjà."

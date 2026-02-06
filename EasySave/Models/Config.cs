@@ -20,7 +20,7 @@ public class Config // Class representing the configuration of the application, 
     private Languages _language;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
-    private readonly string _confPath = "./config.json";
+    private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
     public Languages Language { get => _language; set => _language = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
     
@@ -97,7 +97,7 @@ public class Config // Class representing the configuration of the application, 
 
     public bool AddJob(SavedJob job)
     {
-        if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)
+        if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)   // Check if a job with the same name and ID already exists in the list of saved jobs, if not, add the new job to the list and return true, otherwise return false
         {
             _savedJobs.Add(job);
             return true;

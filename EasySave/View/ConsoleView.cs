@@ -132,7 +132,6 @@ public class ConsoleView
             return;
         }
 
-        
         try
         {
             if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
@@ -158,7 +157,7 @@ public class ConsoleView
         catch (Exception ex)
         {
             // If the source or target path is invalid during job creation, we catch it here
-            Console.WriteLine($"{Translate("error_execution")}: {ex.Message}");
+            Console.WriteLine($"{Translate("error_invalid_path")}: {ex.Message}");
         }
 
         Console.WriteLine(Translate("press_key"));
