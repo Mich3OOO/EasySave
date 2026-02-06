@@ -158,5 +158,9 @@
     "differential": {
         "en": "Differential",
         "fr": "Différentielle"
+    },
+    "backup_done": {
+        "en": "Sauvegarde has been",
+        "fr":  "La sauvegarde à été faite"
     }
 }

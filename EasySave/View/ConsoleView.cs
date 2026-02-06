@@ -178,6 +178,7 @@ public class ConsoleView
         Console.WriteLine($"1. {Translate("complete")}\n2. {Translate("differential")}");   // We ask the user to choose the type of backup (complete or differential) using the LanguageViewModel to translate the options
         string typeInput = _ask("input_type");  //Complete / DIfferential choice
         ProcessDirectCommand(id, (typeInput == "2") ? BackupType.Differential : BackupType.Complete);   // We use ProcessDirectCommand to execute the selected backup job with the chosen type, then we display a message to press a key to return to the menu
+        Console.WriteLine(Translate("backup_done"));
         Console.WriteLine(Translate("press_key"));
         Console.ReadKey();
     }
