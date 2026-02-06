@@ -4,12 +4,20 @@ using System.Text;
 
 namespace EasySave.Models;
 
+/// <summary>
+/// Manages the real-time state of backup jobs, handling persistence to a JSON file 
+/// and responding to backup events via the Observer pattern.
+/// </summary>
 public class StateManager: IEventListener
 {
     private List<StateInfo> _states;
     
     private readonly string _stateFilePath = "./states.json";
 
+    /// <summary>
+    /// Initializes a new instance of the StateManager.
+    /// Subscribes to the EventManager and loads existing states from the local JSON file.
+    /// </summary>
     public StateManager()
     {
         EventManager.GetInstance().Subscribe(this);
@@ -30,6 +38,11 @@ public class StateManager: IEventListener
         }
     }
     
+    /// <summary>
+    /// Updates the state of a specific backup job based on provided BackupInfo.
+    /// Triggered whenever a file is copied or a job status changes.
+    /// </summary>
+    /// <param name="data">The current data context of the backup job.</param>
     public void Update(BackupInfo data)
     {
         Console.WriteLine("update state");
@@ -68,6 +81,10 @@ public class StateManager: IEventListener
         _save();
     }
 
+    /// <summary>
+    /// Serializes the current list of states to the JSON file.
+    /// Uses UTF8 encoding for the file stream.
+    /// </summary>
     private void _save()
     {
         if (File.Exists(_stateFilePath)) File.Delete(_stateFilePath);
@@ -77,6 +94,11 @@ public class StateManager: IEventListener
         }
     }
 
+    /// <summary>
+    /// Retrieves the state information for a specific backup job by name.
+    /// </summary>
+    /// <param name="savedJobName">The name of the job to search for.</param>
+    /// <returns>The StateInfo if found; otherwise, null.</returns>
     public StateInfo? GetStateFrom(string savedJobName)
     {
         return _states.FirstOrDefault(s => s.Name == savedJobName);

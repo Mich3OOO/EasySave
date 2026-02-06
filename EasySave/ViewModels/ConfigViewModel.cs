@@ -50,8 +50,9 @@ public class ConfigViewModel    // Class representing the config view model, it 
     }
     public bool CreateJob(string name, string source, string destination) //    Method to create a new saved job, it takes the name, source and destination of the new job, it creates a new SavedJob object with the given values and adds it to the configuration using the AddJob method of the Config class, it returns true if the job was added successfully, false otherwise (e.g., if a job with the same name already exists)
     {
+        Console.WriteLine($"2./ Source = {source}");    //debug
         List<SavedJob> savedJobs = _config.SavedJobs;
-        return _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));
+        return _config.AddJob(new SavedJob(savedJobs.Count > 0 ?savedJobs.Max(j=> j.Id) + 1: 1 ,name, source, destination));    // The ID of the new job is set to the maximum ID of the existing jobs plus one, or 1 if there are no existing jobs
 
     }
     public string[] GetJobsNames()  // Method to get the names of all saved jobs, it returns an array of strings containing the names of the saved jobs

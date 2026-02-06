@@ -2,7 +2,7 @@ namespace EasyLog;
 
 public class Logger
 {
-    private static Logger _instance;
+    private static Logger? _instance;
     private readonly string _logsPath = "./logs";
 
     private Logger()
@@ -21,8 +21,8 @@ public class Logger
     // The creation of the JSON document is managed in EasySave and transferred as a string
     public void Log(string message)
     {
-        string _path = _getFileName();
-        System.IO.File.AppendAllText(_path, message + System.Environment.NewLine);
+        string path = _getFileName();
+        File.AppendAllText(path, message + Environment.NewLine);
     }
 
     // Create a Logger singleton or return the existing one
@@ -39,9 +39,9 @@ public class Logger
     // Return the path of the current log file (based on the current date)
     private string _getFileName()
     {
-        System.IO.Directory.CreateDirectory(_logsPath); // Create the logs directory if it doesn't exist
-        string _nomFichier = DateTime.Now.ToString("yyyy-MM-dd") + "_log.json"; // Assemble the file name based on the current date
-        return System.IO.Path.Combine(_logsPath, _nomFichier); // Assemble the path with the file name (better than a concatenation because it handles / and )
+        Directory.CreateDirectory(_logsPath); // Create the logs directory if it doesn't exist
+        string nomFichier = DateTime.Now.ToString("yyyy-MM-dd") + "_log.json"; // Assemble the file name based on the current date
+        return Path.Combine(_logsPath, nomFichier); // Assemble the path with the file name (better than a concatenation because it handles / and )
     }
 
 }

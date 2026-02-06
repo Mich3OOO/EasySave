@@ -1,13 +1,12 @@
 using EasySave.View;
 using EasySave.ViewModels;
-using EasySave.Models; // si besoinn
 
+namespace EasySave;
 internal class Program
 {
     private static void Main(string[] args)
     {
-        LogsManager logsManager = new LogsManager(); // Initialization of the LogsManager, needed for backup logging (called by EventManager)
-        // Setup Encoding for accents
+        
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
         // Define path to dictionary.json
@@ -19,15 +18,15 @@ internal class Program
         );
 
         // Initialize ViewModels (Dependency Injection)
-        LanguageViewModel langVM = new LanguageViewModel(dictionaryPath);
-        ConfigViewModel configVM = new ConfigViewModel();
-        BackupViewModel backupVM = new BackupViewModel();
+        LanguageViewModel langVm = new LanguageViewModel(dictionaryPath);
+        ConfigViewModel configVm = new ConfigViewModel();
+        BackupViewModel backupVm = new BackupViewModel();
 
         // Create the View with the ViewModels
-        ConsoleView view = new ConsoleView(langVM, configVM, backupVM);
+        ConsoleView view = new ConsoleView(langVm, configVm, backupVm);
 
         // Run the application
-        string command = args.Length > 0 ? args[0] : null;
+        string command = args.Length > 0 ? args[0] : string.Empty;
 
         view.RunCommand(command, args);
     }

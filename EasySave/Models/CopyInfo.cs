@@ -10,6 +10,11 @@ public class CopyInfo   // Class representing information about a file copy oper
 
     public CopyInfo()
     {
+        Source = string.Empty;
+        Destination = string.Empty;
+        StartTime = DateTime.MinValue;
+        Size = 0;
+        EndTime = DateTime.MinValue;
         // Empty constructor
     }
     public CopyInfo(string source, string destination, DateTime startTime, int size, DateTime endTime)

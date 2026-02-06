@@ -10,11 +10,11 @@ public class ConsoleView
     private readonly ConfigViewModel _configViewModel;
     private readonly BackupViewModel _backupViewModel;
 
-    public ConsoleView(LanguageViewModel langVM, ConfigViewModel configVM, BackupViewModel backupVM)        // Constructor to inject ViewModels
+    public ConsoleView(LanguageViewModel langVm, ConfigViewModel configVm, BackupViewModel backupVm)        // Constructor to inject ViewModels
     {
-        _languageViewModel = langVM;
-        _configViewModel = configVM;
-        _backupViewModel = backupVM;
+        _languageViewModel = langVm;
+        _configViewModel = configVm;
+        _backupViewModel = backupVm;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class ConsoleView
     }
 
 
-    // <summary>
+    /// <summary>
     /// Entry point for commands. Handles both interactive menu and CLI arguments.
     /// </summary>
     public void RunCommand(string? command, string[] args)  // If a command is passed as an argument, executes directly
@@ -85,9 +85,9 @@ public class ConsoleView
 
             // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {Translate("menu_create")}");
-            Console.WriteLine($"2. Lister tous les jobs"); // Pense à ajouter une clé de traduction pour ça plus tard
-            Console.WriteLine($"3. Supprimer un job par le nom"); // Idem
-            Console.WriteLine($"4. Modifier un job par le nom"); // Idem
+            Console.WriteLine($"2. {Translate("menu_list")}"); 
+            Console.WriteLine($"3. {Translate("menu_delete")}"); 
+            Console.WriteLine($"4. {Translate("menu_edit")}"); 
             Console.WriteLine($"5. {Translate("menu_run")}");
             Console.WriteLine($"6. {Translate("settings")} / {Translate("language")}");
             Console.WriteLine($"7. {Translate("menu_exit")}");
@@ -132,7 +132,6 @@ public class ConsoleView
             return;
         }
 
-        
         try
         {
             if (_configViewModel.CreateJob(name, source, target))   // We use CreateJob from the ConfigViewModel to create the new backup job
@@ -158,7 +157,7 @@ public class ConsoleView
         catch (Exception ex)
         {
             // If the source or target path is invalid during job creation, we catch it here
-            Console.WriteLine($"{Translate("error_execution")}: {ex.Message}");
+            Console.WriteLine($"{Translate("error_invalid_path")}: {ex.Message}");
         }
 
         Console.WriteLine(Translate("press_key"));
@@ -196,11 +195,12 @@ public class ConsoleView
     private void ChangeLanguageMenu()   // Displays the language options and allows the user to change the application's language using the LanguageViewModel
     {
         Console.WriteLine($"\n--- {Translate("settings")} ---\nen - English\nfr - Français");
-        string lang = _ask("language");
+        string lang = _ask("language").ToLower();
+        lang = string.Concat(char.ToUpper(lang[0]), lang.Substring(1));
 
         Languages newLanguage;
 
-        if (Languages.TryParse(lang.ToUpper(), out newLanguage))
+        if (Enum.TryParse(lang, out newLanguage))
         {
             _languageViewModel.SetLanguage(newLanguage);    //We call the SetLanguage method from the LanguageViewModel
             Console.WriteLine($"{Translate("language_changed")} {lang.ToUpper()}");
@@ -211,7 +211,7 @@ public class ConsoleView
         }
 
 
-        System.Threading.Thread.Sleep(1000);
+        Thread.Sleep(1000);
     }
 
     /// <summary>
