@@ -1,4 +1,3 @@
-using EasyLog;
 using EasySave.Interfaces;
 
 namespace EasySave.Models;
