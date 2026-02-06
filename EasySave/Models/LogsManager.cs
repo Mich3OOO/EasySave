@@ -25,13 +25,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
         }
-        if (data?.SavedJobInfo == null || data?.CurrentCopyInfo == null)
+        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
         // Create 'JSON' string with infos from data
         return $@"{{
-           ""Name"": ""{data.SavedJobInfo.getName()}"",
+           ""Name"": ""{data.SavedJobInfo.GetName()}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
            ""FileTarget"": ""{data.CurrentCopyInfo.Destination}"",
            ""FileSize"": {data.CurrentCopyInfo.Size},

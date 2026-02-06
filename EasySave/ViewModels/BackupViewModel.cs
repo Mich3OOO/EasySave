@@ -5,14 +5,14 @@ namespace EasySave.ViewModels;
 
 public class BackupViewModel    // Class representing the backup view model, it is responsible for running backups based on a given range of job IDs and backup type
 {
-    private StateManager _statesManager;
-    private Config _config;
+    private Config _config = Config.S_GetInstance();
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
-        Config config = Config.S_GetInstance();
-        SavedJob savedJob = config.GetJob(jobId);
-        BackupInfo backupInfo = new BackupInfo();
+        _config = Config.S_GetInstance();
+        SavedJob? savedJob = _config.GetJob(jobId);
+        if (savedJob == null) throw new ArgumentException("Invalid backup id");
+        BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = savedJob};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
@@ -81,7 +81,7 @@ public class BackupViewModel    // Class representing the backup view model, it 
         {
             if (int.TryParse(range, out int jobId))
             {
-                return new int[] { jobId };
+                return  [jobId];
             }
             else
             {

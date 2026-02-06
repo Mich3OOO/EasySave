@@ -8,15 +8,15 @@ public class SavedJob   // Class representing a saved job, it holds the informat
     private string _destination;
 
 
-    public string getName() // Getters for the fields, they are used to access the fields from outside the class, they are not properties because we want to control the setting of the destination and source fields
+    public string GetName() // Getters for the fields, they are used to access the fields from outside the class, they are not properties because we want to control the setting of the destination and source fields
     {
         return this._name;
     }
-    public string getDestination()
+    public string GetDestination()
     {
         return this._destination;
     }
-    public string getSource()
+    public string GetSource()
     {
         return this._source;
     }
