@@ -85,9 +85,9 @@ public class ConsoleView
 
             // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {Translate("menu_create")}");
-            Console.WriteLine($"2. Lister tous les jobs"); // Pense à ajouter une clé de traduction pour ça plus tard
-            Console.WriteLine($"3. Supprimer un job par le nom"); // Idem
-            Console.WriteLine($"4. Modifier un job par le nom"); // Idem
+            Console.WriteLine($"2. {Translate("menu_list")}"); 
+            Console.WriteLine($"3. {Translate("menu_delete")}"); 
+            Console.WriteLine($"4. {Translate("menu_edit")}"); 
             Console.WriteLine($"5. {Translate("menu_run")}");
             Console.WriteLine($"6. {Translate("settings")} / {Translate("language")}");
             Console.WriteLine($"7. {Translate("menu_exit")}");
