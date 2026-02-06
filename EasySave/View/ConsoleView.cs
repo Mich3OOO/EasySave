@@ -12,6 +12,9 @@ public class ConsoleView
 
     public ConsoleView(LanguageViewModel langVm, ConfigViewModel configVm, BackupViewModel backupVm)        // Constructor to inject ViewModels
     {
+        new StateManager();
+        new LogsManager();
+        
         _languageViewModel = langVm;
         _configViewModel = configVm;
         _backupViewModel = backupVm;

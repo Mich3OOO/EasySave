@@ -45,7 +45,6 @@ public class StateManager: IEventListener
     /// <param name="data">The current data context of the backup job.</param>
     public void Update(BackupInfo data)
     {
-        Console.WriteLine("update state");
         StateInfo? editedJobState = _states.FirstOrDefault(s => s.Name == data.SavedJobInfo.Name);
 
         if (editedJobState == null)
@@ -57,7 +56,7 @@ public class StateManager: IEventListener
             _states.Add(editedJobState);
         }
 
-        if (data.CurrentCopyInfo != null)
+        if (data.CurrentFile != data.TotalFiles)
         {
             editedJobState.SourceFilePath = data.CurrentCopyInfo.Source;
             editedJobState.TargetFilePath = data.CurrentCopyInfo.Destination;
@@ -87,10 +86,10 @@ public class StateManager: IEventListener
     /// </summary>
     private void _save()
     {
-        if (File.Exists(_stateFilePath)) File.Delete(_stateFilePath);
-        using(FileStream fs = File.Open(_stateFilePath, FileMode.CreateNew, FileAccess.Write))
+        using (FileStream fs = File.Open(_stateFilePath, FileMode.Create, FileAccess.Write))
         {
-            fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(_states)));
+            byte[] info = new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(_states));
+            fs.Write(info, 0, info.Length);
         }
     }
 
