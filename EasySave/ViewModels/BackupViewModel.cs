@@ -22,10 +22,9 @@ public class BackupViewModel    // Class representing the backup view model, it 
         }
         else if (backupType == BackupType.Complete)
         {
-            backup = new CompBackup(savedJob, backupInfo);
+            IBackup backup = new CompBackup(savedJob, backupInfo);
             backup.ExecuteBackup();
         }
-        Console.WriteLine($"Backup for job ID {jobId} from the source '{savedJob.Source}' to the destination '{savedJob.Destination}' has been completed.");
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
