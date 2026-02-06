@@ -10,11 +10,11 @@ public class ConsoleView
     private readonly ConfigViewModel _configViewModel;
     private readonly BackupViewModel _backupViewModel;
 
-    public ConsoleView(LanguageViewModel langVM, ConfigViewModel configVM, BackupViewModel backupVM)        // Constructor to inject ViewModels
+    public ConsoleView(LanguageViewModel langVm, ConfigViewModel configVm, BackupViewModel backupVm)        // Constructor to inject ViewModels
     {
-        _languageViewModel = langVM;
-        _configViewModel = configVM;
-        _backupViewModel = backupVM;
+        _languageViewModel = langVm;
+        _configViewModel = configVm;
+        _backupViewModel = backupVm;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class ConsoleView
     }
 
 
-    // <summary>
+    /// <summary>
     /// Entry point for commands. Handles both interactive menu and CLI arguments.
     /// </summary>
     public void RunCommand(string? command, string[] args)  // If a command is passed as an argument, executes directly
@@ -199,7 +199,7 @@ public class ConsoleView
 
         Languages newLanguage;
 
-        if (Languages.TryParse(lang.ToUpper(), out newLanguage))
+        if (Enum.TryParse(lang.ToUpper(), out newLanguage))
         {
             _languageViewModel.SetLanguage(newLanguage);    //We call the SetLanguage method from the LanguageViewModel
             Console.WriteLine($"{Translate("language_changed")} {lang.ToUpper()}");
@@ -210,7 +210,7 @@ public class ConsoleView
         }
 
 
-        System.Threading.Thread.Sleep(1000);
+        Thread.Sleep(1000);
     }
 
     /// <summary>

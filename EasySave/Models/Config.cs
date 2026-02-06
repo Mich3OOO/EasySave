@@ -91,7 +91,7 @@ public class Config // Class representing the configuration of the application, 
 
     private void _setDefaultConfig()    // Method to set the default configuration, it is called when there is no config file or when the config file is invalid, it sets the default language to English and initializes an empty list of saved jobs
     {
-        _language = Languages.EN;
+        _language = Languages.En;
         _savedJobs = new List<SavedJob>();
     }
 

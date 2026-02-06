@@ -14,12 +14,12 @@ public class StateInfo
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public StateLevel State = StateLevel.Inactive;
     [JsonInclude]
-    public int TotalFilesToCopy = 0;
+    public int TotalFilesToCopy ;
     [JsonInclude]
-    public long TotalFilesSize = 0;
+    public long TotalFilesSize;
     [JsonInclude]
-    public int NbFilesLeftToDo = 0;
+    public int NbFilesLeftToDo;
     [JsonInclude]
-    public float Progression = 0;
+    public float Progression ;
     
 }
