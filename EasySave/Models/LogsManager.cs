@@ -18,18 +18,18 @@ public class LogsManager : IEventListener   // Class representing the logs manag
     public void Update(BackupInfo data)
     {
         string logText = ""; // Initializing the log text variable
-        LogsFormats formats = _config.LogsFormat; // Retrieving the logs format from config
-        if (formats == LogsFormats.Json) // If the format is JSON, transform the data into a JSON string and log it
+        LogsFormats format = _config.LogsFormat; // Retrieving the logs format from config
+        if (format == LogsFormats.Json) // If the format is JSON, transform the data into a JSON string
         {
             _format = "json";
             logText = this._toJson(data);
         }
-        if (formats == LogsFormats.Xml) // If the format is XML, transform the data into an XML string and log it
+        if (format == LogsFormats.Xml) // If the format is XML, transform the data into an XML string
         {
             _format = "xml";
             logText = this._toXml(data);
         }
-        else // If the format isn't reconized or sent, to Txt (default)
+        if (format != LogsFormats.Json && format != LogsFormats.Xml) // If the format isn't reconized or sent, to Txt (default)
         {
             _format = "txt";
             logText = this._toTxt(data);
@@ -74,7 +74,7 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         }
         // Create 'XML' string with infos from data
         return $@"<Log>
-                    <Name>{data.SavedJobInfo.GetName()}</Name>
+                    <JobName>{data.SavedJobInfo.GetName()}</JobName>
                     <FileSource>{data.CurrentCopyInfo.Source}</FileSource>
                     <FileTarget>{data.CurrentCopyInfo.Destination}</FileTarget>
                     <FileSize>{data.CurrentCopyInfo.Size}</FileSize>

@@ -253,7 +253,7 @@ public class ConsoleView
                 break;
             case "2":
                 _configViewModel.SetLogsFormat(LogsFormats.Xml);
-                Console.WriteLine(Translate("logsFormat_changed")+"Xml");
+                Console.WriteLine(Translate("logsFormat_changed") + "Xml");
                 break;
             default:
                 Console.WriteLine(Translate("invalid_logs_format"));

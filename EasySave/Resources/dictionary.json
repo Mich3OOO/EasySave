@@ -44,8 +44,8 @@
     "fr": "Changer de langue"
   },
   "language_changed": {
-    "en": "Language changed to",
-    "fr": "Langue changée en"
+    "en": "Language changed to ",
+    "fr": "Langue changée en "
   },
   "invalid_language": {
     "en": "Invalid language (use 'en' or 'fr')",
@@ -56,16 +56,16 @@
     "fr": "Changer le format des logs"
   },
   "logs_format_changed": {
-    "en": "Logs format changed to",
-    "fr": "Format des logs changé en"
+    "en": "Logs format changed to ",
+    "fr": "Format des logs changé en "
   },
   "logsFormat_changed": {
-    "en": "Logs format changed to",
-    "fr": "Format des logs changé en"
+    "en": "Logs format changed to ",
+    "fr": "Format des logs changé en "
   },
   "invalid_logs_format": {
-    "en": "Invalid logs format (use 'json' or 'csv')",
-    "fr": "Format des logs invalide (utilisez 'json' ou 'csv')"
+    "en": "Invalid logs format (use 'Json' or 'Xml')",
+    "fr": "Format des logs invalide (utilisez 'Json' ou 'Xml')"
   },
   "title_new_job": {
     "en": "Create a New Backup Job",

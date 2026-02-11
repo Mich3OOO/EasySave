@@ -18,9 +18,11 @@ public class Logger
         throw new NotImplementedException();
     }
 
-    // Allows to create logs as a JSON file
-    // The creation of the JSON document is managed in EasySave and transferred as a string
-    // I'll replace these comments by a summary when it will work
+    /// <summary>
+    /// Log the data into the file according to the parameters
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="format"></param>
     public void Log(string message, string format)
     {
         string path = _getFileName(format);
