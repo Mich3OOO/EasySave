@@ -20,6 +20,10 @@ public class ConfigViewModel    // Class representing the config view model, it 
     {
         _config.Language = lang;
     }
+    public void SetLogsFormat(LogsFormats format)    // Method to change the selected logs format, it updates the LogsFormat property of the Config class
+    {
+        _config.LogsFormat = format;
+    }
     public void ChangeJobSource(string jobName, string newJobSource)    // Method to change the source of a saved job, it takes the name of the job to update and the new source
     {
         SavedJob? job = _config.GetJob(jobName);

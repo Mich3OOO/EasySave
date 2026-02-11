@@ -1,166 +1,186 @@
 ﻿{
-    "welcome": {
-        "en": "Welcome to EasySave",
-        "fr": "Bienvenue sur EasySave"
-    },
-    "menu_create": {
-        "en": "Create a backup job",
-        "fr": "Créer un travail de sauvegarde"
-    },
-    "menu_list": {
-        "en": "List all jobs",
-        "fr": "Lister tous les travaux"
-    },
-    "menu_delete": {
-        "en": "Delete a job",
-        "fr": "Supprimer un travail"
-    },
-    "menu_edit": {
-        "en": "Edit a job",
-        "fr": "Modifier un travail"
-    },
-    "menu_run": {
-        "en": "Execute backup jobs",
-        "fr": "Exécuter des travaux de sauvegarde"
-    },
-    "menu_exit": {
-        "en": "Exit application",
-        "fr": "Quitter l'application"
-    },
-    "menu_choice": {
-        "en": "Please enter your choice",
-        "fr": "Veuillez entrer votre choix"
-    },
-    "settings": {
-        "en": "Settings",
-        "fr": "Paramètres"
-    },
-    "language": {
-        "en": "Language",
-        "fr": "Langue"
-    },
-    "language_changed": {
-        "en": "Language changed to",
-        "fr": "Langue changée en"
-    },
-    "invalid_language": {
-        "en": "Invalid language (use 'en' or 'fr')",
-        "fr": "Langue invalide (utilisez 'en' ou 'fr')"
-    },
-    "title_new_job": {
-        "en": "Create a New Backup Job",
-        "fr": "Création d'un nouveau travail"
-    },
-    "input_name": {
-        "en": "Enter backup job name",
-        "fr": "Entrez le nom du travail"
-    },
-    "input_source": {
-        "en": "Enter source directory path",
-        "fr": "Entrez le chemin du répertoire source"
-    },
-    "input_target": {
-        "en": "Enter destination directory path",
-        "fr": "Entrez le chemin du répertoire de destination"
-    },
-    "input_new_name": {
-        "en": "Enter new name",
-        "fr": "Entrez le nouveau nom"
-    },
-    "input_new_source": {
-        "en": "Enter new source path",
-        "fr": "Entrez le nouveau chemin source"
-    },
-    "input_new_destination": {
-        "en": "Enter new destination path",
-        "fr": "Entrez le nouveau chemin de destination"
-    },
-    "input_type": {
-        "en": "Select type (1 or 2)",
-        "fr": "Sélectionnez le type (1 ou 2)"
-    },
-    "input_run_id": {
-        "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
-        "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
-    },
-    "success_job_created": {
-        "en": "Backup job created successfully!",
-        "fr": "Travail de sauvegarde créé avec succès !"
-    },
-    "job_deleted_success": {
-        "en": "Job deleted successfully:",
-        "fr": "Travail supprimé avec succès :"
-    },
-    "job_modified_success": {
-        "en": "Job modified successfully:",
-        "fr": "Travail modifié avec succès :"
-    },
-    "error_job_limit": {
-        "en": "Error: You cannot create more than 5 jobs.",
-        "fr": "Erreur : Impossible de créer plus de 5 travaux."
-    },
-    "error_invalid_path": {
-        "en": "Error: Invalid path. Please enter a valid directory path.",
-        "fr": "Erreur : Chemin invalide. Veuillez entrer un chemin de répertoire valide."
-    },
-    "error_job_exists": {
-        "en": "Error: A job with this name already exists.",
-        "fr": "Erreur : Un travail avec ce nom existe déjà."
-    },
-    "error_job_not_found": {
-        "en": "Error: Job not found with name:",
-        "fr": "Erreur : Aucun travail trouvé avec le nom :"
-    },
-    "error_invalid_choice": {
-        "en": "Invalid choice. Please try again.",
-        "fr": "Choix invalide. Veuillez réessayer."
-    },
-    "error_execution": {
-        "en": "Execution Error",
-        "fr": "Erreur d'exécution"
-    },
-    "no_jobs_registered": {
-        "en": "No jobs registered.",
-        "fr": "Aucun travail enregistré."
-    },
-    "jobs_list_title": {
-        "en": "Jobs List",
-        "fr": "Liste des travaux"
-    },
-    "id_label": {
-        "en": "ID",
-        "fr": "ID"
-    },
-    "name_label": {
-        "en": "Name",
-        "fr": "Nom"
-    },
-    "source_label": {
-        "en": "Source",
-        "fr": "Source"
-    },
-    "destination_label": {
-        "en": "Destination",
-        "fr": "Destination"
-    },
-    "press_key": {
-        "en": "Press any key to continue...",
-        "fr": "Appuyez sur une touche pour continuer..."
-    },
-    "backup": {
-        "en": "Backup",
-        "fr": "Sauvegarde"
-    },
-    "complete": {
-        "en": "Complete",
-        "fr": "Complète"
-    },
-    "differential": {
-        "en": "Differential",
-        "fr": "Différentielle"
-    },
-    "backup_done": {
-        "en": "Sauvegarde has been",
-        "fr":  "La sauvegarde à été faite"
-    }
+  "welcome": {
+    "en": "Welcome to EasySave",
+    "fr": "Bienvenue sur EasySave"
+  },
+  "menu_create": {
+    "en": "Create a backup job",
+    "fr": "Créer un travail de sauvegarde"
+  },
+  "menu_list": {
+    "en": "List all jobs",
+    "fr": "Lister tous les travaux"
+  },
+  "menu_delete": {
+    "en": "Delete a job",
+    "fr": "Supprimer un travail"
+  },
+  "menu_edit": {
+    "en": "Edit a job",
+    "fr": "Modifier un travail"
+  },
+  "menu_run": {
+    "en": "Execute backup jobs",
+    "fr": "Exécuter des travaux de sauvegarde"
+  },
+  "menu_exit": {
+    "en": "Exit application",
+    "fr": "Quitter l'application"
+  },
+  "menu_choice": {
+    "en": "Please enter your choice",
+    "fr": "Veuillez entrer votre choix"
+  },
+  "menu_settings": {
+    "en": "Settings",
+    "fr": "Paramètres"
+  },
+  "language": {
+    "en": "Language",
+    "fr": "Langue"
+  },
+  "change_language": {
+    "en": "Change language",
+    "fr": "Changer de langue"
+  },
+  "language_changed": {
+    "en": "Language changed to ",
+    "fr": "Langue changée en "
+  },
+  "invalid_language": {
+    "en": "Invalid language (use 'en' or 'fr')",
+    "fr": "Langue invalide (utilisez 'en' ou 'fr')"
+  },
+  "change_logsFormat": {
+    "en": "Change logs format",
+    "fr": "Changer le format des logs"
+  },
+  "logs_format_changed": {
+    "en": "Logs format changed to ",
+    "fr": "Format des logs changé en "
+  },
+  "logsFormat_changed": {
+    "en": "Logs format changed to ",
+    "fr": "Format des logs changé en "
+  },
+  "invalid_logs_format": {
+    "en": "Invalid logs format (use 'Json' or 'Xml')",
+    "fr": "Format des logs invalide (utilisez 'Json' ou 'Xml')"
+  },
+  "title_new_job": {
+    "en": "Create a New Backup Job",
+    "fr": "Création d'un nouveau travail"
+  },
+  "input_name": {
+    "en": "Enter backup job name",
+    "fr": "Entrez le nom du travail"
+  },
+  "input_source": {
+    "en": "Enter source directory path",
+    "fr": "Entrez le chemin du répertoire source"
+  },
+  "input_target": {
+    "en": "Enter destination directory path",
+    "fr": "Entrez le chemin du répertoire de destination"
+  },
+  "input_new_name": {
+    "en": "Enter new name",
+    "fr": "Entrez le nouveau nom"
+  },
+  "input_new_source": {
+    "en": "Enter new source path",
+    "fr": "Entrez le nouveau chemin source"
+  },
+  "input_new_destination": {
+    "en": "Enter new destination path",
+    "fr": "Entrez le nouveau chemin de destination"
+  },
+  "input_type": {
+    "en": "Select type (1 or 2)",
+    "fr": "Sélectionnez le type (1 ou 2)"
+  },
+  "input_run_id": {
+    "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
+    "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
+  },
+  "success_job_created": {
+    "en": "Backup job created successfully!",
+    "fr": "Travail de sauvegarde créé avec succès !"
+  },
+  "job_deleted_success": {
+    "en": "Job deleted successfully:",
+    "fr": "Travail supprimé avec succès :"
+  },
+  "job_modified_success": {
+    "en": "Job modified successfully:",
+    "fr": "Travail modifié avec succès :"
+  },
+  "error_job_limit": {
+    "en": "Error: You cannot create more than 5 jobs.",
+    "fr": "Erreur : Impossible de créer plus de 5 travaux."
+  },
+  "error_invalid_path": {
+    "en": "Error: Invalid path. Please enter a valid directory path.",
+    "fr": "Erreur : Chemin invalide. Veuillez entrer un chemin de répertoire valide."
+  },
+  "error_job_exists": {
+    "en": "Error: A job with this name already exists.",
+    "fr": "Erreur : Un travail avec ce nom existe déjà."
+  },
+  "error_job_not_found": {
+    "en": "Error: Job not found with name:",
+    "fr": "Erreur : Aucun travail trouvé avec le nom :"
+  },
+  "error_invalid_choice": {
+    "en": "Invalid choice. Please try again.",
+    "fr": "Choix invalide. Veuillez réessayer."
+  },
+  "error_execution": {
+    "en": "Execution Error",
+    "fr": "Erreur d'exécution"
+  },
+  "no_jobs_registered": {
+    "en": "No jobs registered.",
+    "fr": "Aucun travail enregistré."
+  },
+  "jobs_list_title": {
+    "en": "Jobs List",
+    "fr": "Liste des travaux"
+  },
+  "id_label": {
+    "en": "ID",
+    "fr": "ID"
+  },
+  "name_label": {
+    "en": "Name",
+    "fr": "Nom"
+  },
+  "source_label": {
+    "en": "Source",
+    "fr": "Source"
+  },
+  "destination_label": {
+    "en": "Destination",
+    "fr": "Destination"
+  },
+  "press_key": {
+    "en": "Press any key to continue...",
+    "fr": "Appuyez sur une touche pour continuer..."
+  },
+  "backup": {
+    "en": "Backup",
+    "fr": "Sauvegarde"
+  },
+  "complete": {
+    "en": "Complete",
+    "fr": "Complète"
+  },
+  "differential": {
+    "en": "Differential",
+    "fr": "Différentielle"
+  },
+  "backup_done": {
+    "en": "Sauvegarde has been",
+    "fr": "La sauvegarde à été faite"
+  }
 }
