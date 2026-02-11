@@ -9,6 +9,8 @@ struct ConfigStructure  // This struct is used to serialize and deserialize the 
     // The JsonInclude attribute is used to include the fields in the serialization and deserialization process, even if they are not public properties
     [JsonInclude]
     public Languages SelectedLanguage;
+    [JsonInclude]  
+    public LogsFormats SelectedLogsFormat;
     [JsonInclude]
     public List<SavedJob> SavedJobs;
     
@@ -18,10 +20,12 @@ public class Config // Class representing the configuration of the application, 
 {
     // The singleton pattern is used to ensure that there is only one instance of the Config class throughout the application, and it can be accessed globally via the S_GetInstance method
     private Languages _language;
+    private LogsFormats _logsFormat;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
     public Languages Language { get => _language; set => _language = value; }
+    public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
     
 
@@ -54,7 +58,7 @@ public class Config // Class representing the configuration of the application, 
         if (File.Exists(_confPath)) File.Delete(_confPath);
         using(FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
         {
-            ConfigStructure config = new ConfigStructure(){SelectedLanguage = _language, SavedJobs = _savedJobs};
+            ConfigStructure config = new ConfigStructure(){SelectedLanguage = _language, SelectedLogsFormat = _logsFormat, SavedJobs = _savedJobs};
             fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
            
         }
@@ -83,6 +87,7 @@ public class Config // Class representing the configuration of the application, 
             else
             {
                 _language = config.Value.SelectedLanguage;
+                _logsFormat = config.Value.SelectedLogsFormat;
                 _savedJobs = config.Value.SavedJobs ?? new List<SavedJob>();
             }
             
@@ -92,6 +97,7 @@ public class Config // Class representing the configuration of the application, 
     private void _setDefaultConfig()    // Method to set the default configuration, it is called when there is no config file or when the config file is invalid, it sets the default language to English and initializes an empty list of saved jobs
     {
         _language = Languages.En;
+        _logsFormat = LogsFormats.Json;
         _savedJobs = new List<SavedJob>();
     }
 

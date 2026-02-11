@@ -84,7 +84,7 @@ public class ConsoleView
             // Calling the method to display the logo with a rainbow gradient
             WriteRainbowGradient(easySaveLogo);
 
-            Console.WriteLine("\n--- EasySave Version 1.0 ---");
+            Console.WriteLine("\n--- EasySave Version 1.1 ---");
 
             // Main menu options, using the LanguageViewModel to translate each option based on the user's language preference
             Console.WriteLine($"1. {Translate("menu_create")}");
@@ -92,7 +92,7 @@ public class ConsoleView
             Console.WriteLine($"3. {Translate("menu_delete")}"); 
             Console.WriteLine($"4. {Translate("menu_edit")}"); 
             Console.WriteLine($"5. {Translate("menu_run")}");
-            Console.WriteLine($"6. {Translate("settings")} / {Translate("language")}");
+            Console.WriteLine($"6. {Translate("menu_settings")}");
             Console.WriteLine($"7. {Translate("menu_exit")}");
 
             string choice = _ask("menu_choice");    //We catch the user's choice
@@ -104,7 +104,7 @@ public class ConsoleView
                 case "3": DeleteJobByName(); break;
                 case "4": EditJobByName(); break;
                 case "5": RunBackupSelection(); break;
-                case "6": ChangeLanguageMenu(); break;
+                case "6": SettingsMenu(); break;
                 case "7": exit = true; break;
                 default:
                     Console.WriteLine(Translate("error_invalid_choice"));
@@ -193,6 +193,27 @@ public class ConsoleView
     }
 
     /// <summary>
+    /// method to the settings menu
+    /// </summary>
+    private void SettingsMenu() {         Console.WriteLine($"\n--- {Translate("settings")} ---");
+        Console.WriteLine($"1. {Translate("change_language")}");
+        Console.WriteLine($"2. {Translate("change_logsFormat")}");
+        Console.WriteLine($"3. {Translate("menu_exit")}");
+        string choice = _ask("menu_choice");
+        switch (choice)
+        {
+            case "1": ChangeLanguageMenu(); break;
+            case "2": ChangeLogsFormat();  break;
+            case "3": break;
+            default:
+                Console.WriteLine(Translate("error_invalid_choice"));
+                Console.WriteLine(Translate("press_key"));
+                Console.ReadKey();
+                break;
+        }
+    }
+
+    /// <summary>
     /// method to handle language switching
     /// </summary>
     private void ChangeLanguageMenu()   // Displays the language options and allows the user to change the application's language using the LanguageViewModel
@@ -214,6 +235,30 @@ public class ConsoleView
         }
 
 
+        Thread.Sleep(1000);
+    }
+
+    /// <summary>
+    /// method to handle logs format switching
+    /// </summary>
+    private void ChangeLogsFormat()    // Displays the log format options and allows the user to change the log format using the LogsManager
+    {
+        Console.WriteLine($"\n--- {Translate("settings")} ---\n1. Json \n2. Xml");
+        string choice = _ask("change_logsFormat");
+        switch (choice)
+        {
+            case "1":
+                _configViewModel.SetLogsFormat(LogsFormats.Json);
+                Console.WriteLine(Translate("logsFormat_changed") + "Json");
+                break;
+            case "2":
+                _configViewModel.SetLogsFormat(LogsFormats.Xml);
+                Console.WriteLine(Translate("logsFormat_changed") + "Xml");
+                break;
+            default:
+                Console.WriteLine(Translate("invalid_logs_format"));
+                break;
+        }
         Thread.Sleep(1000);
     }
 
