@@ -1,4 +1,4 @@
-using EasySave.View;
+using EasySave.Views;
 using EasySave.ViewModels;
 using Avalonia;
 using System;
