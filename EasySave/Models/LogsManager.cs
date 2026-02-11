@@ -7,6 +7,7 @@ public class LogsManager : IEventListener   // Class representing the logs manag
 {
 
     Config _config = Config.S_GetInstance();
+    private string _format;
 
     // Constructor that automatically subscribes to EventManager
     public LogsManager()
@@ -20,17 +21,20 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         LogsFormats formats = _config.LogsFormat; // Retrieving the logs format from config
         if (formats == LogsFormats.Json) // If the format is JSON, transform the data into a JSON string and log it
         {
+            _format = "json";
             logText = this._toJson(data);
         }
         if (formats == LogsFormats.Xml) // If the format is XML, transform the data into an XML string and log it
         {
+            _format = "xml";
             logText = this._toXml(data);
         }
         else // If the format isn't reconized or sent, to Txt (default)
         {
+            _format = "txt";
             logText = this._toTxt(data);
         }
-        Logger.GetInstance().Log(logText);
+        Logger.GetInstance().Log(logText, _format);
     }
 
     // Transform BackupInfo data into a JSON string
