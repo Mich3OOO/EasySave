@@ -26,9 +26,9 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         {
             logText = this._toXml(data);
         }
-        else // If the format isn't reconized or sent, to Json (default)
+        else // If the format isn't reconized or sent, to Txt (default)
         {
-            logText = this._toJson(data);
+            logText = this._toTxt(data);
         }
         Logger.GetInstance().Log(logText);
     }
@@ -77,5 +77,21 @@ public class LogsManager : IEventListener   // Class representing the logs manag
                     <FileTransferTime>{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}</FileTransferTime>
                     <Time>{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}</Time>
                 </Log>";
+    }
+
+    // Transform BackupInfo data into a string
+    private string _toTxt(BackupInfo data)
+    {
+        // Check if the data sent
+        if (data == null)
+        {
+            throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
+        }
+        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
+        {
+            throw new ArgumentException("Invalid backup data structure.");
+        }
+        // Create string with infos from data
+        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}";
     }
 }
