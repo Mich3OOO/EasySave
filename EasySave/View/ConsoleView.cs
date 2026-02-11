@@ -259,7 +259,8 @@ public class ConsoleView
                 Console.WriteLine(Translate("invalid_logs_format"));
                 break;
         }
-        Thread.Sleep(1000);
+        Console.WriteLine(Translate("press_key"));
+        Console.ReadKey();
     }
 
     /// <summary>
