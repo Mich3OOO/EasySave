@@ -17,7 +17,7 @@ public class LogsManager : IEventListener   // Class representing the logs manag
     public void Update(BackupInfo data)
     {
         string logText = ""; // Initializing the log text variable
-        LogsFormats formats = _config.GetLogsFormat(); // Retrieving the logs format from config
+        LogsFormats formats = _config.LogsFormat; // Retrieving the logs format from config
         if (formats == LogsFormats.Json) // If the format is JSON, transform the data into a JSON string and log it
         {
             logText = this._toJson(data);
