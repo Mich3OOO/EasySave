@@ -1,9 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:EasySave.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
         x:Class="EasySave.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="EasySave - Version 2.0"
@@ -14,14 +11,7 @@
     <Grid RowDefinitions="Auto, *, Auto" Margin="30">
         
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
-            
-            <TextBlock Grid.Column="0" 
-                       FontFamily="Consolas" 
-                       FontSize="9" 
-                       Foreground="#00E676" 
-                       FontWeight="Bold" 
-                       xml:space="preserve" 
-                       VerticalAlignment="Center">
+             <TextBlock Grid.Column="0" FontFamily="Consolas" FontSize="9" Foreground="#00E676" FontWeight="Bold" xml:space="preserve" VerticalAlignment="Center">
  /$$$$$$$$                                     /$$$$$$                  
 | $$_____/                                    /$$__  $$                 
 | $$        /$$$$$$   /$$$$$$$ /$$   /$$     | $$  \__/  /$$$$$$   /$$    /$$ /$$$$$$ 
@@ -34,91 +24,103 @@
                               |  $$$$$$/                                    
                                \______/ 
             </TextBlock>
-            
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
-                
-                <Button Background="Transparent" 
-                        Click="OpenSettings_Click"
-                        Cursor="Hand"
-                        ToolTip.Tip="Ouvrir les paramètres">
+                <Button Background="Transparent" Click="OpenSettings_Click" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
                     <TextBlock Text="☰" FontSize="24"/>
                 </Button>
-                
             </StackPanel>
         </Grid>
 
         <Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15" BoxShadow="0 4 10 0 #00000000">
             <Grid RowDefinitions="Auto, *">
-                
                 <TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
                 
-                <ListBox Grid.Row="3" Background="Transparent" BorderThickness="0" ItemsSource="123" SelectionMode="Toggle">
-    
-    <ListBox.Styles>
-        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
+                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="123" SelectionMode="Toggle">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Style>
+                        <Style Selector="ListBoxItem Border#CardBorder">
+                            <Setter Property="Background" Value="#252526"/>
+                            <Setter Property="BorderBrush" Value="#333333"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:pointerover Border#CardBorder">
+                            <Setter Property="Background" Value="#2E2E2E"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:selected Border#CardBorder">
+                            <Setter Property="Background" Value="#151515"/>
+                            <Setter Property="BorderBrush" Value="#00E676"/>
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Style>
+                    </ListBox.Styles>
 
-        <Style Selector="ListBoxItem Border#CardBorder">
-            <Setter Property="Background" Value="#252526"/>
-            <Setter Property="BorderBrush" Value="#333333"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Name="CardBorder" CornerRadius="6" Padding="15" Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                    
+                                    <Border Grid.Column="0" Background="#00E676" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="ID " Foreground="#121212" FontWeight="Bold"/>
+                                            <TextBlock Text="1" Foreground="#121212" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Sauvegarde TEST" Foreground="White" FontSize="16" FontWeight="Bold"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                            <TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
+                                            <TextBlock Text="c:/Source" Foreground="#AAAAAA" FontSize="12"/>
+                                            <TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
+                                            <TextBlock Text="c:/Destination" Foreground="#AAAAAA" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                                        
+                                        <Button Command="{Binding $parent[Window].DataContext.RunJob}" 
+                                                CommandParameter="{Binding}"
+                                                Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Lancer">
+                                            <TextBlock Text="▶️" FontSize="20"/>
+                                        </Button>
 
-        <Style Selector="ListBoxItem:pointerover Border#CardBorder">
-            <Setter Property="Background" Value="#2E2E2E"/>
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
+                                        <Button Command="{Binding $parent[Window].DataContext.EditJob}" 
+                                                CommandParameter="{Binding}"
+                                                Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Modifier">
+                                            <TextBlock Text="✎" FontSize="20"/>
+                                        </Button>
 
-        <Style Selector="ListBoxItem:selected Border#CardBorder">
-            <Setter Property="Background" Value="#151515"/>      <Setter Property="BorderBrush" Value="#00E676"/>     <Setter Property="BorderThickness" Value="2"/>       </Style>
-    </ListBox.Styles>
-    
-    <ListBox.ItemTemplate>
-        <DataTemplate>
-            <Border Name="CardBorder" CornerRadius="6" Padding="15" Margin="0,0,0,10">
-                <Grid ColumnDefinitions="Auto, *, Auto">
-                    
-                    <Border Grid.Column="0" Background="#00E676" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="ID " Foreground="#121212" FontWeight="Bold"/>
-                            <TextBlock Text="1" Foreground="#121212" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="Sauvegarde 1" Foreground="White" FontSize="16" FontWeight="Bold"/>
-                        
-                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                            <TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
-                            <TextBlock Text="C:/Source" Foreground="#AAAAAA" FontSize="12"/>
-                            <TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
-                            <TextBlock Text="C:/Destination" Foreground="#AAAAAA" FontSize="12"/>
-                        </StackPanel>
-                    </StackPanel>
-                    
-                    <TextBlock Grid.Column="2" Text="Prêt" Foreground="#00E676" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                
-                </Grid>
-            </Border>
-        </DataTemplate>
-    </ListBox.ItemTemplate>
-</ListBox>
+                                        <Button Command="{Binding $parent[Window].DataContext.DeleteJob}" 
+                                                CommandParameter="{Binding}"
+                                                Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Supprimer">
+                                            <TextBlock Text="❌" FontSize="20"/>
+                                        </Button>
+                                        
+                                    </StackPanel>
+                                
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </Border>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15" Margin="0,25,0,0">
-            <Button Content="➕ Créer" Command="{Binding CreateJob}" Width="130" Height="40" CornerRadius="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#2E7D32" Foreground="White" FontWeight="Bold"/>
-            <Button Content="✏️ Modifier" Command="{Binding EditJob}" Width="130" Height="40" CornerRadius="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#F57C00" Foreground="White" FontWeight="Bold"/>
-            <Button Content="🗑️ Supprimer" Command="{Binding DeleteJob}" Width="130" Height="40" CornerRadius="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#D32F2F" Foreground="White" FontWeight="Bold"/>
-            
-            <Button Content="▶️ LANCER LA SÉLECTION" Command="{Binding RunJob}" Height="40" Padding="20,0" CornerRadius="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#1976D2" Foreground="White" FontWeight="Bold"/>
+            <Button Content="➕ Créer un travail" 
+                    Command="{Binding CreateJob}" 
+                    Width="160" Height="45" 
+                    CornerRadius="6" 
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                    Background="#2E7D32" Foreground="White" FontWeight="Bold" FontSize="14"/>
         </StackPanel>
 
     </Grid>
