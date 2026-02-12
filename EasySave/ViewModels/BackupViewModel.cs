@@ -1,11 +1,77 @@
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using EasySave.Interfaces;
 using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class BackupViewModel    // Class representing the backup view model, it is responsible for running backups based on a given range of job IDs and backup type
+/// <summary>
+/// ViewModel for the Backup view displaying the list of backup jobs.
+/// Handles job execution, editing, and deletion.
+/// </summary>
+public class BackupViewModel : ViewModelBase
 {
     private Config _config = Config.S_GetInstance();
+
+    /// <summary>
+    /// Observable collection of backup jobs to display in the UI.
+    /// </summary>
+    public ObservableCollection<SavedJob> Jobs { get; set; } = new();
+
+    /// <summary>
+    /// Command to run a specific backup job.
+    /// </summary>
+    public ICommand RunJobCommand { get; }
+
+    /// <summary>
+    /// Command to edit a specific backup job.
+    /// </summary>
+    public ICommand EditJobCommand { get; }
+
+    /// <summary>
+    /// Command to delete a specific backup job.
+    /// </summary>
+    public ICommand DeleteJobCommand { get; }
+
+    public BackupViewModel()
+    {
+        RunJobCommand = new RelayCommand<SavedJob>(RunJob);
+        EditJobCommand = new RelayCommand<SavedJob>(EditJob);
+        DeleteJobCommand = new RelayCommand<SavedJob>(DeleteJob);
+
+        LoadJobs();
+    }
+
+    private void LoadJobs()
+    {
+        Jobs.Clear();
+        // TODO: Load jobs from config
+        // Example: foreach (var job in _config.GetAllJobs()) Jobs.Add(job);
+    }
+
+    private void RunJob(SavedJob? job)
+    {
+        if (job == null) return;
+        // Run the backup with default type (e.g., Complete)
+        _runBackup(job.Id, BackupType.Complete);
+    }
+
+    private void EditJob(SavedJob? job)
+    {
+        if (job == null) return;
+        // TODO: Open edit dialog or navigate to edit view
+        System.Diagnostics.Debug.WriteLine($"Editing job: {job.Name}");
+    }
+
+    private void DeleteJob(SavedJob? job)
+    {
+        if (job == null) return;
+        Jobs.Remove(job);
+        // TODO: Delete from config
+        // _config.DeleteJob(job.Name);
+        System.Diagnostics.Debug.WriteLine($"Deleted job: {job.Name}");
+    }
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
