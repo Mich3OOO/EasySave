@@ -2,7 +2,7 @@
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using EasySave.ViewModels;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EasySave.Views;
@@ -19,7 +19,7 @@ public partial class JobSettingsView : UserControl
         var path = await OpenFolderPickerAsync("Sélectionner le dossier source");
         if (path != null && DataContext is JobSettingsViewModel vm)
         {
-            vm.Source = path;
+            vm.Source = path; // Le SetProperty du VM déclenchera la mise à jour UI
         }
     }
 
@@ -34,18 +34,15 @@ public partial class JobSettingsView : UserControl
 
     private async Task<string?> OpenFolderPickerAsync(string title)
     {
-        // On récupère la fenêtre principale pour afficher la boîte de dialogue
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel == null) return null;
 
-        // Ouvre l'explorateur de dossiers
         var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
             Title = title,
             AllowMultiple = false
         });
 
-        // Retourne le chemin local si un dossier a été choisi
         return folders.Count > 0 ? folders[0].Path.LocalPath : null;
     }
 }

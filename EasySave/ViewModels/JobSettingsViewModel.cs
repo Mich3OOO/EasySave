@@ -38,7 +38,6 @@ public class JobSettingsViewModel : ViewModelBase
     public event Action<SavedJob>? OnSaveRequested;
     public event Action? OnCancelRequested;
 
-    // Mode Création
     public JobSettingsViewModel()
     {
         IsEditMode = false;
@@ -46,7 +45,6 @@ public class JobSettingsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(Cancel);
     }
 
-    // Mode Édition
     public JobSettingsViewModel(SavedJob jobToEdit) : this()
     {
         IsEditMode = true;
@@ -62,7 +60,6 @@ public class JobSettingsViewModel : ViewModelBase
         job.Name = Name;
         job.Source = Source;
         job.Destination = Destination;
-
         OnSaveRequested?.Invoke(job);
     }
 
