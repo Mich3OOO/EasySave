@@ -45,10 +45,7 @@ public class Config // Class representing the configuration of the application, 
         {
             _setDefaultConfig();
             SaveConfig();
-            
         }
-        
-
     }
 
     public static Config S_GetInstance()    // Static method to get the single instance of the Config class
