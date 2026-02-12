@@ -1,7 +1,7 @@
 using EasySave.ViewModels;
 using EasySave.Models;
 
-namespace EasySave.Views;
+namespace EasySave.View;
 
 public class ConsoleView
 {

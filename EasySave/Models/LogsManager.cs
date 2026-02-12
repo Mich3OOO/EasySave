@@ -56,7 +56,6 @@ public class LogsManager : IEventListener   // Class representing the logs manag
            ""FileTarget"": ""{data.CurrentCopyInfo.Destination}"",
            ""FileSize"": {data.CurrentCopyInfo.Size},
            ""FileTransferTime"": {(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds},
-           ""TimeToEncrypt"": {data.CurrentCopyInfo.TimeToEncrypt},
            ""Time"": ""{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}""
          }}";
     }
@@ -80,7 +79,6 @@ public class LogsManager : IEventListener   // Class representing the logs manag
                     <FileTarget>{data.CurrentCopyInfo.Destination}</FileTarget>
                     <FileSize>{data.CurrentCopyInfo.Size}</FileSize>
                     <FileTransferTime>{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}</FileTransferTime>
-                    <TimeToEncrypt>{data.CurrentCopyInfo.TimeToEncrypt}</TimeToEncrypt>
                     <Time>{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}</Time>
                 </Log>";
     }
@@ -98,6 +96,6 @@ public class LogsManager : IEventListener   // Class representing the logs manag
             throw new ArgumentException("Invalid backup data structure.");
         }
         // Create string with infos from data
-        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
+        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}";
     }
 }
