@@ -11,7 +11,8 @@
         Width="950" Height="650"
         Background="#121212"
         WindowStartupLocation="CenterScreen"
-        utils:CursorUtils.ImagePath="{Binding CustomCursorPath}">
+        utils:CursorUtils.ImagePath="{Binding CustomCursorPath}"
+		Icon="/Assets/Icon.png">
         
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -23,19 +24,13 @@
 
 		<!-- Header with Logo and Settings Button -->
 		<Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
-			 <TextBlock Grid.Column="0" FontFamily="Consolas" FontSize="9" Foreground="#00E676" FontWeight="Bold" xml:space="preserve" VerticalAlignment="Center">
- /$$$$$$$$                                     /$$$$$$                  
-| $$_____/                                    /$$__  $$                 
-| $$        /$$$$$$   /$$$$$$$ /$$   /$$     | $$  \__/  /$$$$$$   /$$    /$$ /$$$$$$ 
-| $$$$$    |____  $$ /$$_____/| $$  | $$     |  $$$$$$  |____  $$|  $$   /$$//$$__  $$
-| $$__/     /$$$$$$$|  $$$$$$ | $$  | $$      \____  $$  /$$$$$$$ \  $$/$$/| $$$$$$$$
-| $$       /$$__  $$ \____  $$| $$  | $$      /$$  \ $$ /$$__  $$  \  $$$/ | $$_____/
-| $$$$$$$$|  $$$$$$$ /$$$$$$$/|  $$$$$$$     |  $$$$$$/|  $$$$$$$   \  $/  |  $$$$$$$
-|________/ \_______/|_______/  \____  $$      \______/  \_______/    \_/    \_______/
-							   /$$  | $$                                    
-							  |  $$$$$$/                                    
-							   \______/ 
-			</TextBlock>
+			<Grid Grid.Column="0">
+				<Image Source="/Assets/Logo.png"
+					   Width="400"
+					   Height="120"
+					   Stretch="Uniform"
+					   HorizontalAlignment="Left"/>
+			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
 				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
 					<TextBlock Text="⚙︎" FontSize="24"/>
