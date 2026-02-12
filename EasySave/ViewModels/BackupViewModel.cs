@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Interfaces;
 using EasySave.Models;
+using System.Diagnostics;
 
 namespace EasySave.ViewModels;
 
@@ -75,9 +76,9 @@ public class BackupViewModel : ViewModelBase
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
-        _config = Config.S_GetInstance();
         SavedJob? savedJob = _config.GetJob(jobId);
         if (savedJob == null) throw new ArgumentException("Invalid backup id");
+        if (isASafeJob(savedJob)) throw new Exception("Source is used by another program");
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = savedJob};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
@@ -91,6 +92,19 @@ public class BackupViewModel : ViewModelBase
             IBackup backup = new CompBackup(savedJob, backupInfo);
             backup.ExecuteBackup();
         }
+    }
+
+    private bool isASafeJob(SavedJob savedJob)
+    {
+        Process[] allProcesses = Process.GetProcesses();
+
+        foreach (Process process in allProcesses)
+        {
+            if(process.MainModule?.FileName.Contains(savedJob.Source) == true) return false;
+            
+        }
+        
+        return true;
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
