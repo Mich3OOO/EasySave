@@ -1,24 +1,59 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using EasySave.Models; 
 
 namespace EasySave.ViewModels;
 
+/// <summary>
+/// Main window ViewModel that manages navigation between different views.
+/// </summary>
 public class MainWindowViewModel : ViewModelBase
 {
+    public string Greeting { get; } = "Welcome to EasySave!";
+
+    public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
+    
+    private ViewModelBase _currentViewModel;
+
+    /// <summary>
+    /// The currently displayed ViewModel (BackupViewModel or SettingsViewModel).
+    /// </summary>
+    public ViewModelBase CurrentViewModel
+    {
+        get => _currentViewModel;
+        set => SetProperty(ref _currentViewModel, value);
+    }
+
+    /// <summary>
+    /// Command to navigate to the settings view.
+    /// </summary>
+    public ICommand ShowSettingsCommand { get; }
+
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
     public MainWindowViewModel()
     {
+        ShowSettingsCommand = new RelayCommand(ShowSettings);
+
         Jobs = new ObservableCollection<SavedJob>();
         LoadJobsFromConfig();
     }
 
+    private void ShowSettings()
+    {
+        var settingsViewModel = new SettingsViewModel();
+        settingsViewModel.OnCloseRequested += () => CurrentViewModel = null;
+        CurrentViewModel = settingsViewModel;
+    }
+
     private void LoadJobsFromConfig()
     {
-        // ... Ton code de chargement existant ...
-        // (Je remets un exemple bidon si tu n'as pas encore le vrai backend connecté)
-        // Jobs.Add(new SavedJob { Id = 1, Name = "Test", Source = "A", Destination = "B" });
+        // Fake data for testing
+        Jobs.Add(new SavedJob { Id = 1, Name = "Sauvegarde Documents", Source = "C:/Users/Documents", Destination = "D:/Backup/Documents" });
+        Jobs.Add(new SavedJob { Id = 2, Name = "Sauvegarde Photos", Source = "C:/Users/Pictures", Destination = "D:/Backup/Pictures" });
+        Jobs.Add(new SavedJob { Id = 3, Name = "Sauvegarde Projet", Source = "C:/Dev/MyProject", Destination = "D:/Backup/MyProject" });
     }
 
     // --- COMMANDES MISES À JOUR ---
