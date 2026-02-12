@@ -1,146 +1,144 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:EasySave.ViewModels"
+        xmlns:utils="using:EasySave.Utils"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="EasySave.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="EasySave - Version 2.0"
         Width="950" Height="650"
         Background="#121212"
-        WindowStartupLocation="CenterScreen">
-
-    <Grid RowDefinitions="Auto, *, Auto" Margin="30">
+        WindowStartupLocation="CenterScreen"
+        utils:CursorUtils.ImagePath="{Binding CustomCursorPath}"
+		Icon="/Assets/Icon.png">
         
-        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
-             <TextBlock Grid.Column="0" FontFamily="Consolas" FontSize="9" Foreground="#00E676" FontWeight="Bold" xml:space="preserve" VerticalAlignment="Center">
- /$$$$$$$$                                     /$$$$$$                  
-| $$_____/                                    /$$__  $$                 
-| $$        /$$$$$$   /$$$$$$$ /$$   /$$     | $$  \__/  /$$$$$$   /$$    /$$ /$$$$$$ 
-| $$$$$    |____  $$ /$$_____/| $$  | $$     |  $$$$$$  |____  $$|  $$   /$$//$$__  $$
-| $$__/     /$$$$$$$|  $$$$$$ | $$  | $$      \____  $$  /$$$$$$$ \  $$/$$/| $$$$$$$$
-| $$       /$$__  $$ \____  $$| $$  | $$      /$$  \ $$ /$$__  $$  \  $$$/ | $$_____/
-| $$$$$$$$|  $$$$$$$ /$$$$$$$/|  $$$$$$$     |  $$$$$$/|  $$$$$$$   \  $/  |  $$$$$$$
-|________/ \_______/|_______/  \____  $$      \______/  \_______/    \_/    \_______/
-                               /$$  | $$                                    
-                              |  $$$$$$/                                    
-                               \______/ 
-            </TextBlock>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
-                <Button Background="Transparent" Click="OpenSettings_Click" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
-                    <TextBlock Text="☰" FontSize="24"/>
-                </Button>
-            </StackPanel>
-        </Grid>
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
 
-        <Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15" BoxShadow="0 4 10 0 #00000000">
-            <Grid RowDefinitions="Auto, *">
-                <TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
-                
-                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="123" SelectionMode="Toggle">
-                    
-                    <ListBox.Styles>
-                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Style>
-                        <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Style>
-                        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Style>
+	<Grid RowDefinitions="Auto, *, Auto" Margin="30">
 
-                        <Style Selector="ListBoxItem Border#CardBorder">
-                            <Setter Property="Background" Value="#252526"/>
-                            <Setter Property="BorderBrush" Value="#333333"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="Transitions">
-                                <Transitions>
-                                    <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
-                                </Transitions>
-                            </Setter>
-                        </Style>
+		<!-- Header with Logo and Settings Button -->
+		<Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
+			<Grid Grid.Column="0">
+				<Image Source="/Assets/Logo.png"
+					   Width="400"
+					   Height="120"
+					   Stretch="Uniform"
+					   HorizontalAlignment="Left"/>
+			</Grid>
+			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
+				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
+					<TextBlock Text="⚙︎" FontSize="24"/>
+				</Button>
+			</StackPanel>
+		</Grid>
 
-                        <Style Selector="ListBoxItem:pointerover Border#CardBorder">
-                            <Setter Property="Background" Value="#2E2E2E"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                        </Style>
+		<!-- Jobs List (Main Content) -->
+		<Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15" BoxShadow="0 4 10 0 #00000000">
+			<Grid RowDefinitions="Auto, *">
+				<TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
-                        <Style Selector="ListBoxItem:selected Border#CardBorder">
-                            <Setter Property="Background" Value="#151515"/>
-                            <Setter Property="BorderBrush" Value="#00E676"/>
-                            <Setter Property="BorderThickness" Value="2"/>
-                        </Style>
+				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Toggle">
+					<ListBox.Styles>
+						<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+						<Style Selector="ListBoxItem Border#CardBorder">
+							<Setter Property="Background" Value="#252526"/>
+							<Setter Property="BorderBrush" Value="#333333"/>
+							<Setter Property="BorderThickness" Value="1"/>
+						</Style>
+						<Style Selector="ListBoxItem:pointerover Border#CardBorder">
+							<Setter Property="Background" Value="#2E2E2E"/>
+							<Setter Property="Cursor" Value="Hand"/>
+						</Style>
+						<Style Selector="ListBoxItem:selected Border#CardBorder">
+							<Setter Property="Background" Value="#151515"/>
+							<Setter Property="BorderBrush" Value="#00E676"/>
+							<Setter Property="BorderThickness" Value="2"/>
+						</Style>
+					</ListBox.Styles>
 
-                        <Style Selector="ListBoxItem Button">
-                            <Setter Property="IsHitTestVisible" Value="False"/>
-                            </Style>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Border Name="CardBorder" CornerRadius="6" Padding="15" Margin="0,0,0,10">
+								<Grid ColumnDefinitions="Auto, *, Auto">
 
-                        <Style Selector="ListBoxItem:selected Button">
-                            <Setter Property="IsHitTestVisible" Value="True"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                        </Style>
+									<Border Grid.Column="0" Background="#00E676" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="ID " Foreground="#121212" FontWeight="Bold"/>
+											<TextBlock Text="{Binding Id}" Foreground="#121212" FontWeight="Bold"/>
+										</StackPanel>
+									</Border>
 
-                    </ListBox.Styles>
+									<StackPanel Grid.Column="1" VerticalAlignment="Center">
+										<TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold"/>
+										<StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+											<TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
+											<TextBlock Text="{Binding Source}" Foreground="#AAAAAA" FontSize="12"/>
+											<TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
+											<TextBlock Text="{Binding Destination}" Foreground="#AAAAAA" FontSize="12"/>
+										</StackPanel>
+									</StackPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border Name="CardBorder" CornerRadius="6" Padding="15" Margin="0,0,0,10">
-                                <Grid ColumnDefinitions="Auto, *, Auto">
-                                    
-                                    <Border Grid.Column="0" Background="#00E676" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="ID " Foreground="#121212" FontWeight="Bold"/>
-                                            <TextBlock Text="1" Foreground="#121212" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </Border>
-                                    
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="Sauvegarde test" Foreground="White" FontSize="16" FontWeight="Bold"/>
-                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                            <TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
-                                            <TextBlock Text="c:/Source" Foreground="#AAAAAA" FontSize="12"/>
-                                            <TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
-                                            <TextBlock Text="c:/Destination" Foreground="#AAAAAA" FontSize="12"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                        
-                                        <Button Command="{Binding $parent[Window].DataContext.RunJob}" 
-                                                CommandParameter="{Binding}"
-                                                Background="Transparent" BorderThickness="0" ToolTip.Tip="Lancer">
-                                            <TextBlock Text="▷" FontSize="20"/>
-                                        </Button>
+									<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
 
-                                        <Button Command="{Binding $parent[Window].DataContext.EditJob}" 
-                                                CommandParameter="{Binding}"
-                                                Background="Transparent" BorderThickness="0" ToolTip.Tip="Modifier">
-                                            <TextBlock Text="✎" FontSize="20"/>
-                                        </Button>
+										<Button Command="{Binding $parent[Window].DataContext.RunJob}" 
+												CommandParameter="{Binding}"
+												Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Lancer">
+											<TextBlock Text="▶️" FontSize="20"/>
+										</Button>
 
-                                        <Button Command="{Binding $parent[Window].DataContext.DeleteJob}" 
-                                                CommandParameter="{Binding}"
-                                                Background="Transparent" BorderThickness="0" ToolTip.Tip="Supprimer">
-                                            <TextBlock Text="❌" FontSize="20"/>
-                                        </Button>
-                                        
-                                    </StackPanel>
-                                
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </Border>
+										<Button Command="{Binding $parent[Window].DataContext.EditJob}" 
+												CommandParameter="{Binding}"
+												Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Modifier">
+											<TextBlock Text="✎" FontSize="20"/>
+										</Button>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15" Margin="0,25,0,0">
-            <Button Content="➕ Créer un travail" 
-                    Command="{Binding CreateJob}" 
-                    Width="160" Height="45" 
-                    CornerRadius="6" 
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                    Background="#2E7D32" Foreground="White" FontWeight="Bold" FontSize="14"/>
-        </StackPanel>
+										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" 
+												CommandParameter="{Binding}"
+												Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip.Tip="Supprimer">
+											<TextBlock Text="🗑️" FontSize="20"/>
+										</Button>
 
-    </Grid>
+									</StackPanel>
+
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</Border>
+
+		<!-- Footer with Create Button -->
+		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
+			<TextBlock Grid.Column="0" Text="EasySave v2.0 - Backup Management System" 
+					   Foreground="#555" FontSize="10" VerticalAlignment="Center"/>
+			<Button Grid.Column="1" Content="➕ Créer un travail" 
+					Command="{Binding CreateJob}" 
+					Width="160" Height="45" 
+					CornerRadius="6" 
+					HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+					Background="#2E7D32" Foreground="White" FontWeight="Bold" FontSize="14" Cursor="Hand"/>
+		</Grid>
+
+		<!-- Settings Overlay (displayed when CurrentViewModel is set) -->
+		<Border Grid.Row="0" Grid.RowSpan="3" Background="#CC000000" 
+				IsVisible="{Binding CurrentViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
+			<ContentControl Content="{Binding CurrentViewModel}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		</Border>
+
+	</Grid>
 </Window>
