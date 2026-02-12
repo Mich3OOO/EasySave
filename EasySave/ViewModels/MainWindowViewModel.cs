@@ -11,6 +11,10 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class MainWindowViewModel : ViewModelBase
 {
+    public string Greeting { get; } = "Welcome to EasySave!";
+
+    public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
+    
     private ViewModelBase _currentViewModel;
 
     /// <summary>
