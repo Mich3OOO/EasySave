@@ -31,10 +31,18 @@ public class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel()
     {
-        CloseCommand = new RelayCommand(Close);
+        SaveCommand = new RelayCommand(Save);
+        CancelCommand = new RelayCommand(Cancel);
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
         LanguageViewModel = new LanguageViewModel(dictionaryPath);
     }
+
+    private void Save()
+    {
+        // Signal to save settings (will be handled by MainWindowViewModel)
+        OnSaveRequested?.Invoke();
+    }
+
 
     private void Cancel()
     {
