@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:EasySave.ViewModels"
-             x:Class="EasySave.Views.ConfirmDeleteDialogView"
-             x:DataType="vm:ConfirmDeleteDialogViewModel"
+             x:Class="EasySave.Views.DeleteView"
+             x:DataType="vm:DeleteJobViewModel"
              Width="440" Height="350">
 
     <Border Background="#252526" 

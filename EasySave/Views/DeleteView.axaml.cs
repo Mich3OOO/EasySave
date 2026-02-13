@@ -3,9 +3,9 @@ using EasySave.ViewModels;
 
 namespace EasySave.Views;
 
-public partial class ConfirmDeleteDialogView : UserControl
+public partial class DeleteView : UserControl
 {
-    public ConfirmDeleteDialogView()
+    public DeleteView()
     {
         InitializeComponent();
     }

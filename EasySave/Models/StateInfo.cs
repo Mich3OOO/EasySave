@@ -9,17 +9,17 @@ public class StateInfo  // Class representing the real-time state of a backup jo
     [JsonInclude]
     public string SourceFilePath = "";
     [JsonInclude]
-    public string TargetFilePath= "";
+    public string TargetFilePath = "";
     [JsonInclude]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public StateLevel State = StateLevel.Inactive;
     [JsonInclude]
-    public int TotalFilesToCopy ;
+    public int TotalFilesToCopy;
     [JsonInclude]
     public long TotalFilesSize;
     [JsonInclude]
     public int NbFilesLeftToDo;
     [JsonInclude]
-    public float Progression ;
-    
+    public float Progression;
+
 }

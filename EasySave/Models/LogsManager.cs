@@ -12,7 +12,7 @@ public class LogsManager : IEventListener   // Class representing the logs manag
 
     // Constructor that automatically subscribes to EventManager
     public LogsManager()
-    {   
+    {
         EventManager.GetInstance().Subscribe(this);
     }
     // Transform and transfer BackupInfos to Logger

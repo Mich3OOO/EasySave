@@ -30,6 +30,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Views\DeleteView.axaml.cs">
+        <DependentUpon>DeleteView.axaml</DependentUpon>
+      </Compile>
       <Compile Update="Views\MainWindow.axaml.cs">
         <DependentUpon>MainWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
