@@ -50,7 +50,7 @@ public class BackupViewModel : ViewModelBase
         EditJobCommand = new RelayCommand<SavedJob>(EditJob);
         DeleteJobCommand = new RelayCommand<SavedJob>(DeleteJob);
 
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         LanguageViewModel = new LanguageViewModel(dictionaryPath);
 
         LoadJobs();
