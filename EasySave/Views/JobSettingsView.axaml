@@ -33,6 +33,18 @@
                     </Grid>
                 </StackPanel>
 
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Type de sauvegarde" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,5,0,0">
+                        <RadioButton Content="Complète" 
+                                     Foreground="White"
+                                     IsChecked="{Binding !IsDifferential}" />
+                        <RadioButton Content="Différentielle" 
+                                     Foreground="White"
+                                     IsChecked="{Binding IsDifferential}" />
+                    </StackPanel>
+                </StackPanel>
+
                 <Separator Height="1" Background="#333333" Margin="0,5"/>
 
                 <TextBlock Text="{Binding ErrorMessage}" 
