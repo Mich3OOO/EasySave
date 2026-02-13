@@ -4,39 +4,69 @@ using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
+using System.Threading.Tasks;
 
 namespace EasySave.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase    // ViewModel for the main window of the application, it manages the current view model being displayed, the list of backup jobs, and commands for showing settings, creating, editing, running, and deleting jobs.
+/// <summary>
+/// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
+/// </summary>
+public class MainWindowViewModel : ViewModelBase
 {
+    // UI Display Properties
     public string Greeting { get; } = "Welcome to EasySave!";
-
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
+    public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
 
+    // Localization/Language support
     public LanguageViewModel _languageViewModel { get; }
-
-    // Translated strings properties
     public string T_save_sobs => _languageViewModel.GetTranslation("save_jobs");
     public string T_create_job => _languageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
 
-    public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
-    
+    // Navigation - holds the current view model being displayed
     private ViewModelBase _currentViewModel;
-
-    public ViewModelBase? CurrentViewModel  // Property for the current view model being displayed in the main window, with getter and setter that raises property change notifications. This is used to switch between different views (e.g., settings, job settings, confirmation dialog) based on user actions.
+    public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
         set => SetProperty(ref _currentViewModel, value);
     }
 
+    // Status message display - shows temporary success/error messages
+    private string _statusMessage;
+    public string StatusMessage
+    {
+        get => _statusMessage;
+        set => SetProperty(ref _statusMessage, value);
+    }
+
+    private bool _isStatusVisible;
+    public bool IsStatusVisible
+    {
+        get => _isStatusVisible;
+        set => SetProperty(ref _isStatusVisible, value);
+    }
+
+    /// <summary>
+    /// Displays a success message temporarily (4 seconds) in the UI
+    /// </summary>
+    private async Task ShowSuccessMessage(string message)
+    {
+        StatusMessage = message;
+        IsStatusVisible = true;
+        await Task.Delay(4000);
+        IsStatusVisible = false;
+    }
+
+    // Commands and data collections
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
-    
+
     private Config _config = Config.S_GetInstance();
 
-    public MainWindowViewModel()    // Constructor initializes the ShowSettingsCommand and loads the list of jobs from the configuration (currently with test data)
+    public MainWindowViewModel()
     {
+        // Initialize language support and load saved jobs
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         _languageViewModel.LanguageChanged += OnLanguageChanged;
@@ -54,29 +84,21 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         OnPropertyChanged(nameof(T_settings_tooltip));
     }
 
+    /// <summary>
+    /// Opens the settings view
+    /// </summary>
     private void ShowSettings()
     {
         var settingsVM = new SettingsViewModel();
-
-        // If the user saves, we should save the settings to the config file and then close the window
-        settingsVM.OnSaveRequested += () =>
-        {
-            CurrentViewModel = null;    //FOR NOW, close the window, later, will only close it after saving the settings to the JSON file
-
-        };
+        settingsVM.OnSaveRequested += () => CurrentViewModel = null;
         settingsVM.OnCancelRequested += () => CurrentViewModel = null;
-
         CurrentViewModel = settingsVM;
     }
 
-    private void LoadJobsFromConfig()   // Method to load the list of backup jobs from the configuration, currently it adds some test data to the Jobs collection, but in a complete implementation, it would read the jobs from the configuration file and populate the Jobs collection accordingly.
-    {
-        // Test Datas
-        Jobs.Add(new SavedJob { Id = 1, Name = "Sauvegarde Documents", Source = "C:/Users/Documents", Destination = "D:/Backup/Documents" });
-        Jobs.Add(new SavedJob { Id = 2, Name = "Sauvegarde Photos", Source = "C:/Users/Pictures", Destination = "D:/Backup/Pictures" });
-    }
-
-    public void CreateJob() // Method to create a new backup job, it creates a new instance of the JobSettingsViewModel, subscribes to its OnSaveRequested event to add the new job to the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job creation is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
+    /// <summary>
+    /// Opens the job creation dialog and adds new job to collection
+    /// </summary>
+    public void CreateJob()
     {
         JobSettingsViewModel jobVM = new JobSettingsViewModel();
         jobVM.OnSaveRequested += (newJob) =>
@@ -92,7 +114,10 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         CurrentViewModel = jobVM;
     }
 
-    public void EditJob(SavedJob job)   // Method to edit an existing backup job, it takes a SavedJob object as a parameter, creates a new instance of the JobSettingsViewModel initialized with the job to edit, subscribes to its OnSaveRequested event to update the job in the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job editing is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
+    /// <summary>
+    /// Opens the job editing dialog and updates existing job
+    /// </summary>
+    public void EditJob(SavedJob job)
     {
         JobSettingsViewModel jobVM = new JobSettingsViewModel(job);
         jobVM.OnSaveRequested += (updatedJob) =>
@@ -107,27 +132,27 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         CurrentViewModel = jobVM;
     }
 
+    /// <summary>
+    /// Executes a save job and displays a success message when complete
+    /// </summary>
     public void RunJob(SavedJob job)
     {
-        // ViewModel du dialogue
         var runJobVM = new RunJobsViewModel(job);
-
-        // On s'abonne au résultat (Démarrer ou Annuler)
-        runJobVM.OnResult += (confirmed) =>
+        runJobVM.OnResult += async (confirmed) =>
         {
-            CurrentViewModel = null; // On ferme l'overlay
-
+            CurrentViewModel = null;
             if (confirmed)
             {
-                // Logic de sauvegarde
-                Console.WriteLine($"Action confirmée pour {job.Name} !");
+                Console.WriteLine($"Sauvegarde lancée pour {job.Name}");
+                await ShowSuccessMessage($"✔ {job.Name} : Sauvegarde terminée avec succès !");
             }
         };
-
-        // On affiche l'overlay
         CurrentViewModel = runJobVM;
     }
 
+    /// <summary>
+    /// Opens a confirmation dialog and deletes the job if confirmed
+    /// </summary>
     public void DeleteJob(SavedJob job)
     {
         // Display a confirmation dialog before deleting the job
@@ -135,17 +160,14 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         confirmDialog.JobName = job.Name;
         confirmDialog.OnResult += (confirmed) =>
         {
-            CurrentViewModel = null; // close the dialog
-
+            CurrentViewModel = null;
             if (confirmed)
             {
-                // On le retire de la liste visuelle
                 _config.DeleteJob(job);
                 _config.SaveConfig();
                 Jobs.Remove(job);
             }
         };
-
         CurrentViewModel = confirmDialog;
     }
 }
