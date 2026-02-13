@@ -24,7 +24,19 @@
     "fr": "Format des logs"
   },
   "business_software": {
-  "en": "Business software (pause the save job)",
-  "fr": "Logiciel Métier (interromp la sauvegarde)"
+    "en": "Business software (pause the save job)",
+    "fr": "Logiciel Métier (interromp la sauvegarde)"
+  },
+  "business_software_detected": {
+    "en": "If a business software is detected, the save job will be paused",
+    "fr": "Si détecté, les travaux seront mis en pause."
+  },
+  "extensions_to_encrypt": {
+    "en": "Extensions to encrypt (separated by a comma)",
+    "fr": " Extensions à chiffrer (séparées par une virgule)"
+  },
+  "save_and_quit": {
+    "en": "Save and Quit",
+    "fr": "Enregistrer et quitter"
   }
 }
