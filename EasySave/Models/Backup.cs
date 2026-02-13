@@ -15,7 +15,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         _password = pw;
         _savedJob = savedJob;
         _backupInfo = backupInfo;
-        _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7za.exe");
+        _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
     }
 
     public void SetPassword(string password)

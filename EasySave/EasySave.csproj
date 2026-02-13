@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="CryptoSoft\7za.exe">
+      <None Include="CryptoSoft\7za.exe">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Utils\dictionary.json">

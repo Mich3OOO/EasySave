@@ -58,7 +58,7 @@ public class RunJobsViewModel : ViewModelBase
     private void _runBackup()   //private method to run single backup
     {
         if (Job == null) throw new ArgumentException(T_invalid_backup_id);
-        if (_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
+        if (!_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
