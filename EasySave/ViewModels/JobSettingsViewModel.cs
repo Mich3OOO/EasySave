@@ -23,6 +23,7 @@ public class JobSettingsViewModel : ViewModelBase
     private string _source = string.Empty;
     private string _destination = string.Empty;
     private string _errorMessage = string.Empty;
+    private string _password = string.Empty;
 
     public string Name
     {
