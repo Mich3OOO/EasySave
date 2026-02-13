@@ -12,7 +12,14 @@ public class MainWindowViewModel : ViewModelBase
     public string Greeting { get; } = "Welcome to EasySave!";
 
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
-    
+
+    public LanguageViewModel LanguageViewModel { get; }
+
+    // Translated strings properties
+    public string T_save_sobs => LanguageViewModel.GetTranslation("save_jobs");
+    public string T_create_job => LanguageViewModel.GetTranslation("create_job");
+    public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
+
     private ViewModelBase _currentViewModel;
 
     public ViewModelBase? CurrentViewModel
@@ -26,6 +33,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
+        LanguageViewModel = new LanguageViewModel(dictionaryPath);
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>();
         LoadJobsFromConfig();

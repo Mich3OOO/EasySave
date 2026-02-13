@@ -32,7 +32,7 @@
 					   HorizontalAlignment="Left"/>
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
-				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
+				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="{Binding T_settings_tooltip}">
 					<TextBlock Text="⚙" FontSize="24"/>
 				</Button>
 			</StackPanel>
@@ -40,7 +40,7 @@
 
 		<Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15">
 			<Grid RowDefinitions="Auto, *">
-				<TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+				<TextBlock Grid.Row="0" Text="{Binding T_save_sobs}" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
 				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Toggle">
 					<ListBox.Styles>
@@ -100,7 +100,7 @@
 
 		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
 			<Button Grid.Column="1"
-					Content="➕ Créer un travail"
+					Content="{Binding T_create_job}"
 					Command="{Binding CreateJob}"
 					Width="160" Height="45"
 					VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#2E7D32"
