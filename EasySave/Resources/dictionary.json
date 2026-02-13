@@ -78,5 +78,29 @@
   "delete": {
     "en": "Delete",
     "fr": "🗑️ Supprimer"
+  },
+  "invald_backup_id": {
+    "en": "Invalid backup ID",
+    "fr": "ID de sauvegarde invalide"
+  },
+  "source_in_use": {
+    "en": "Source is used by another program",
+    "fr": "La source est utilisée par un autre programme"
+  },
+  "start_less_or_equal_end": {
+    "en": "Start of the range must be less than or equal to end",
+    "fr": "Le début de la plage doit être inférieur ou égal à la fin"
+  },
+  "invalid_range_format": {
+    "en": "Invalid range format",
+    "fr": "Format de plage invalide"
+  },
+  "error_occured": {
+    "en": "An error occurred : ",
+    "fr": "Une erreur s'est produite : "
+  },
+  "invalid_job_id_not_integer": {
+    "en": "Invalid job ID, following value is not an integer : ",
+    "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
   }
 }
