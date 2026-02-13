@@ -12,6 +12,7 @@ public class MainWindowViewModel : ViewModelBase
     public string Greeting { get; } = "Welcome to EasySave!";
 
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
+    public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
     
     private ViewModelBase _currentViewModel;
 
