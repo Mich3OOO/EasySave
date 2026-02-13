@@ -4,7 +4,7 @@
              x:Class="EasySave.Views.JobSettingsView"
              x:DataType="vm:JobSettingsViewModel">
 
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="500">
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="500" MinWidth="400">
         <Border Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="25">
             <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
