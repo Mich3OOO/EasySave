@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,23 +11,40 @@ namespace EasySave.ViewModels;
 public class SettingsViewModel : ViewModelBase
 {
     /// <summary>
-    /// Command to close the settings view.
+    /// Command to save the settings.
     /// </summary>
-    public ICommand CloseCommand { get; }
+    public ICommand SaveCommand { get; }
+
+    /// <summary>
+    /// Command to cancel and close the settings view.
+    /// </summary>
+    public ICommand CancelCommand { get; }
 
     public SettingsViewModel()
     {
-        CloseCommand = new RelayCommand(Close);
+        SaveCommand = new RelayCommand(Save);
+        CancelCommand = new RelayCommand(Cancel);
     }
 
-    private void Close()
+    private void Save()
     {
-        // Signal to close settings (will be handled by MainWindowViewModel)
-        OnCloseRequested?.Invoke();
+        // Signal to save settings (will be handled by MainWindowViewModel)
+        OnSaveRequested?.Invoke();
+    }
+
+    private void Cancel()
+    {
+        // Signal to cancel settings (will be handled by MainWindowViewModel)
+        OnCancelRequested?.Invoke();
     }
 
     /// <summary>
-    /// Event raised when the user wants to close the settings view.
+    /// Event raised when the user wants to save the settings.
     /// </summary>
-    public event Action? OnCloseRequested;
+    public event Action? OnSaveRequested;
+
+    /// <summary>
+    /// Event raised when the user wants to close the settings view without saving.
+    /// </summary>
+    public event Action? OnCancelRequested;
 }

@@ -52,19 +52,37 @@
                     <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6"/>
                 </StackPanel>
 
-                <Button Content="Enregistrer et Fermer" 
-                        Command="{Binding CloseCommand}"
-                        HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,20,0,0"
-                        Height="45"
-                        CornerRadius="6"
-                        Background="#1976D2" 
-                        Foreground="White"
-                        FontWeight="Bold"
-                        FontSize="14"
-                        Cursor="Hand"/>
+                <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                    <Button Grid.Column="0" 
+                            Content="Annuler" 
+                            Command="{Binding CancelCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="0,0,10,0"
+                            CornerRadius="6"
+                            Background="Transparent" 
+                            BorderBrush="#333333"
+                            BorderThickness="1"
+                            Foreground="#AAAAAA"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+
+                    <Button Grid.Column="1" 
+                            Content="Enregistrer" 
+                            Command="{Binding SaveCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="10,0,0,0"
+                            CornerRadius="6"
+                            Background="#1976D2" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+                </Grid>
             </StackPanel>
 
         </Border>
