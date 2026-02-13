@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:EasySave.ViewModels"
+			 x:Class="EasySave.Views.RunJobsView"
+			 x:DataType="vm:RunJobsViewModel">
+
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="450">
+		<Border Background="#1E1E1E"
+				BorderBrush="#333333"
+				BorderThickness="1"
+				CornerRadius="8"
+				Padding="25">
+			<StackPanel Spacing="20">
+				<TextBlock Text="{Binding T_launch_save}"
+						   FontSize="20"
+						   FontWeight="Bold"
+						   Foreground="White"
+						   HorizontalAlignment="Center"/>
+
+				<TextBlock Text="{Binding Job.Name}"
+						   Foreground="#00E676"
+						   HorizontalAlignment="Center"
+						   FontWeight="SemiBold"
+						   FontSize="16"/>
+
+				<StackPanel Spacing="10">
+					<TextBlock Text="{Binding T_what_type_save}"
+							   Foreground="#AAAAAA"
+							   HorizontalAlignment="Center"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
+						<RadioButton Content="{Binding T_complete}" Foreground="White" IsChecked="{Binding !IsDifferential}"/>
+						<RadioButton Content="{Binding T_differential}" Foreground="White" IsChecked="{Binding IsDifferential}"/>
+					</StackPanel>
+				</StackPanel>
+
+				<StackPanel Spacing="5">
+					<TextBlock Text="{Binding T_password}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="{Binding T_enter_password}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                </StackPanel>
+				
+				
+				<TextBlock Text="{Binding ErrorMessage}" 
+				           Foreground="#E53935" 
+				           FontSize="12" 
+				           FontWeight="Bold"
+				           HorizontalAlignment="Center"
+				           TextWrapping="Wrap"
+				           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+				
+
+				<Grid ColumnDefinitions="*, *">
+					<Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+					<Button Grid.Column="1" Content="{Binding T_launch}" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
+				</Grid>
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

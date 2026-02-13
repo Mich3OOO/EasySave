@@ -1,0 +1,87 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:EasySave.ViewModels"
+             x:Class="EasySave.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <Grid Margin="20" MaxWidth="500" VerticalAlignment="Center">
+
+        <Border Background="#1E1E1E" 
+                BorderBrush="#333333" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="25" 
+                BoxShadow="0 4 10 0 #00000000">
+
+            <StackPanel Spacing="15">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
+                    <TextBlock Text="⚙️" Classes="emoji" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding T_settings}" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding T_language_selection}"  Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" ItemsSource="{Binding LanguagesList}" SelectedValue="{Binding SelectedLanguage}">
+
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding T_logs_format}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" ItemsSource="{Binding LogsFormatsList}" SelectedValue="{Binding SelectedLogsFormats}">
+                    </ComboBox>
+                </StackPanel>
+
+                <Separator Height="1" Background="#333333" Margin="0,5"/>
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding T_business_software}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Watermark="Ex: Calculator.exe, Notepad.exe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Text = "{Binding Softwares}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <TextBlock Text="⚠️" Classes="emoji" Foreground="#E53935" FontSize="12"/>
+                        <TextBlock Text="{Binding T_business_software_detected}" Foreground="#E53935" FontSize="11" FontStyle="Italic"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding T_extensions_to_encrypt}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold" />
+                    <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Text = "{Binding Extension}"/>
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                    <Button Grid.Column="0" 
+                            Content="{Binding T_cancel}" 
+                            Command="{Binding CancelCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="0,0,10,0"
+                            CornerRadius="6"
+                            Background="Transparent" 
+                            BorderBrush="#333333"
+                            BorderThickness="1"
+                            Foreground="#AAAAAA"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+
+                    <Button Grid.Column="1" 
+                            Content="{Binding T_save_and_quit}" 
+                            Command="{Binding SaveCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="10,0,0,0"
+                            CornerRadius="6"
+                            Background="#1976D2" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+                </Grid>
+            </StackPanel>
+
+        </Border>
+    </Grid>
+</UserControl>

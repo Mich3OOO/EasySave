@@ -2,9 +2,9 @@ namespace EasySave.Models;
 
 public class DiffBackup : Backup
 {
-    public DiffBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }
+    public DiffBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }
 
-    public override void ExecuteBackup()
+    public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a differential backup, creating a timestamped folder and copying only the files that have been modified since the last complete backup
     {
         // Create the timestamped folder
         string destinationPath = _createTimestampedFolder("Differential");
@@ -21,7 +21,7 @@ public class DiffBackup : Backup
         }
     }
 
-    protected override string[] _getFilesList()
+    protected override string[] _getFilesList() // Override of the _getFilesList method to return only the files that have been modified since the last complete backup, it checks the creation date of the last complete backup folder and compares it with the last write time of each file in the source directory, if a file has been modified after the last complete backup, it is added to the list of files to copy
     {
         // Define the path where Complete backups are stored
         string completeFolderPath = Path.Combine(_savedJob.Destination, "Complete");

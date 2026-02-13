@@ -24,6 +24,16 @@ public class ConfigViewModel    // Class representing the config view model, it 
     {
         _config.LogsFormat = format;
     }
+    
+    public void ChangeJobName(string oldJobName, string newJobName) // Method to change the name of a saved job, it takes the old name of the job to update and the new name
+    {
+        SavedJob? job = _config.GetJob(oldJobName);
+        if (job != null)
+        { 
+            job.Name = newJobName;
+            _config.UpdateJob(oldJobName,job); 
+        }
+    }
     public void ChangeJobSource(string jobName, string newJobSource)    // Method to change the source of a saved job, it takes the name of the job to update and the new source
     {
         SavedJob? job = _config.GetJob(jobName);
@@ -33,15 +43,6 @@ public class ConfigViewModel    // Class representing the config view model, it 
             _config.UpdateJob(jobName,job); 
         }
        
-    }
-    public void ChangeJobName(string oldJobName, string newJobName) // Method to change the name of a saved job, it takes the old name of the job to update and the new name
-    {
-        SavedJob? job = _config.GetJob(oldJobName);
-        if (job != null)
-        { 
-            job.Name = newJobName;
-            _config.UpdateJob(oldJobName,job); 
-        }
     }
     public void ChangeJobDestination(string jobName, string newDestination) // Method to change the destination of a saved job, it takes the name of the job to update and the new destination
     {
