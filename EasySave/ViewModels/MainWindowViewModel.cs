@@ -32,27 +32,25 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
+    
+    private Config _config = Config.S_GetInstance();
 
     public MainWindowViewModel()    // Constructor initializes the ShowSettingsCommand and loads the list of jobs from the configuration (currently with test data)
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         LanguageViewModel = new LanguageViewModel(dictionaryPath);
         ShowSettingsCommand = new RelayCommand(ShowSettings);
-        Jobs = new ObservableCollection<SavedJob>();
-        LoadJobsFromConfig();
+        Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
+
     }
 
     private void ShowSettings()
     {
         var settingsVM = new SettingsViewModel();
-
-        // CLose the window when the user cancels
-        settingsVM.OnCancelRequested += () => CurrentViewModel = null;
-
+        
         // If the user saves, we should save the settings to the config file and then close the window
         settingsVM.OnSaveRequested += () =>
         {
-            // TODO: Add the logic to Save the settings on the JSON file
             CurrentViewModel = null;    //FOR NOW, close the window, later, will only close it after saving the settings to the JSON file
 
         };
@@ -69,11 +67,13 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
     public void CreateJob() // Method to create a new backup job, it creates a new instance of the JobSettingsViewModel, subscribes to its OnSaveRequested event to add the new job to the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job creation is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
     {
-        var jobVM = new JobSettingsViewModel();
+        JobSettingsViewModel jobVM = new JobSettingsViewModel();
         jobVM.OnSaveRequested += (newJob) =>
         {
             int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
             newJob.Id = newId;
+            _config.AddJob(newJob);
+            _config.SaveConfig();
             Jobs.Add(newJob);
             CurrentViewModel = null;
         };
@@ -83,11 +83,13 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
     public void EditJob(SavedJob job)   // Method to edit an existing backup job, it takes a SavedJob object as a parameter, creates a new instance of the JobSettingsViewModel initialized with the job to edit, subscribes to its OnSaveRequested event to update the job in the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job editing is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
     {
-        var jobVM = new JobSettingsViewModel(job);
+        JobSettingsViewModel jobVM = new JobSettingsViewModel(job);
         jobVM.OnSaveRequested += (updatedJob) =>
         {
             int index = Jobs.IndexOf(job);
             if (index != -1) Jobs[index] = updatedJob;
+            _config.UpdateJob(job.Name, updatedJob);
+            _config.SaveConfig();
             CurrentViewModel = null;
         };
         jobVM.OnCancelRequested += () => CurrentViewModel = null;
@@ -126,9 +128,10 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
             if (confirmed)
             {
+                // On le retire de la liste visuelle
+                _config.DeleteJob(job);
+                _config.SaveConfig();
                 Jobs.Remove(job);
-
-                // TODO: Appeler Config.DeleteJob(job.Name) pour le supprimer du json
             }
         };
 
