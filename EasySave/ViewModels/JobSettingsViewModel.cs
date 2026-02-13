@@ -99,7 +99,7 @@ public class JobSettingsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"⚠️ {ex.Message}";
+            ErrorMessage = _languageViewModel.GetTranslation("error_path");
         }
     }
 

@@ -108,16 +108,16 @@
         "fr": "Format de plage invalide"
     },
     "error_occured": {
-        "en": "An error occurred : ",
-        "fr": "Une erreur s'est produite : "
+        "en": "⚠️ An error occurred : ",
+        "fr": "⚠️ Une erreur s'est produite : "
     },
     "invalid_job_id_not_integer": {
         "en": "Invalid job ID, following value is not an integer : ",
         "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
     },
     "error_loading_dictionary": {
-        "en": "Error loading dictionary : ",
-        "fr": "Erreur lors du chargement du dictionnaire : "
+        "en": "⚠️ Error loading dictionary : ",
+        "fr": "⚠️ Erreur lors du chargement du dictionnaire : "
     },
     "launch_save": {
         "en": "Launch Save",
@@ -138,5 +138,9 @@
     "launch": {
         "en": "Launch",
         "fr": "Démarrer"
+    },
+    "error_path": {
+        "en": "⚠️ Invalid path destination ",
+        "fr": "⚠️ Chemin invalide"
     }
 }
