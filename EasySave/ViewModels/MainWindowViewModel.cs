@@ -43,6 +43,8 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
+        LogsManager _logsManager = new LogsManager();
+        StateManager _stateManager = new StateManager();
     }
 
     private void OnLanguageChanged()
