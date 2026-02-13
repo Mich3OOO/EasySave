@@ -3,8 +3,8 @@
              xmlns:vm="using:EasySave.ViewModels"
              x:Class="EasySave.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
-    
-    <Grid Margin="20" MaxWidth="500">
+
+    <Grid Margin="20" MaxWidth="500" VerticalAlignment="Center">
 
         <Border Background="#1E1E1E" 
                 BorderBrush="#333333" 
@@ -15,15 +15,10 @@
 
             <StackPanel Spacing="15">
 
-                <!-- Header with close button -->
-                <Grid ColumnDefinitions="*, Auto">
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-                        <TextBlock Text="⚙️" FontSize="24" VerticalAlignment="Center"/>
-                        <TextBlock Text="Paramètres" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <Button Grid.Column="1" Content="✕" Background="Transparent" Foreground="White" 
-                            Command="{Binding CloseCommand}" FontSize="20" Padding="10,0" Cursor="Hand"/>
-                </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
+                    <TextBlock Text="⚙️" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBlock Text="Paramètres" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <StackPanel Spacing="5">
                     <TextBlock Text="Langue de l'application" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
@@ -52,27 +47,26 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Separator Height="1" Background="#333333" Margin="0,5"/>
-
                 <StackPanel Spacing="5">
-                    <TextBlock Text="Extensions de fichiers prioritaires" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
-                    <TextBox Watermark="Ex: .docx, .pdf, .xlsx" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6"/>
-                    <TextBlock Text="Ces fichiers seront sauvegardés en premier." Foreground="#888888" FontSize="10" FontStyle="Italic"/>
+                    <TextBlock Text="Extensions à chiffrer (CryptoSoft)" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6"/>
                 </StackPanel>
 
-                <Separator Height="1" Background="#333333" Margin="0,5"/>
-
-                <StackPanel Spacing="5">
-                    <TextBlock Text="Taille maximale des fichiers (Mo)" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
-                    <NumericUpDown Minimum="1" Maximum="10000" Value="500" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6"/>
-                </StackPanel>
-
-                <Button Content="Enregistrer" HorizontalAlignment="Center" Background="#00E676" Foreground="Black" FontWeight="Bold" CornerRadius="8" Padding="25,10" Margin="0,15,0,0" Cursor="Hand"/>
-                
+                <Button Content="Enregistrer et Fermer" 
+                        Command="{Binding CloseCommand}"
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="0,20,0,0"
+                        Height="45"
+                        CornerRadius="6"
+                        Background="#1976D2" 
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Cursor="Hand"/>
             </StackPanel>
-            
+
         </Border>
-        
     </Grid>
-    
 </UserControl>
