@@ -35,7 +35,7 @@ public class BackupViewModel : ViewModelBase
     /// </summary>
     public ICommand DeleteJobCommand { get; }
 
-    public BackupViewModel()
+    public BackupViewModel()    // Constructor initializes commands and loads jobs from config
     {
         RunJobCommand = new RelayCommand<SavedJob>(RunJob);
         EditJobCommand = new RelayCommand<SavedJob>(EditJob);
@@ -44,28 +44,28 @@ public class BackupViewModel : ViewModelBase
         LoadJobs();
     }
 
-    private void LoadJobs()
+    private void LoadJobs() // Method to load jobs from config and populate the Jobs collection
     {
         Jobs.Clear();
         // TODO: Load jobs from config
         // Example: foreach (var job in _config.GetAllJobs()) Jobs.Add(job);
     }
 
-    private void RunJob(SavedJob? job)
+    private void RunJob(SavedJob? job)  // Method to run a specific backup job, it takes a SavedJob object as a parameter and calls the _runBackup method with the job ID and a default backup type (e.g., Complete)
     {
         if (job == null) return;
         // Run the backup with default type (e.g., Complete)
         _runBackup(job.Id, BackupType.Complete);
     }
 
-    private void EditJob(SavedJob? job)
+    private void EditJob(SavedJob? job) // Method to edit a specific backup job, it takes a SavedJob object as a parameter and opens the edit dialog or navigates to the edit view
     {
         if (job == null) return;
         // TODO: Open edit dialog or navigate to edit view
         System.Diagnostics.Debug.WriteLine($"Editing job: {job.Name}");
     }
 
-    private void DeleteJob(SavedJob? job)
+    private void DeleteJob(SavedJob? job)   // Method to delete a specific backup job, it takes a SavedJob object as a parameter and removes it from the Jobs collection and deletes it from the config
     {
         if (job == null) return;
         Jobs.Remove(job);
@@ -94,7 +94,7 @@ public class BackupViewModel : ViewModelBase
         }
     }
 
-    private bool isASafeJob(SavedJob savedJob)
+    private bool isASafeJob(SavedJob savedJob)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
     {
         Process[] allProcesses = Process.GetProcesses();
 

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Models;
 
-public class StateInfo
+public class StateInfo  // Class representing the real-time state of a backup job, including progress and file information, used for persistence and UI updates
 {
     [JsonInclude]
     public string Name = "";

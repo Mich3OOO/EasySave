@@ -59,7 +59,7 @@ public class LanguageViewModel  // Class responsible for managing the translatio
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception ex)    // Handle any exceptions that occur during the loading of the dictionary, such as file not found, invalid JSON format, etc., and initialize an empty dictionary in case of error
         {
             Console.WriteLine($"Error loading dictionary: {ex.Message}");
             _dictionary = new Dictionary<string, Dictionary<Languages, string>>();

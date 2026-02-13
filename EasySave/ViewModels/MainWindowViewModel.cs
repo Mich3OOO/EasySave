@@ -7,7 +7,7 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase    // ViewModel for the main window of the application, it manages the current view model being displayed, the list of backup jobs, and commands for showing settings, creating, editing, running, and deleting jobs.
 {
     public string Greeting { get; } = "Welcome to EasySave!";
 
@@ -16,7 +16,7 @@ public class MainWindowViewModel : ViewModelBase
     
     private ViewModelBase _currentViewModel;
 
-    public ViewModelBase? CurrentViewModel
+    public ViewModelBase? CurrentViewModel  // Property for the current view model being displayed in the main window, with getter and setter that raises property change notifications. This is used to switch between different views (e.g., settings, job settings, confirmation dialog) based on user actions.
     {
         get => _currentViewModel;
         set => SetProperty(ref _currentViewModel, value);
@@ -25,28 +25,28 @@ public class MainWindowViewModel : ViewModelBase
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
-    public MainWindowViewModel()
+    public MainWindowViewModel()    // Constructor initializes the ShowSettingsCommand and loads the list of jobs from the configuration (currently with test data)
     {
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>();
         LoadJobsFromConfig();
     }
 
-    private void ShowSettings()
+    private void ShowSettings() // Method to show the settings view, it creates a new instance of the SettingsViewModel, subscribes to its OnCloseRequested event to set the CurrentViewModel to null when the settings view is closed, and then sets the CurrentViewModel to the new SettingsViewModel instance to display it in the main window.
     {
         var settingsVM = new SettingsViewModel();
         settingsVM.OnCloseRequested += () => CurrentViewModel = null;
         CurrentViewModel = settingsVM;
     }
 
-    private void LoadJobsFromConfig()
+    private void LoadJobsFromConfig()   // Method to load the list of backup jobs from the configuration, currently it adds some test data to the Jobs collection, but in a complete implementation, it would read the jobs from the configuration file and populate the Jobs collection accordingly.
     {
-        // Données de test
+        // Test Datas
         Jobs.Add(new SavedJob { Id = 1, Name = "Sauvegarde Documents", Source = "C:/Users/Documents", Destination = "D:/Backup/Documents" });
         Jobs.Add(new SavedJob { Id = 2, Name = "Sauvegarde Photos", Source = "C:/Users/Pictures", Destination = "D:/Backup/Pictures" });
     }
 
-    public void CreateJob()
+    public void CreateJob() // Method to create a new backup job, it creates a new instance of the JobSettingsViewModel, subscribes to its OnSaveRequested event to add the new job to the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job creation is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
     {
         var jobVM = new JobSettingsViewModel();
         jobVM.OnSaveRequested += (newJob) =>
@@ -60,7 +60,7 @@ public class MainWindowViewModel : ViewModelBase
         CurrentViewModel = jobVM;
     }
 
-    public void EditJob(SavedJob job)
+    public void EditJob(SavedJob job)   // Method to edit an existing backup job, it takes a SavedJob object as a parameter, creates a new instance of the JobSettingsViewModel initialized with the job to edit, subscribes to its OnSaveRequested event to update the job in the Jobs collection and set the CurrentViewModel to null when the job is saved, and also subscribes to its OnCancelRequested event to set the CurrentViewModel to null when the job editing is canceled. Finally, it sets the CurrentViewModel to the new JobSettingsViewModel instance to display it in the main window.
     {
         var jobVM = new JobSettingsViewModel(job);
         jobVM.OnSaveRequested += (updatedJob) =>
@@ -73,20 +73,19 @@ public class MainWindowViewModel : ViewModelBase
         CurrentViewModel = jobVM;
     }
 
-    public void RunJob(SavedJob job) { /* Logique V1 */ }
+    public void RunJob(SavedJob job) { /* Logic V1 */ }
 
     public void DeleteJob(SavedJob job)
     {
-        // Afficher la popup de confirmation
+        // Display a confirmation dialog before deleting the job
         var confirmDialog = new ConfirmDeleteDialogViewModel();
         confirmDialog.JobName = job.Name;
         confirmDialog.OnResult += (confirmed) =>
         {
-            CurrentViewModel = null; // Fermer le dialogue
+            CurrentViewModel = null; // close the dialog
 
             if (confirmed)
             {
-                // On le retire de la liste visuelle
                 Jobs.Remove(job);
 
                 // TODO: Appeler Config.DeleteJob(job.Name) pour le supprimer du json

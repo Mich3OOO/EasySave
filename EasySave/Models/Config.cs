@@ -104,7 +104,7 @@ public class Config // Class representing the configuration of the application, 
         _ExtensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
     }
 
-    public bool AddJob(SavedJob job)
+    public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false
     {
         if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)   // Check if a job with the same name and ID already exists in the list of saved jobs, if not, add the new job to the list and return true, otherwise return false
         {
