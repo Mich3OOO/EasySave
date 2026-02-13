@@ -33,6 +33,11 @@
 					</StackPanel>
 				</StackPanel>
 
+				<StackPanel Spacing="5">
+                    <TextBlock Text="Mot de passe" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="Entrez le mot de passe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                </StackPanel>
+
 				<Grid ColumnDefinitions="*, *">
 					<Button Grid.Column="0" Content="Annuler" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
 					<Button Grid.Column="1" Content="Demarrer" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
