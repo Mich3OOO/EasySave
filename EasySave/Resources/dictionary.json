@@ -38,5 +38,29 @@
   "save_and_quit": {
     "en": "Save and Quit",
     "fr": "Enregistrer et quitter"
+  },
+  "job_settings": {
+    "en": "Job Settings",
+    "fr": "Paramètres du travail"
+  },
+  "job_name": {
+    "en": "Job Name",
+    "fr": "Nom du travail"
+  },
+  "source_folder": {
+    "en": "Source Folder",
+    "fr": "Dossier source"
+  },
+  "target_folder": {
+    "en": "Target Folder",
+    "fr": "Dossier cible"
+  },
+  "cancel": {
+    "en": "Cancel",
+    "fr": "Annuler"
+  },
+  "save": {
+    "en": "Save",
+    "fr": "Enregistrer"
   }
 }
