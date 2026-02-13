@@ -47,11 +47,23 @@
     "en": "Job Name",
     "fr": "Nom du travail"
   },
+  "example_job_name": {
+    "en": "Ex: Desktop backup",
+    "fr": "Ex: Sauvegarde du Bureau"
+  },
   "source_folder": {
     "en": "Source Folder",
     "fr": "Dossier source"
   },
+  "source_path": {
+    "en": "Source Path",
+    "fr": "Chemin source"
+  },
   "target_folder": {
+    "en": "Target Path",
+    "fr": "Chemin cible"
+  },
+  "target_path": {
     "en": "Target Folder",
     "fr": "Dossier cible"
   },

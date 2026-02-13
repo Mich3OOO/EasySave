@@ -11,8 +11,11 @@ public class JobSettingsViewModel : ViewModelBase
 
     public string T_job_settings => LanguageViewModel.GetTranslation("job_settings");
     public string T_job_name => LanguageViewModel.GetTranslation("job_name");
+    public string T_example_job_name => LanguageViewModel.GetTranslation("example_job_name");
     public string T_source_folder => LanguageViewModel.GetTranslation("source_folder");
+    public string T_source_path => LanguageViewModel.GetTranslation("source_path");
     public string T_target_folder => LanguageViewModel.GetTranslation("target_folder");
+    public string T_target_path => LanguageViewModel.GetTranslation("target_path");
     public string T_cancel => LanguageViewModel.GetTranslation("cancel");
     public string T_save => LanguageViewModel.GetTranslation("save");
 
