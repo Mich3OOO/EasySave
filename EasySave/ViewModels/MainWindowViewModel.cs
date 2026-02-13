@@ -47,13 +47,14 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
     private void ShowSettings()
     {
         var settingsVM = new SettingsViewModel();
-        
+
         // If the user saves, we should save the settings to the config file and then close the window
         settingsVM.OnSaveRequested += () =>
         {
             CurrentViewModel = null;    //FOR NOW, close the window, later, will only close it after saving the settings to the JSON file
 
         };
+        settingsVM.OnCancelRequested += () => CurrentViewModel = null;
 
         CurrentViewModel = settingsVM;
     }
