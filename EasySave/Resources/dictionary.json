@@ -62,5 +62,21 @@
   "save": {
     "en": "Save",
     "fr": "Enregistrer"
+  },
+  "confirm_deletion": {
+    "en": "Confirm deletion",
+    "fr": "Confirmer la suppression"
+  },
+  "are_you_sure_deletion": {
+    "en": "Are you sure you want to delete this job?",
+    "fr": "Êtes-vous sûr de vouloir supprimer ce travail ?"
+  },
+  "irreversible_action": {
+    "en": "This action is irreversible",
+    "fr": "Cette action est irréversible"
+  },
+  "delete": {
+    "en": "Delete",
+    "fr": "🗑️ Supprimer"
   }
 }
