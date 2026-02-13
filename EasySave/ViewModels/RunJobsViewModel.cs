@@ -12,6 +12,14 @@ public class RunJobsViewModel : ViewModelBase
     private string _password = string.Empty;
     public SavedJob Job { get; }
     
+    private string _errorMessage = string.Empty;
+    
+    
+    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
+    {
+        get => _errorMessage;
+        set => SetProperty(ref _errorMessage, value);
+    }
     public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
     public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
 
@@ -52,7 +60,18 @@ public class RunJobsViewModel : ViewModelBase
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
-        ConfirmCommand = new RelayCommand(_runBackup);
+        ConfirmCommand = new RelayCommand(() =>
+        {
+            try
+            {
+                ErrorMessage = string.Empty;
+                _runBackup();
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = e.Message;
+            }
+        });
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false));
     }
     

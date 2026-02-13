@@ -34,9 +34,19 @@
 				</StackPanel>
 
 				<StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_password}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+					<TextBlock Text="{Binding T_password}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="{Binding T_enter_password}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
                 </StackPanel>
+				
+				
+				<TextBlock Text="{Binding ErrorMessage}" 
+				           Foreground="#E53935" 
+				           FontSize="12" 
+				           FontWeight="Bold"
+				           HorizontalAlignment="Center"
+				           TextWrapping="Wrap"
+				           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+				
 
 				<Grid ColumnDefinitions="*, *">
 					<Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
