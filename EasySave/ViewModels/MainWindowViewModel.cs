@@ -74,6 +74,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public void RunJob(SavedJob job) { /* Logique V1 */ }
 
+    public void DeleteJob(SavedJob job)
+    {
         // Afficher la popup de confirmation
         var confirmDialog = new ConfirmDeleteDialogViewModel();
         confirmDialog.JobName = job.Name;
