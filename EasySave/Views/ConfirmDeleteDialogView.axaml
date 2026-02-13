@@ -28,7 +28,7 @@
 
             <!-- Title -->
             <TextBlock Grid.Row="1" 
-                       Text="Confirmer la suppression" 
+                       Text="{Binding T_confirm_deletion}" 
                        Foreground="White" 
                        FontSize="22" 
                        FontWeight="Bold" 
@@ -39,7 +39,7 @@
             <StackPanel Grid.Row="2" 
                         HorizontalAlignment="Center" 
                         Margin="0,0,0,18">
-                <TextBlock Text="Êtes-vous sûr de vouloir supprimer le travail" 
+                <TextBlock Text="{Binding T_are_you_sure_deletion }" 
                            Foreground="#B4B4B4" 
                            FontSize="14" 
                            HorizontalAlignment="Center" 
@@ -64,7 +64,7 @@
                                Classes="emoji"
                                FontSize="12" 
                                Margin="0,0,5,0"/>
-                    <TextBlock Text="Cette action est irréversible" 
+                    <TextBlock Text="{Binding T_irreversible_action}" 
                                Foreground="#FF6B6B" 
                                FontSize="12" 
                                FontStyle="Italic"/>
@@ -76,7 +76,7 @@
                         Orientation="Horizontal" 
                         HorizontalAlignment="Center"
                         Spacing="12">
-                <Button Content="Annuler" 
+                <Button Content="{Binding T_cancel}" 
                         Command="{Binding CancelCommand}"
                         Width="140"
                         Height="45" 
@@ -98,7 +98,7 @@
                     </Button.Styles>
                 </Button>
 
-                <Button Content="🗑️ Supprimer" 
+                <Button Content="{Binding T_delete}" 
                         Classes="emoji"
                         Command="{Binding ConfirmCommand}"
                         Width="160"

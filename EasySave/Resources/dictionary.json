@@ -1,186 +1,122 @@
 ﻿{
-  "welcome": {
-    "en": "Welcome to EasySave",
-    "fr": "Bienvenue sur EasySave"
+  "save_jobs": {
+    "en": "Save Jobs",
+    "fr": "Travaux de Sauvegarde"
   },
-  "menu_create": {
-    "en": "Create a backup job",
-    "fr": "Créer un travail de sauvegarde"
+  "create_job": {
+    "en": "Create Job",
+    "fr": "Créer un travail"
   },
-  "menu_list": {
-    "en": "List all jobs",
-    "fr": "Lister tous les travaux"
+  "settings_tooltip": {
+    "en": "Open Settings",
+    "fr": "Ouvrir les paramètres"
   },
-  "menu_delete": {
-    "en": "Delete a job",
-    "fr": "Supprimer un travail"
-  },
-  "menu_edit": {
-    "en": "Edit a job",
-    "fr": "Modifier un travail"
-  },
-  "menu_run": {
-    "en": "Execute backup jobs",
-    "fr": "Exécuter des travaux de sauvegarde"
-  },
-  "menu_exit": {
-    "en": "Exit application",
-    "fr": "Quitter l'application"
-  },
-  "menu_choice": {
-    "en": "Please enter your choice",
-    "fr": "Veuillez entrer votre choix"
-  },
-  "menu_settings": {
+  "settings_menu": {
     "en": "Settings",
     "fr": "Paramètres"
   },
-  "language": {
-    "en": "Language",
-    "fr": "Langue"
+  "language_selection": {
+    "en": "App language",
+    "fr": "Langage de l'application"
   },
-  "change_language": {
-    "en": "Change language",
-    "fr": "Changer de langue"
+  "logs_format": {
+    "en": "Logs format",
+    "fr": "Format des logs"
   },
-  "language_changed": {
-    "en": "Language changed to ",
-    "fr": "Langue changée en "
+  "business_software": {
+    "en": "Business software (pause the save job)",
+    "fr": "Logiciel Métier (interromp la sauvegarde)"
   },
-  "invalid_language": {
-    "en": "Invalid language (use 'en' or 'fr')",
-    "fr": "Langue invalide (utilisez 'en' ou 'fr')"
+  "business_software_detected": {
+    "en": "If a business software is detected, the save job will be paused",
+    "fr": "Si détecté, les travaux seront mis en pause."
   },
-  "change_logsFormat": {
-    "en": "Change logs format",
-    "fr": "Changer le format des logs"
+  "extensions_to_encrypt": {
+    "en": "Extensions to encrypt (separated by a comma)",
+    "fr": " Extensions à chiffrer (séparées par une virgule)"
   },
-  "logs_format_changed": {
-    "en": "Logs format changed to ",
-    "fr": "Format des logs changé en "
+  "save_and_quit": {
+    "en": "Save and Quit",
+    "fr": "Enregistrer et quitter"
   },
-  "logsFormat_changed": {
-    "en": "Logs format changed to ",
-    "fr": "Format des logs changé en "
+  "job_settings": {
+    "en": "Job Settings",
+    "fr": "Paramètres du travail"
   },
-  "invalid_logs_format": {
-    "en": "Invalid logs format (use 'Json' or 'Xml')",
-    "fr": "Format des logs invalide (utilisez 'Json' ou 'Xml')"
+  "job_name": {
+    "en": "Job Name",
+    "fr": "Nom du travail"
   },
-  "title_new_job": {
-    "en": "Create a New Backup Job",
-    "fr": "Création d'un nouveau travail"
+  "example_job_name": {
+    "en": "Ex: Desktop backup",
+    "fr": "Ex: Sauvegarde du Bureau"
   },
-  "input_name": {
-    "en": "Enter backup job name",
-    "fr": "Entrez le nom du travail"
+  "source_folder": {
+    "en": "Source Folder",
+    "fr": "Dossier source"
   },
-  "input_source": {
-    "en": "Enter source directory path",
-    "fr": "Entrez le chemin du répertoire source"
+  "source_path": {
+    "en": "Source Path",
+    "fr": "Chemin source"
   },
-  "input_target": {
-    "en": "Enter destination directory path",
-    "fr": "Entrez le chemin du répertoire de destination"
+  "target_folder": {
+    "en": "Target Path",
+    "fr": "Chemin cible"
   },
-  "input_new_name": {
-    "en": "Enter new name",
-    "fr": "Entrez le nouveau nom"
+  "target_path": {
+    "en": "Target Folder",
+    "fr": "Dossier cible"
   },
-  "input_new_source": {
-    "en": "Enter new source path",
-    "fr": "Entrez le nouveau chemin source"
+  "cancel": {
+    "en": "Cancel",
+    "fr": "Annuler"
   },
-  "input_new_destination": {
-    "en": "Enter new destination path",
-    "fr": "Entrez le nouveau chemin de destination"
+  "save": {
+    "en": "Save",
+    "fr": "Enregistrer"
   },
-  "input_type": {
-    "en": "Select type (1 or 2)",
-    "fr": "Sélectionnez le type (1 ou 2)"
+  "confirm_deletion": {
+    "en": "Confirm deletion",
+    "fr": "Confirmer la suppression"
   },
-  "input_run_id": {
-    "en": "Enter job IDs to run (e.g. 1-3 or 1;3)",
-    "fr": "Entrez les IDs à lancer (ex: 1-3 ou 1;3)"
+  "are_you_sure_deletion": {
+    "en": "Are you sure you want to delete this job?",
+    "fr": "Êtes-vous sûr de vouloir supprimer ce travail ?"
   },
-  "success_job_created": {
-    "en": "Backup job created successfully!",
-    "fr": "Travail de sauvegarde créé avec succès !"
+  "irreversible_action": {
+    "en": "This action is irreversible",
+    "fr": "Cette action est irréversible"
   },
-  "job_deleted_success": {
-    "en": "Job deleted successfully:",
-    "fr": "Travail supprimé avec succès :"
+  "delete": {
+    "en": "Delete",
+    "fr": "🗑️ Supprimer"
   },
-  "job_modified_success": {
-    "en": "Job modified successfully:",
-    "fr": "Travail modifié avec succès :"
+  "invald_backup_id": {
+    "en": "Invalid backup ID",
+    "fr": "ID de sauvegarde invalide"
   },
-  "error_job_limit": {
-    "en": "Error: You cannot create more than 5 jobs.",
-    "fr": "Erreur : Impossible de créer plus de 5 travaux."
+  "source_in_use": {
+    "en": "Source is used by another program",
+    "fr": "La source est utilisée par un autre programme"
   },
-  "error_invalid_path": {
-    "en": "Error: Invalid path. Please enter a valid directory path.",
-    "fr": "Erreur : Chemin invalide. Veuillez entrer un chemin de répertoire valide."
+  "start_less_or_equal_end": {
+    "en": "Start of the range must be less than or equal to end",
+    "fr": "Le début de la plage doit être inférieur ou égal à la fin"
   },
-  "error_job_exists": {
-    "en": "Error: A job with this name already exists.",
-    "fr": "Erreur : Un travail avec ce nom existe déjà."
+  "invalid_range_format": {
+    "en": "Invalid range format",
+    "fr": "Format de plage invalide"
   },
-  "error_job_not_found": {
-    "en": "Error: Job not found with name:",
-    "fr": "Erreur : Aucun travail trouvé avec le nom :"
+  "error_occured": {
+    "en": "An error occurred : ",
+    "fr": "Une erreur s'est produite : "
   },
-  "error_invalid_choice": {
-    "en": "Invalid choice. Please try again.",
-    "fr": "Choix invalide. Veuillez réessayer."
+  "invalid_job_id_not_integer": {
+    "en": "Invalid job ID, following value is not an integer : ",
+    "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
   },
-  "error_execution": {
-    "en": "Execution Error",
-    "fr": "Erreur d'exécution"
-  },
-  "no_jobs_registered": {
-    "en": "No jobs registered.",
-    "fr": "Aucun travail enregistré."
-  },
-  "jobs_list_title": {
-    "en": "Jobs List",
-    "fr": "Liste des travaux"
-  },
-  "id_label": {
-    "en": "ID",
-    "fr": "ID"
-  },
-  "name_label": {
-    "en": "Name",
-    "fr": "Nom"
-  },
-  "source_label": {
-    "en": "Source",
-    "fr": "Source"
-  },
-  "destination_label": {
-    "en": "Destination",
-    "fr": "Destination"
-  },
-  "press_key": {
-    "en": "Press any key to continue...",
-    "fr": "Appuyez sur une touche pour continuer..."
-  },
-  "backup": {
-    "en": "Backup",
-    "fr": "Sauvegarde"
-  },
-  "complete": {
-    "en": "Complete",
-    "fr": "Complète"
-  },
-  "differential": {
-    "en": "Differential",
-    "fr": "Différentielle"
-  },
-  "backup_done": {
-    "en": "Sauvegarde has been",
-    "fr": "La sauvegarde à été faite"
+  "error_loading_dictionary": {
+    "en": "Error loading dictionary : ",
+    "fr": "Erreur lors du chargement du dictionnaire : "
   }
 }

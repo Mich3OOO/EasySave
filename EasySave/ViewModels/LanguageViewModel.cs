@@ -11,6 +11,8 @@ public class LanguageViewModel  // Class responsible for managing the translatio
     private Languages _currentLanguage;
     Config _conf ;
 
+    public string T_error_loading_dictionary => this.GetTranslation("error_loading_dictionary");
+
     public LanguageViewModel(string dictionaryPath) // Constructor that initializes the dictionary and loads it from the given JSON file path, also sets the current language based on the config
     {
         _conf = Config.S_GetInstance();
@@ -61,7 +63,7 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         }
         catch (Exception ex)    // Handle any exceptions that occur during the loading of the dictionary, such as file not found, invalid JSON format, etc., and initialize an empty dictionary in case of error
         {
-            Console.WriteLine($"Error loading dictionary: {ex.Message}");
+            Console.WriteLine($"{T_error_loading_dictionary}{ex.Message}");
             _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
         }
     }

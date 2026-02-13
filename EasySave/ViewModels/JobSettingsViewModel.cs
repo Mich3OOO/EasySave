@@ -7,6 +7,18 @@ namespace EasySave.ViewModels;
 
 public class JobSettingsViewModel : ViewModelBase      // ViewModel for the job settings view, used for creating or editing backup jobs. It contains properties for the job name, source path, destination path, and error messages. It also has commands for saving or canceling the job settings and events to notify when a save or cancel action is requested.
 {
+    public LanguageViewModel LanguageViewModel { get; }
+
+    public string T_job_settings => LanguageViewModel.GetTranslation("job_settings");
+    public string T_job_name => LanguageViewModel.GetTranslation("job_name");
+    public string T_example_job_name => LanguageViewModel.GetTranslation("example_job_name");
+    public string T_source_folder => LanguageViewModel.GetTranslation("source_folder");
+    public string T_source_path => LanguageViewModel.GetTranslation("source_path");
+    public string T_target_folder => LanguageViewModel.GetTranslation("target_folder");
+    public string T_target_path => LanguageViewModel.GetTranslation("target_path");
+    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
+    public string T_save => LanguageViewModel.GetTranslation("save");
+
     private string _name = string.Empty;
     private string _source = string.Empty;
     private string _destination = string.Empty;
@@ -50,6 +62,9 @@ public class JobSettingsViewModel : ViewModelBase      // ViewModel for the job 
         IsEditMode = false;
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
+
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
+        LanguageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
     public JobSettingsViewModel(SavedJob jobToEdit) : this()    // Constructor for editing an existing job, it initializes the commands, sets IsEditMode to true, and populates the properties with the values from the job to edit
