@@ -70,7 +70,7 @@ public class JobSettingsViewModel : ViewModelBase
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
 
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         LanguageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
