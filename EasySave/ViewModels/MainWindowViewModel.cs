@@ -74,5 +74,22 @@ public class MainWindowViewModel : ViewModelBase
 
     public void RunJob(SavedJob job) { /* Logique V1 */ }
 
-    public void DeleteJob(SavedJob job) => Jobs.Remove(job);
+        // Afficher la popup de confirmation
+        var confirmDialog = new ConfirmDeleteDialogViewModel();
+        confirmDialog.JobName = job.Name;
+        confirmDialog.OnResult += (confirmed) =>
+        {
+            CurrentViewModel = null; // Fermer le dialogue
+
+            if (confirmed)
+            {
+                // On le retire de la liste visuelle
+                Jobs.Remove(job);
+
+                // TODO: Appeler Config.DeleteJob(job.Name) pour le supprimer du json
+            }
+        };
+
+        CurrentViewModel = confirmDialog;
+    }
 }
