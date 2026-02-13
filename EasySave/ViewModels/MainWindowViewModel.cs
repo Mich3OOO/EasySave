@@ -38,10 +38,18 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
     public MainWindowViewModel()    // Constructor initializes the ShowSettingsCommand and loads the list of jobs from the configuration (currently with test data)
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        _languageViewModel.LanguageChanged += OnLanguageChanged;
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
+    }
+
+    private void OnLanguageChanged()
+    {
+        OnPropertyChanged(nameof(T_save_sobs));
+        OnPropertyChanged(nameof(T_create_job));
+        OnPropertyChanged(nameof(T_settings_tooltip));
     }
 
     private void ShowSettings()

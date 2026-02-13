@@ -48,29 +48,31 @@ public class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel()
     {
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+
         SelectedLanguage = _config.Language;
         SelectedLogsFormats = _config.LogsFormat;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
-        
-        
+
+
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
-        
+
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
     private void Save()
     {
+        _languageViewModel.SetLanguage(SelectedLanguage);
         _config.Language = SelectedLanguage;
         _config.LogsFormat = SelectedLogsFormats;
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.SaveConfig();
-        
+
         // Signal to save settings (will be handled by MainWindowViewModel)
         OnSaveRequested?.Invoke();
     }

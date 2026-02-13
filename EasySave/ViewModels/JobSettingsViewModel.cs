@@ -71,7 +71,7 @@ public class JobSettingsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(Cancel);
 
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
     public JobSettingsViewModel(SavedJob jobToEdit) : this()

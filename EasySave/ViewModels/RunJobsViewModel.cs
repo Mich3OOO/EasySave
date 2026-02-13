@@ -49,7 +49,7 @@ public class RunJobsViewModel : ViewModelBase
     public RunJobsViewModel(SavedJob job)   //constructor
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
         ConfirmCommand = new RelayCommand(_runBackup);
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false));

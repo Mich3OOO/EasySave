@@ -5,16 +5,35 @@ namespace EasySave.ViewModels;
 
 public class LanguageViewModel  // Class responsible for managing the translations of the application based on a given dictionary JSON file and the current language set in the config
 {
+    private static LanguageViewModel? _instance;
+    private static readonly object _lock = new object();
+
+    public static LanguageViewModel GetInstance(string dictionaryPath)
+    {
+        if (_instance == null)
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new LanguageViewModel(dictionaryPath);
+                }
+            }
+        }
+        return _instance;
+    }
+
     // The dictionary is a nested dictionary where the first key is the word to translate, and the value is another dictionary where the key is the language and the value is the translation of the word in that language
     private readonly string _dictionaryPath;
     private Dictionary<string, Dictionary<Languages, string>> _dictionary;
     Config _conf ;
     private Languages _currentLanguage;
-   
+
+    public event Action? LanguageChanged;
 
     public string T_error_loading_dictionary => this.GetTranslation("error_loading_dictionary");
 
-    public LanguageViewModel(string dictionaryPath) // Constructor that initializes the dictionary and loads it from the given JSON file path, also sets the current language based on the config
+    private LanguageViewModel(string dictionaryPath) // Constructor that initializes the dictionary and loads it from the given JSON file path, also sets the current language based on the config
     {
         
         _dictionaryPath = dictionaryPath;
@@ -29,6 +48,7 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         _currentLanguage = language;
         _conf.Language = language;
         _conf.SaveConfig();
+        LanguageChanged?.Invoke();
     }
 
     public Languages GetCurrentLanguage()   // Method to get the current language

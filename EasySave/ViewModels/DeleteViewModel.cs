@@ -33,7 +33,7 @@ public class DeleteJobViewModel : ViewModelBase   // ViewModel for the confirmat
         ConfirmCommand = new RelayCommand(Confirm);
 
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
     private void Cancel()   // Method to handle the cancel action, it invokes the OnResult event with false to indicate that the user canceled the deletion
