@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:EasySave.ViewModels"
+			 x:Class="EasySave.Views.RunJobsView"
+			 x:DataType="vm:RunJobsViewModel">
+
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="450">
+		<Border Background="#1E1E1E"
+				BorderBrush="#333333"
+				BorderThickness="1"
+				CornerRadius="8"
+				Padding="25">
+			<StackPanel Spacing="20">
+				<TextBlock Text="Lancer la sauvegarde"
+						   FontSize="20"
+						   FontWeight="Bold"
+						   Foreground="White"
+						   HorizontalAlignment="Center"/>
+
+				<TextBlock Text="{Binding Job.Name}"
+						   Foreground="#00E676"
+						   HorizontalAlignment="Center"
+						   FontWeight="SemiBold"
+						   FontSize="16"/>
+
+				<StackPanel Spacing="10">
+					<TextBlock Text="Quel type de sauvegarde voulez-vous effectuer ?"
+							   Foreground="#AAAAAA"
+							   HorizontalAlignment="Center"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
+						<RadioButton Content="Complete" Foreground="White" IsChecked="{Binding !IsDifferential}"/>
+						<RadioButton Content="Differentielle" Foreground="White" IsChecked="{Binding IsDifferential}"/>
+					</StackPanel>
+				</StackPanel>
+
+				<Grid ColumnDefinitions="*, *">
+					<Button Grid.Column="0" Content="Annuler" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+					<Button Grid.Column="1" Content="Demarrer" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
+				</Grid>
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

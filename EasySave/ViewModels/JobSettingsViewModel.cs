@@ -11,7 +11,6 @@ public class JobSettingsViewModel : ViewModelBase
     private string _source = string.Empty;
     private string _destination = string.Empty;
     private string _errorMessage = string.Empty;
-    private bool _isDifferential = false; // Par défaut : Complet
 
     public string Name
     {
@@ -37,12 +36,6 @@ public class JobSettingsViewModel : ViewModelBase
         set => SetProperty(ref _errorMessage, value);
     }
 
-    // Propriété pour le type de sauvegarde
-    public bool IsDifferential
-    {
-        get => _isDifferential;
-        set => SetProperty(ref _isDifferential, value);
-    }
 
     public bool IsEditMode { get; }
     private readonly SavedJob? _originalJob;
@@ -67,7 +60,6 @@ public class JobSettingsViewModel : ViewModelBase
         Name = jobToEdit.Name;
         Source = jobToEdit.Source;
         Destination = jobToEdit.Destination;
-        IsDifferential = jobToEdit.IsDifferential; // On récupère l'état existant
     }
 
     private void Save()
@@ -81,8 +73,6 @@ public class JobSettingsViewModel : ViewModelBase
             job.SetSource(Source);
             job.SetDestination(Destination);
 
-            // On enregistre le type de sauvegarde dans le modèle
-            job.IsDifferential = IsDifferential;
 
             OnSaveRequested?.Invoke(job);
         }
