@@ -78,27 +78,27 @@ public class Config // Class representing the configuration of the application, 
     public void SaveConfig()    // Method to save the current configuration to the config file, it serializes the ConfigStructure struct and writes it to the file
     {
         if (File.Exists(_confPath)) File.Delete(_confPath);
-        using(FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
+        using (FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
         {
             ConfigStructure config = new ConfigStructure(this);
             fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
-           
+
         }
     }
 
     private void _loadConfig()  //  Method to load the configuration from the config file, it reads the file, deserializes it into a ConfigStructure struct and updates the current configuration accordingly
     {
-        using(FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read))
+        using (FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read))
         {
             string json = "";
             byte[] b = new byte[1024];
             UTF8Encoding temp = new UTF8Encoding(true);
 
-            while (fs.Read(b,0,b.Length) > 0)
+            while (fs.Read(b, 0, b.Length) > 0)
             {
                 json += temp.GetString(b);
             }
-            
+
             ConfigStructure? config = JsonSerializer.Deserialize<ConfigStructure>(json.Trim('\0'));
 
             if (config is null)
@@ -114,7 +114,7 @@ public class Config // Class representing the configuration of the application, 
                 _savedJobs = config.SavedJobs;
                 _softwares = config.Softwares;
             }
-            
+
         }
     }
 
@@ -133,39 +133,36 @@ public class Config // Class representing the configuration of the application, 
             _savedJobs.Add(job);
             return true;
         }
-        
+
         return false;
     }
-    
-    public void UpdateJob(string jobName,SavedJob job)  // Method to update a saved job, it takes the name of the job to update and the new job data, it searches for the job with the given name and updates its properties if found
+
+    public void UpdateJob(string jobName, SavedJob job)  // Method to update a saved job, it takes the name of the job to update and the new job data, it searches for the job with the given name and updates its properties if found
     {
-        
+
         SavedJob? jobToUpdate = _savedJobs.FirstOrDefault(j => j.Name == jobName);
 
         if (jobToUpdate != null)
         {
             jobToUpdate.Name = job.Name;
             jobToUpdate.Destination = job.Destination;
-            jobToUpdate.Source= job.Source;
-            
+            jobToUpdate.Source = job.Source;
+
         }
     }
     public SavedJob? GetJob(string jobName) // Method to get a saved job by its name, it searches for the job with the given name and returns a copy of it if found, otherwise it returns null
     {
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Name == jobName);
-        return  job is null ? null : new(job);
+        return job is null ? null : new(job);
     }
-    
+
     public SavedJob? GetJob(int id) // Method to get a saved job by its id, it searches for the job with the given id and returns a copy of it if found, otherwise it returns null
     {
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Id == id);
-        return  job is null ? null : new(job);
+        return job is null ? null : new(job);
     }
     public void DeleteJob(SavedJob job) // Method to delete a saved job, it takes the job to delete and removes it from the list of saved jobs if it exists
     {
         _savedJobs.RemoveAll(j => j.Id == job.Id);
     }
-
-    
-
 }

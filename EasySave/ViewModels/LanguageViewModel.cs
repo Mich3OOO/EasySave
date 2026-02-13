@@ -8,16 +8,18 @@ public class LanguageViewModel  // Class responsible for managing the translatio
     // The dictionary is a nested dictionary where the first key is the word to translate, and the value is another dictionary where the key is the language and the value is the translation of the word in that language
     private readonly string _dictionaryPath;
     private Dictionary<string, Dictionary<Languages, string>> _dictionary;
-    private Languages _currentLanguage;
     Config _conf ;
+    private Languages _currentLanguage;
+   
 
     public string T_error_loading_dictionary => this.GetTranslation("error_loading_dictionary");
 
     public LanguageViewModel(string dictionaryPath) // Constructor that initializes the dictionary and loads it from the given JSON file path, also sets the current language based on the config
     {
-        _conf = Config.S_GetInstance();
+        
         _dictionaryPath = dictionaryPath;
         _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
+        _conf = Config.S_GetInstance();
         _currentLanguage = _conf.Language;
         _loadDictionary();
     }

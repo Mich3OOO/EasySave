@@ -8,10 +8,10 @@ namespace EasySave.Models;
 /// Manages the real-time state of backup jobs, handling persistence to a JSON file 
 /// and responding to backup events via the Observer pattern.
 /// </summary>
-public class StateManager: IEventListener   // Class representing the state manager, implementing the IEventListener interface, it manages the state of backup jobs and saves it in a local JSON file
+public class StateManager : IEventListener   // Class representing the state manager, implementing the IEventListener interface, it manages the state of backup jobs and saves it in a local JSON file
 {
     private List<StateInfo> _states;
-    
+
     private readonly string _stateFilePath = "./states.json";
 
     /// <summary>
@@ -37,7 +37,7 @@ public class StateManager: IEventListener   // Class representing the state mana
             }
         }
     }
-    
+
     /// <summary>
     /// Updates the state of a specific backup job based on provided BackupInfo.
     /// Triggered whenever a file is copied or a job status changes.
@@ -64,7 +64,7 @@ public class StateManager: IEventListener   // Class representing the state mana
             editedJobState.TotalFilesToCopy = data.TotalFiles;
             editedJobState.TotalFilesSize = editedJobState.TotalFilesSize + data.CurrentCopyInfo.Size;
             editedJobState.NbFilesLeftToDo = data.TotalFiles - data.CurrentFile;
-            editedJobState.Progression = ((float)data.CurrentFile/data.TotalFiles) * 100f;
+            editedJobState.Progression = ((float)data.CurrentFile / data.TotalFiles) * 100f;
         }
         else
         {

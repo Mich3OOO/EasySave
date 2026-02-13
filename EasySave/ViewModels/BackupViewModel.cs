@@ -1,9 +1,9 @@
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 using EasySave.Interfaces;
 using EasySave.Models;
-using System.Diagnostics;
 
 namespace EasySave.ViewModels;
 
@@ -91,7 +91,7 @@ public class BackupViewModel : ViewModelBase
         SavedJob? savedJob = _config.GetJob(jobId);
         if (savedJob == null) throw new ArgumentException(T_invalid_backup_id);
         if (isASafeJob(savedJob)) throw new Exception(T_source_in_use);
-        BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = savedJob};
+        BackupInfo backupInfo = new BackupInfo() { SavedJobInfo = savedJob };
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
         if (backupType == BackupType.Differential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
@@ -112,16 +112,16 @@ public class BackupViewModel : ViewModelBase
 
         foreach (Process process in allProcesses)
         {
-            if(process.MainModule?.FileName.Contains(savedJob.Source) == true) return false;
-            
+            if (process.MainModule?.FileName.Contains(savedJob.Source) == true) return false;
+
         }
-        
+
         return true;
     }
 
     public void RunRangeBackup(string range, BackupType backupType)     //Public method, will call _getJobIdsToBackup to get back the job IDs to backup, then call _runBackup for each job ID
     {
-        try 
+        try
         {
             int[] jobIdsToBackup = _getJobIdsToBackup(range);
             foreach (int jobId in jobIdsToBackup)
@@ -172,7 +172,7 @@ public class BackupViewModel : ViewModelBase
         {
             if (int.TryParse(range, out int jobId))
             {
-                return  [jobId];
+                return [jobId];
             }
             else
             {

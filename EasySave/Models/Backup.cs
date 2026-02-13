@@ -48,7 +48,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
 
             // Construct full target path using specific destination folder
             string targetFilePath = Path.Combine(destinationPath, relativePath);
-            
+
 
             // Create destination directory if it doesn't exist
             string? targetDirectory = Path.GetDirectoryName(targetFilePath);
@@ -68,7 +68,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
                 targetFilePath += ".7z";
                 DateTime temp = DateTime.Now;
                 _encryptFile(sourceFilePath, targetFilePath);
-                copyInfo.TimeToEncrypt =  (int)(DateTime.Now - temp).TotalMicroseconds;
+                copyInfo.TimeToEncrypt = (int)(DateTime.Now - temp).TotalMicroseconds;
             }
             else
             {
@@ -121,7 +121,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
             }
         }
     }
-    
+
     protected virtual string[] _getFilesList()
     {
         // Return all files to backup
