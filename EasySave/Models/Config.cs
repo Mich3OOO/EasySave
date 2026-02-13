@@ -4,18 +4,37 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Models;
 
-struct ConfigStructure  // This struct is used to serialize and deserialize the config file, it is not used in the program itself
+class ConfigStructure // This class is used to serialize and deserialize the config file, it is not used in the program itself
 {
     // The JsonInclude attribute is used to include the fields in the serialization and deserialization process, even if they are not public properties
     [JsonInclude]
-    public Languages SelectedLanguage;
+    public Languages Language = Languages.En;
     [JsonInclude]  
-    public LogsFormats SelectedLogsFormat;
+    public LogsFormats LogsFormat  = LogsFormats.Json;
     [JsonInclude]
-    public String[] SelectedExtensionsToEncrypt;
+    public string[] ExtensionsToEncrypt = {};
     [JsonInclude]
-    public List<SavedJob> SavedJobs;
+    public List<SavedJob> SavedJobs = new();
+    [JsonInclude]
+    public string[] Softwares = {};
+
+
+    public ConfigStructure(Config _config)
+    { 
+        
+        Language = _config.Language;
+        LogsFormat  = _config.LogsFormat;
+        ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
+        SavedJobs = _config.SavedJobs;
+        Softwares = _config.Softwares;
+        
+    }
+    public ConfigStructure()
+    {}
     
+    
+    
+
 }
 
 public class Config // Class representing the configuration of the application, it is a singleton class that holds the selected language and the list of saved jobs
@@ -23,13 +42,15 @@ public class Config // Class representing the configuration of the application, 
     // The singleton pattern is used to ensure that there is only one instance of the Config class throughout the application, and it can be accessed globally via the S_GetInstance method
     private Languages _language;
     private LogsFormats _logsFormat;
-    private String[] _ExtensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
+    private string[] _extensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
+    private string[] _softwares;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
     public Languages Language { get => _language; set => _language = value; }
     public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
-    public String[] ExtensionsToEncrypt { get => _ExtensionsToEncrypt; set => _ExtensionsToEncrypt = value; }
+    public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
+    public string[] Softwares { get => _softwares; set => _softwares = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
     
 
@@ -59,7 +80,7 @@ public class Config // Class representing the configuration of the application, 
         if (File.Exists(_confPath)) File.Delete(_confPath);
         using(FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
         {
-            ConfigStructure config = new ConfigStructure(){SelectedLanguage = _language, SelectedLogsFormat = _logsFormat, SelectedExtensionsToEncrypt = _ExtensionsToEncrypt, SavedJobs = _savedJobs};
+            ConfigStructure config = new ConfigStructure(this);
             fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
            
         }
@@ -87,10 +108,11 @@ public class Config // Class representing the configuration of the application, 
             }
             else
             {
-                _language = config.Value.SelectedLanguage;
-                _logsFormat = config.Value.SelectedLogsFormat;
-                _ExtensionsToEncrypt = config.Value.SelectedExtensionsToEncrypt;
-                _savedJobs = config.Value.SavedJobs ?? new List<SavedJob>();
+                _language = config.Language;
+                _logsFormat = config.LogsFormat;
+                _extensionsToEncrypt = config.ExtensionsToEncrypt;
+                _savedJobs = config.SavedJobs;
+                _softwares = config.Softwares;
             }
             
         }
@@ -101,7 +123,7 @@ public class Config // Class representing the configuration of the application, 
         _language = Languages.En;
         _logsFormat = LogsFormats.Json;
         _savedJobs = new List<SavedJob>();
-        _ExtensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
+        _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
     }
 
     public bool AddJob(SavedJob job)
