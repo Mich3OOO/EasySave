@@ -33,6 +33,11 @@
                     </Grid>
                 </StackPanel>
 
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Mot de passe" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="Entrez le mot de passe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                </StackPanel>
+                
                 <Separator Height="1" Background="#333333" Margin="0,5"/>
 
                 <TextBlock Text="{Binding ErrorMessage}" 
