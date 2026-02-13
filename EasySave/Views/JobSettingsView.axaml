@@ -33,10 +33,11 @@
                     </Grid>
                 </StackPanel>
 
-                <Grid ColumnDefinitions="*, *" Margin="0,15,0,0">
-                    <Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="0,0,10,0" CornerRadius="6" Background="Transparent" BorderBrush="#333333" BorderThickness="1" Foreground="#AAAAAA" FontWeight="Bold"/>
-                    <Button Grid.Column="1" Content="{Binding T_save}" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="10,0,0,0" CornerRadius="6" Background="#1976D2" Foreground="White" FontWeight="Bold"/>
-                <Separator Height="1" Background="#333333" Margin="0,5"/>
+				<Grid ColumnDefinitions="*, *" Margin="0,15,0,0">
+					<Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="0,0,10,0" CornerRadius="6" Background="Transparent" BorderBrush="#333333" BorderThickness="1" Foreground="#AAAAAA" FontWeight="Bold"/>
+					<Button Grid.Column="1" Content="{Binding T_save}" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="10,0,0,0" CornerRadius="6" Background="#1976D2" Foreground="White" FontWeight="Bold"/>
+				</Grid>
+					<Separator Height="1" Background="#333333" Margin="0,5"/>
 
                 <TextBlock Text="{Binding ErrorMessage}" 
                            Foreground="#E53935" 
