@@ -9,7 +9,6 @@ namespace EasySave.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting { get; } = "Welcome to EasySave!";
 
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
@@ -24,12 +23,15 @@ public class MainWindowViewModel : ViewModelBase
 
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
+    
+    private Config _config = Config.S_GetInstance();
 
     public MainWindowViewModel()
     {
+        
         ShowSettingsCommand = new RelayCommand(ShowSettings);
-        Jobs = new ObservableCollection<SavedJob>();
-        LoadJobsFromConfig();
+        Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
+
     }
 
     private void ShowSettings()
@@ -48,32 +50,42 @@ public class MainWindowViewModel : ViewModelBase
 
     public void CreateJob()
     {
-        var jobVM = new JobSettingsViewModel();
+        JobSettingsViewModel jobVM = new JobSettingsViewModel();
         jobVM.OnSaveRequested += (newJob) =>
         {
             int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
             newJob.Id = newId;
+            _config.AddJob(newJob);
+            _config.SaveConfig();
             Jobs.Add(newJob);
             CurrentViewModel = null;
         };
         jobVM.OnCancelRequested += () => CurrentViewModel = null;
         CurrentViewModel = jobVM;
+        
     }
 
     public void EditJob(SavedJob job)
     {
-        var jobVM = new JobSettingsViewModel(job);
+        
+        JobSettingsViewModel jobVM = new JobSettingsViewModel(job);
         jobVM.OnSaveRequested += (updatedJob) =>
         {
             int index = Jobs.IndexOf(job);
             if (index != -1) Jobs[index] = updatedJob;
+            _config.UpdateJob(job.Name, updatedJob);
+            _config.SaveConfig();
             CurrentViewModel = null;
         };
         jobVM.OnCancelRequested += () => CurrentViewModel = null;
         CurrentViewModel = jobVM;
     }
 
-    public void RunJob(SavedJob job) { /* Logique V1 */ }
+    public void RunJob(SavedJob job)
+    {
+        
+        
+    }
 
     public void DeleteJob(SavedJob job)
     {
@@ -87,9 +99,9 @@ public class MainWindowViewModel : ViewModelBase
             if (confirmed)
             {
                 // On le retire de la liste visuelle
+                _config.DeleteJob(job);
+                _config.SaveConfig();
                 Jobs.Remove(job);
-
-                // TODO: Appeler Config.DeleteJob(job.Name) pour le supprimer du json
             }
         };
 
