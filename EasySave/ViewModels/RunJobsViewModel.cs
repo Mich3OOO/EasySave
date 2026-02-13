@@ -58,7 +58,7 @@ public class RunJobsViewModel : ViewModelBase
     private void _runBackup()   //private method to run single backup
     {
         if (Job == null) throw new ArgumentException(T_invalid_backup_id);
-        //if (isASafeJob(Job)) throw new Exception(T_source_in_use);
+        if (_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
@@ -75,13 +75,18 @@ public class RunJobsViewModel : ViewModelBase
 
         OnResult?.Invoke(true);
     }
-    private bool isASafeJob(SavedJob savedJob)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
+    private bool _canARunJon(out string processName)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
     {
+        Config conf = Config.S_GetInstance();
         Process[] allProcesses = Process.GetProcesses();
-
+        processName = "";
         foreach (Process process in allProcesses)
         {
-            if(process.MainModule?.FileName.Contains(savedJob.Source) == true) return false;
+            if(conf.Softwares.Contains(process.ProcessName ))
+            {
+                processName =  process.ProcessName;
+                return false;
+            }
             
         }
         
