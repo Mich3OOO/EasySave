@@ -19,7 +19,8 @@
                     CornerRadius="35" 
                     HorizontalAlignment="Center" 
                     Margin="0,0,0,20">
-                <TextBlock Text="⚠️" 
+                <TextBlock Text="⚠️"
+                           Classes="emoji"
                            FontSize="36" 
                            HorizontalAlignment="Center" 
                            VerticalAlignment="Center"/>
@@ -60,6 +61,7 @@
                             HorizontalAlignment="Center" 
                             Margin="0,12,0,0">
                     <TextBlock Text="⚠️" 
+                               Classes="emoji"
                                FontSize="12" 
                                Margin="0,0,5,0"/>
                     <TextBlock Text="Cette action est irréversible" 
@@ -97,6 +99,7 @@
                 </Button>
 
                 <Button Content="🗑️ Supprimer" 
+                        Classes="emoji"
                         Command="{Binding ConfirmCommand}"
                         Width="160"
                         Height="45" 
