@@ -10,6 +10,7 @@ public class JobSettingsViewModel : ViewModelBase
     private string _name = string.Empty;
     private string _source = string.Empty;
     private string _destination = string.Empty;
+    private string _errorMessage = string.Empty;
 
     public string Name
     {
@@ -27,6 +28,12 @@ public class JobSettingsViewModel : ViewModelBase
     {
         get => _destination;
         set => SetProperty(ref _destination, value);
+    }
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set => SetProperty(ref _errorMessage, value);
     }
 
     public bool IsEditMode { get; }
@@ -56,11 +63,26 @@ public class JobSettingsViewModel : ViewModelBase
 
     private void Save()
     {
-        var job = _originalJob ?? new SavedJob();
-        job.Name = Name;
-        job.Source = Source;
-        job.Destination = Destination;
-        OnSaveRequested?.Invoke(job);
+        try
+        {
+            // Reset de l'erreur avant la tentative
+            ErrorMessage = string.Empty;
+
+            var job = _originalJob ?? new SavedJob();
+            job.Name = Name;
+
+            // Appel des méthodes de validation de votre modèle SavedJob
+            // Si l'un des chemins est invalide, l'exception est levée ici
+            job.SetSource(Source);
+            job.SetDestination(Destination);
+
+            OnSaveRequested?.Invoke(job);
+        }
+        catch (Exception ex)
+        {
+            // Affiche le message d'erreur (ex: "Invalid source path" ou "Invalid destination path")
+            ErrorMessage = $"⚠️ {ex.Message}";
+        }
     }
 
     private void Cancel() => OnCancelRequested?.Invoke();

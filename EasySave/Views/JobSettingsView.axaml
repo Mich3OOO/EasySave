@@ -6,18 +6,18 @@
 
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="500">
         <Border Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="25">
-            <StackPanel Spacing="20">
+            <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
                     <TextBlock Text="📝" FontSize="24" VerticalAlignment="Center"/>
                     <TextBlock Text="Paramètres du Travail" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <StackPanel Spacing="8">
+                <StackPanel Spacing="5">
                     <TextBlock Text="Nom du travail" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
-                    <TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="Ex: Sauvegarde Documents" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                    <TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="Nom..." Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
-                <StackPanel Spacing="8">
+                <StackPanel Spacing="5">
                     <TextBlock Text="Dossier Source" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <Grid ColumnDefinitions="*, Auto">
                         <TextBox Grid.Column="0" Text="{Binding Source, Mode=TwoWay}" Watermark="Chemin source..." Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
@@ -25,7 +25,7 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Spacing="8">
+                <StackPanel Spacing="5">
                     <TextBlock Text="Dossier Cible" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <Grid ColumnDefinitions="*, Auto">
                         <TextBox Grid.Column="0" Text="{Binding Destination, Mode=TwoWay}" Watermark="Chemin cible..." Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
@@ -33,7 +33,17 @@
                     </Grid>
                 </StackPanel>
 
-                <Grid ColumnDefinitions="*, *" Margin="0,15,0,0">
+                <Separator Height="1" Background="#333333" Margin="0,5"/>
+
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="#E53935" 
+                           FontSize="12" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Grid ColumnDefinitions="*, *" Margin="0,10,0,0">
                     <Button Grid.Column="0" Content="Annuler" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="0,0,10,0" CornerRadius="6" Background="Transparent" BorderBrush="#333333" BorderThickness="1" Foreground="#AAAAAA" FontWeight="Bold"/>
                     <Button Grid.Column="1" Content="Enregistrer" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="10,0,0,0" CornerRadius="6" Background="#1976D2" Foreground="White" FontWeight="Bold"/>
                 </Grid>
