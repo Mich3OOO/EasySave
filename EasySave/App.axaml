@@ -11,5 +11,8 @@
   
     <Application.Styles>
         <FluentTheme />
+        <Style Selector="TextBlock.emoji">
+            <Setter Property="FontFamily" Value="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji"/>
+        </Style>
     </Application.Styles>
 </Application>
