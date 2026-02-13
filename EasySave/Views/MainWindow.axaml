@@ -16,8 +16,6 @@
 		Icon="/Assets/Icon.png">
 
 	<Design.DataContext>
-		<!-- This only sets the DataContext for the previewer in an IDE,
-			 to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 
@@ -52,26 +50,39 @@
 			<Grid RowDefinitions="Auto, *">
 				<TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
-				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Toggle">
+				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
 					<ListBox.Styles>
-						<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+						
+						<Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
 							<Setter Property="Background" Value="Transparent"/>
 						</Style>
+						<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+
 						<Style Selector="ListBoxItem Border#CardBorder">
 							<Setter Property="Background" Value="#252526"/>
 							<Setter Property="BorderBrush" Value="#333333"/>
 							<Setter Property="BorderThickness" Value="1"/>
+							<Setter Property="Transitions">
+								<Transitions>
+									<BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+									<BrushTransition Property="Background" Duration="0:0:0.2"/>
+								</Transitions>
+							</Setter>
 						</Style>
-						<Style Selector="ListBoxItem:selected Border#CardBorder">
+
+						<Style Selector="ListBoxItem:pointerover Border#CardBorder">
+							<Setter Property="Background" Value="#2E2E2E"/>
 							<Setter Property="BorderBrush" Value="#00E676"/>
 							<Setter Property="BorderThickness" Value="2"/>
 						</Style>
+
 						<Style Selector="ListBoxItem Button">
-							<Setter Property="IsHitTestVisible" Value="False"/>
-						</Style>
-						<Style Selector="ListBoxItem:selected Button">
 							<Setter Property="IsHitTestVisible" Value="True"/>
+							<Setter Property="Cursor" Value="Hand"/>
 						</Style>
+						
 					</ListBox.Styles>
 
 					<ListBox.ItemTemplate>
@@ -84,21 +95,27 @@
 											<TextBlock Text="{Binding Id}" Foreground="#121212" FontWeight="Bold"/>
 										</StackPanel>
 									</Border>
+
 									<StackPanel Grid.Column="1" VerticalAlignment="Center">
 										<TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold"/>
-
 										<StackPanel Orientation="Horizontal" Margin="0,3,0,0">
 											<TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Source}" Foreground="#AAAAAA" FontSize="12"/>
-
 											<TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Destination}" Foreground="#AAAAAA" FontSize="12"/>
 										</StackPanel>
 									</StackPanel>
+
 									<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="▷"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="✎"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="❌"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent">
+											<TextBlock Text="▷" FontSize="20"/>
+										</Button>
+										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent">
+											<TextBlock Text="✎" FontSize="20"/>
+										</Button>
+										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent">
+											<TextBlock Text="❌" FontSize="20"/>
+										</Button>
 									</StackPanel>
 								</Grid>
 							</Border>
