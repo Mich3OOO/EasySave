@@ -102,5 +102,9 @@
   "invalid_job_id_not_integer": {
     "en": "Invalid job ID, following value is not an integer : ",
     "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
+  },
+  "error_loading_dictionary": {
+    "en": "Error loading dictionary : ",
+    "fr": "Erreur lors du chargement du dictionnaire : "
   }
 }
