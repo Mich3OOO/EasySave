@@ -13,12 +13,12 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
 
-    public LanguageViewModel LanguageViewModel { get; }
+    public LanguageViewModel _languageViewModel { get; }
 
     // Translated strings properties
-    public string T_save_sobs => LanguageViewModel.GetTranslation("save_jobs");
-    public string T_create_job => LanguageViewModel.GetTranslation("create_job");
-    public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
+    public string T_save_sobs => _languageViewModel.GetTranslation("save_jobs");
+    public string T_create_job => _languageViewModel.GetTranslation("create_job");
+    public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
 
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
     
@@ -38,7 +38,7 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
     public MainWindowViewModel()    // Constructor initializes the ShowSettingsCommand and loads the list of jobs from the configuration (currently with test data)
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = new LanguageViewModel(dictionaryPath);
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 

@@ -13,14 +13,14 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class BackupViewModel : ViewModelBase
 {
-    public LanguageViewModel LanguageViewModel { get; }
+    public LanguageViewModel _languageViewModel { get; }
 
-    public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
-    public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
-    public string T_start_less_or_equal_end => LanguageViewModel.GetTranslation("start_less_or_equal_end");
-    public string T_invalid_range_format => LanguageViewModel.GetTranslation("invalid_range_format");
-    public string T_error_occured => LanguageViewModel.GetTranslation("error_occured");
-    public string T_invalid_job_id_not_integer => LanguageViewModel.GetTranslation("invalid_job_id_not_integer");
+    public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
+    public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
+    public string T_start_less_or_equal_end => _languageViewModel.GetTranslation("start_less_or_equal_end");
+    public string T_invalid_range_format => _languageViewModel.GetTranslation("invalid_range_format");
+    public string T_error_occured => _languageViewModel.GetTranslation("error_occured");
+    public string T_invalid_job_id_not_integer => _languageViewModel.GetTranslation("invalid_job_id_not_integer");
 
     private Config _config = Config.S_GetInstance();
 
@@ -51,7 +51,7 @@ public class BackupViewModel : ViewModelBase
         DeleteJobCommand = new RelayCommand<SavedJob>(DeleteJob);
 
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = new LanguageViewModel(dictionaryPath);
 
         LoadJobs();
     }

@@ -11,15 +11,15 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class SettingsViewModel : ViewModelBase
 {
-    public LanguageViewModel LanguageViewModel { get; }
-    public string T_settings => LanguageViewModel.GetTranslation("settings_menu");
-    public string T_language_selection => LanguageViewModel.GetTranslation("language_selection");
-    public string T_logs_format => LanguageViewModel.GetTranslation("logs_format");
-    public string T_business_software => LanguageViewModel.GetTranslation("business_software");
-    public string T_business_software_detected => LanguageViewModel.GetTranslation("business_software_detected");
-    public string T_extensions_to_encrypt => LanguageViewModel.GetTranslation("extensions_to_encrypt");
-    public string T_save_and_quit => LanguageViewModel.GetTranslation("save_and_quit");
-    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
+    public LanguageViewModel _languageViewModel { get; }
+    public string T_settings => _languageViewModel.GetTranslation("settings_menu");
+    public string T_language_selection => _languageViewModel.GetTranslation("language_selection");
+    public string T_logs_format => _languageViewModel.GetTranslation("logs_format");
+    public string T_business_software => _languageViewModel.GetTranslation("business_software");
+    public string T_business_software_detected => _languageViewModel.GetTranslation("business_software_detected");
+    public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
+    public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
+    public string T_cancel => _languageViewModel.GetTranslation("cancel");
 
     /// <summary>
     /// Command to save the settings.
@@ -60,7 +60,7 @@ public class SettingsViewModel : ViewModelBase
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
     private void Save()

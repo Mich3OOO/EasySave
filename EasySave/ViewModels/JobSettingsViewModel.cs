@@ -7,17 +7,17 @@ namespace EasySave.ViewModels;
 
 public class JobSettingsViewModel : ViewModelBase
 {
-    public LanguageViewModel LanguageViewModel { get; }
+    public LanguageViewModel _languageViewModel { get; }
 
-    public string T_job_settings => LanguageViewModel.GetTranslation("job_settings");
-    public string T_job_name => LanguageViewModel.GetTranslation("job_name");
-    public string T_example_job_name => LanguageViewModel.GetTranslation("example_job_name");
-    public string T_source_folder => LanguageViewModel.GetTranslation("source_folder");
-    public string T_source_path => LanguageViewModel.GetTranslation("source_path");
-    public string T_target_folder => LanguageViewModel.GetTranslation("target_folder");
-    public string T_target_path => LanguageViewModel.GetTranslation("target_path");
-    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
-    public string T_save => LanguageViewModel.GetTranslation("save");
+    public string T_job_settings => _languageViewModel.GetTranslation("job_settings");
+    public string T_job_name => _languageViewModel.GetTranslation("job_name");
+    public string T_example_job_name => _languageViewModel.GetTranslation("example_job_name");
+    public string T_source_folder => _languageViewModel.GetTranslation("source_folder");
+    public string T_source_path => _languageViewModel.GetTranslation("source_path");
+    public string T_target_folder => _languageViewModel.GetTranslation("target_folder");
+    public string T_target_path => _languageViewModel.GetTranslation("target_path");
+    public string T_cancel => _languageViewModel.GetTranslation("cancel");
+    public string T_save => _languageViewModel.GetTranslation("save");
 
     private string _name = string.Empty;
     private string _source = string.Empty;
@@ -71,7 +71,7 @@ public class JobSettingsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(Cancel);
 
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+        _languageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
     public JobSettingsViewModel(SavedJob jobToEdit) : this()

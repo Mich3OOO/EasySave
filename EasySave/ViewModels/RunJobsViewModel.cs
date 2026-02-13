@@ -12,9 +12,8 @@ public class RunJobsViewModel : ViewModelBase
     private string _password = string.Empty;
     public SavedJob Job { get; }
     
-    public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
-    public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
-    public LanguageViewModel LanguageViewModel { get; }
+    public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
+    public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
 
     public bool IsDifferential
     {
@@ -22,7 +21,7 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _isDifferential, value);
     }
 
-    public LanguageViewModel LanguageViewModel { get; } // Property for the language view model, used to get translations for the UI
+    public LanguageViewModel _languageViewModel { get; } // Property for the language view model, used to get translations for the UI
 
     public string Password   // Property for the password path, with getter and setter that raises property change notifications
     {
@@ -30,13 +29,13 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _password, value);
     }
 
-    public string T_launch_save => LanguageViewModel.GetTranslation("launch_save");
-    public string T_what_type_save => LanguageViewModel.GetTranslation("what_type_save");
-    public string T_complete => LanguageViewModel.GetTranslation("complete");
-    public string T_differential => LanguageViewModel.GetTranslation("differential");
-    public string T_password => LanguageViewModel.GetTranslation("password");
-    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
-    public string T_launch => LanguageViewModel.GetTranslation("launch");
+    public string T_launch_save => _languageViewModel.GetTranslation("launch_save");
+    public string T_what_type_save => _languageViewModel.GetTranslation("what_type_save");
+    public string T_complete => _languageViewModel.GetTranslation("complete");
+    public string T_differential => _languageViewModel.GetTranslation("differential");
+    public string T_password => _languageViewModel.GetTranslation("password");
+    public string T_cancel => _languageViewModel.GetTranslation("cancel");
+    public string T_launch => _languageViewModel.GetTranslation("launch");
 
 
 
@@ -49,13 +48,11 @@ public class RunJobsViewModel : ViewModelBase
 
     public RunJobsViewModel(SavedJob job)   //constructor
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        _languageViewModel = new LanguageViewModel(dictionaryPath);
         Job = job;
         ConfirmCommand = new RelayCommand(_runBackup);
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false));
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
-        LanguageViewModel = new LanguageViewModel(dictionaryPath);
     }
     
     private void _runBackup()   //private method to run single backup
