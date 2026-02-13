@@ -35,7 +35,7 @@
 
 				<StackPanel Spacing="5">
                     <TextBlock Text="{Binding T_password}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
-                    <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="Entrez le mot de passe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                    <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="{Binding T_enter_password}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
 				<Grid ColumnDefinitions="*, *">

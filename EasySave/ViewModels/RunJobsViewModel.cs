@@ -34,6 +34,7 @@ public class RunJobsViewModel : ViewModelBase
     public string T_complete => _languageViewModel.GetTranslation("complete");
     public string T_differential => _languageViewModel.GetTranslation("differential");
     public string T_password => _languageViewModel.GetTranslation("password");
+    public string T_enter_password => _languageViewModel.GetTranslation("enter_password");
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
     public string T_launch => _languageViewModel.GetTranslation("launch");
 
