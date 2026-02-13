@@ -43,7 +43,12 @@ public class JobSettingsViewModel : ViewModelBase
         set => SetProperty(ref _destination, value);
     }
 
-    public string ErrorMessage
+    public string Password   // Property for the password path, with getter and setter that raises property change notifications
+    {
+        get => _destination;
+        set => SetProperty(ref _password, value);
+    }
+    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
