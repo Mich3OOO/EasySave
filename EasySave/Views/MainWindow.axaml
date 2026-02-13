@@ -1,17 +1,17 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EasySave.ViewModels"
-        xmlns:utils="using:EasySave.Utils"
-        xmlns:v="using:EasySave.Views"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="EasySave.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="EasySave - Version 2.0"
-        Width="950" Height="650"
-        Background="#121212"
-        WindowStartupLocation="CenterScreen"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:EasySave.ViewModels"
+		xmlns:utils="using:EasySave.Utils"
+		xmlns:v="using:EasySave.Views"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="EasySave.Views.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
+		Title="EasySave - Version 2.0"
+		Width="950" Height="650"
+		Background="#121212"
+		WindowStartupLocation="CenterScreen"
 		utils:CursorUtils.ImagePath="{Binding CustomCursorPath}"
 		Icon="/Assets/Icon.png">
 
@@ -52,7 +52,7 @@
 
 				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
 					<ListBox.Styles>
-						
+
 						<Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
 							<Setter Property="Background" Value="Transparent"/>
 						</Style>
@@ -82,7 +82,7 @@
 							<Setter Property="IsHitTestVisible" Value="True"/>
 							<Setter Property="Cursor" Value="Hand"/>
 						</Style>
-						
+
 					</ListBox.Styles>
 
 					<ListBox.ItemTemplate>
@@ -141,6 +141,9 @@
 					</DataTemplate>
 					<DataTemplate DataType="{x:Type vm:JobSettingsViewModel}">
 						<v:JobSettingsView/>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type vm:RunJobsViewModel}">
+						<v:RunJobsView/>
 					</DataTemplate>
 				</ContentControl.DataTemplates>
 			</ContentControl>

@@ -42,10 +42,21 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         LoadJobsFromConfig();
     }
 
-    private void ShowSettings() // Method to show the settings view, it creates a new instance of the SettingsViewModel, subscribes to its OnCloseRequested event to set the CurrentViewModel to null when the settings view is closed, and then sets the CurrentViewModel to the new SettingsViewModel instance to display it in the main window.
+    private void ShowSettings()
     {
         var settingsVM = new SettingsViewModel();
-        settingsVM.OnCloseRequested += () => CurrentViewModel = null;
+
+        // CLose the window when the user cancels
+        settingsVM.OnCancelRequested += () => CurrentViewModel = null;
+
+        // If the user saves, we should save the settings to the config file and then close the window
+        settingsVM.OnSaveRequested += () =>
+        {
+            // TODO: Add the logic to Save the settings on the JSON file
+            CurrentViewModel = null;    //FOR NOW, close the window, later, will only close it after saving the settings to the JSON file
+
+        };
+
         CurrentViewModel = settingsVM;
     }
 
@@ -83,7 +94,26 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
         CurrentViewModel = jobVM;
     }
 
-    public void RunJob(SavedJob job) { /* Logic V1 */ }
+    public void RunJob(SavedJob job)
+    {
+        // On crée le ViewModel du dialogue
+        var runJobVM = new RunJobsViewModel(job);
+
+        // On s'abonne au résultat (Démarrer ou Annuler)
+        runJobVM.OnResult += (confirmed) =>
+        {
+            CurrentViewModel = null; // On ferme l'overlay dans tous les cas
+
+            if (confirmed)
+            {
+                // C'est ici que tu mettras ta logique de sauvegarde plus tard
+                Console.WriteLine($"Action confirmée pour {job.Name} !");
+            }
+        };
+
+        // On affiche l'overlay
+        CurrentViewModel = runJobVM;
+    }
 
     public void DeleteJob(SavedJob job)
     {

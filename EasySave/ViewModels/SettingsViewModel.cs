@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
@@ -19,9 +20,14 @@ public class SettingsViewModel : ViewModelBase
     public string T_save_and_quit => LanguageViewModel.GetTranslation("save_and_quit");
 
     /// <summary>
-    /// Command to close the settings view.
+    /// Command to save the settings.
     /// </summary>
-    public ICommand CloseCommand { get; }
+    public ICommand SaveCommand { get; }
+
+    /// <summary>
+    /// Command to cancel and close the settings view.
+    /// </summary>
+    public ICommand CancelCommand { get; }
 
     public SettingsViewModel()
     {
@@ -30,14 +36,19 @@ public class SettingsViewModel : ViewModelBase
         LanguageViewModel = new LanguageViewModel(dictionaryPath);
     }
 
-    private void Close()
+    private void Cancel()
     {
-        // Signal to close settings (will be handled by MainWindowViewModel)
-        OnCloseRequested?.Invoke();
+        // Signal to cancel settings (will be handled by MainWindowViewModel)
+        OnCancelRequested?.Invoke();
     }
 
     /// <summary>
-    /// Event raised when the user wants to close the settings view.
+    /// Event raised when the user wants to save the settings.
     /// </summary>
-    public event Action? OnCloseRequested;
+    public event Action? OnSaveRequested;
+
+    /// <summary>
+    /// Event raised when the user wants to close the settings view without saving.
+    /// </summary>
+    public event Action? OnCancelRequested;
 }
