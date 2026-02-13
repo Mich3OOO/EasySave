@@ -54,7 +54,7 @@
 
                 <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
                     <Button Grid.Column="0" 
-                            Content="Annuler" 
+                            Content="{Binding T_cancel}" 
                             Command="{Binding CancelCommand}"
                             HorizontalAlignment="Stretch" 
                             HorizontalContentAlignment="Center"
@@ -70,7 +70,7 @@
                             Cursor="Hand"/>
 
                     <Button Grid.Column="1" 
-                            Content="Enregistrer" 
+                            Content="{Binding T_save_and_quit}" 
                             Command="{Binding SaveCommand}"
                             HorizontalAlignment="Stretch" 
                             HorizontalContentAlignment="Center"

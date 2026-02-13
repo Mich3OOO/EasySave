@@ -101,7 +101,7 @@
 										<StackPanel Orientation="Horizontal" Margin="0,3,0,0">
 											<TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Source}" Foreground="#AAAAAA" FontSize="12"/>
-											<TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
+											<TextBlock Text="  ➔  Destination: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Destination}" Foreground="#AAAAAA" FontSize="12"/>
 										</StackPanel>
 									</StackPanel>

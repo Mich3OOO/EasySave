@@ -11,7 +11,7 @@
 				CornerRadius="8"
 				Padding="25">
 			<StackPanel Spacing="20">
-				<TextBlock Text="Lancer la sauvegarde"
+				<TextBlock Text="{Binding T_launch_save}"
 						   FontSize="20"
 						   FontWeight="Bold"
 						   Foreground="White"
@@ -24,23 +24,23 @@
 						   FontSize="16"/>
 
 				<StackPanel Spacing="10">
-					<TextBlock Text="Quel type de sauvegarde voulez-vous effectuer ?"
+					<TextBlock Text="{Binding T_what_type_save}"
 							   Foreground="#AAAAAA"
 							   HorizontalAlignment="Center"/>
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
-						<RadioButton Content="Complete" Foreground="White" IsChecked="{Binding !IsDifferential}"/>
-						<RadioButton Content="Differentielle" Foreground="White" IsChecked="{Binding IsDifferential}"/>
+						<RadioButton Content="{Binding T_complete}" Foreground="White" IsChecked="{Binding !IsDifferential}"/>
+						<RadioButton Content="{Binding T_differential}" Foreground="White" IsChecked="{Binding IsDifferential}"/>
 					</StackPanel>
 				</StackPanel>
 
 				<StackPanel Spacing="5">
-                    <TextBlock Text="Mot de passe" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_password}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <TextBox Text="{Binding Password, Mode=TwoWay}" PasswordChar="•" Classes="revealPasswordButton" Watermark="Entrez le mot de passe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
 				<Grid ColumnDefinitions="*, *">
-					<Button Grid.Column="0" Content="Annuler" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-					<Button Grid.Column="1" Content="Demarrer" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
+					<Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+					<Button Grid.Column="1" Content="{Binding T_launch}" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
 				</Grid>
 			</StackPanel>
 		</Border>

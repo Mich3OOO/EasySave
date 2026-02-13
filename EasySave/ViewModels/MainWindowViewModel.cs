@@ -96,17 +96,17 @@ public class MainWindowViewModel : ViewModelBase    // ViewModel for the main wi
 
     public void RunJob(SavedJob job)
     {
-        // On crée le ViewModel du dialogue
+        // ViewModel du dialogue
         var runJobVM = new RunJobsViewModel(job);
 
         // On s'abonne au résultat (Démarrer ou Annuler)
         runJobVM.OnResult += (confirmed) =>
         {
-            CurrentViewModel = null; // On ferme l'overlay dans tous les cas
+            CurrentViewModel = null; // On ferme l'overlay
 
             if (confirmed)
             {
-                // C'est ici que tu mettras ta logique de sauvegarde plus tard
+                // Logic de sauvegarde
                 Console.WriteLine($"Action confirmée pour {job.Name} !");
             }
         };

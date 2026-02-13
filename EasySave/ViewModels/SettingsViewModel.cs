@@ -18,6 +18,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_business_software_detected => LanguageViewModel.GetTranslation("business_software_detected");
     public string T_extensions_to_encrypt => LanguageViewModel.GetTranslation("extensions_to_encrypt");
     public string T_save_and_quit => LanguageViewModel.GetTranslation("save_and_quit");
+    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
 
     /// <summary>
     /// Command to save the settings.
