@@ -10,8 +10,9 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     protected string _sevenZipPath;
     private string _password;
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo) // Constructor to initialize the backup with a saved job and backup info
+    public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
     {
+        _password = pw;
         _savedJob = savedJob;
         _backupInfo = backupInfo;
         _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7za.exe");
