@@ -16,19 +16,19 @@
             <StackPanel Spacing="15">
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
-                    <TextBlock Text="⚙️" FontSize="24" VerticalAlignment="Center"/>
-                    <TextBlock Text="Paramètres" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="⚙️" Classes="emoji" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding T_settings}" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="Langue de l'application"  Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_language_selection}"  Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" ItemsSource="{Binding LanguagesList}" SelectedValue="{Binding SelectedLanguage}">
 
                     </ComboBox>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="Format des logs" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_logs_format}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" ItemsSource="{Binding LogsFormatsList}" SelectedValue="{Binding SelectedLogsFormats}">
                     </ComboBox>
                 </StackPanel>
@@ -36,32 +36,50 @@
                 <Separator Height="1" Background="#333333" Margin="0,5"/>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="Logiciel Métier (Pause la sauvegarde)" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_business_software}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
                     <TextBox Watermark="Ex: Calculator.exe, Notepad.exe" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Text = "{Binding Softwares}"/>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBlock Text="⚠️" Foreground="#E53935" FontSize="12"/>
-                        <TextBlock Text="Si détecté, les travaux seront mis en pause." Foreground="#E53935" FontSize="11" FontStyle="Italic"/>
+                        <TextBlock Text="⚠️" Classes="emoji" Foreground="#E53935" FontSize="12"/>
+                        <TextBlock Text="{Binding T_business_software_detected}" Foreground="#E53935" FontSize="11" FontStyle="Italic"/>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="Extensions à chiffrer (CryptoSoft)" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding T_extensions_to_encrypt}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold" />
                     <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Text = "{Binding Extension}"/>
                 </StackPanel>
 
-                <Button Content="Enregistrer et Fermer" 
-                        Command="{Binding CloseCommand}"
-                        HorizontalAlignment="Stretch" 
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,20,0,0"
-                        Height="45"
-                        CornerRadius="6"
-                        Background="#1976D2" 
-                        Foreground="White"
-                        FontWeight="Bold"
-                        FontSize="14"
-                        Cursor="Hand"/>
+                <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                    <Button Grid.Column="0" 
+                            Content="Annuler" 
+                            Command="{Binding CancelCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="0,0,10,0"
+                            CornerRadius="6"
+                            Background="Transparent" 
+                            BorderBrush="#333333"
+                            BorderThickness="1"
+                            Foreground="#AAAAAA"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+
+                    <Button Grid.Column="1" 
+                            Content="Enregistrer" 
+                            Command="{Binding SaveCommand}"
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Height="45"
+                            Margin="10,0,0,0"
+                            CornerRadius="6"
+                            Background="#1976D2" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Cursor="Hand"/>
+                </Grid>
             </StackPanel>
 
         </Border>

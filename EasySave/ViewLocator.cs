@@ -14,7 +14,7 @@ namespace EasySave;
     Url = "https://docs.avaloniaui.net/docs/concepts/view-locator")]
 public class ViewLocator : IDataTemplate
 {
-    public Control? Build(object? param)
+    public Control? Build(object? param)    // Method that builds a view based on the provided view model, it uses reflection to find a corresponding view class by replacing "ViewModel" with "View" in the view model's type name, and if a matching view class is found, it creates an instance of it and returns it as a Control. If no matching view class is found, it returns a TextBlock indicating that the view was not found.
     {
         if (param is null)
             return null;
@@ -30,7 +30,7 @@ public class ViewLocator : IDataTemplate
         return new TextBlock { Text = "Not Found: " + name };
     }
 
-    public bool Match(object? data)
+    public bool Match(object? data) // Method that checks if the provided data is a view model, it returns true if the data is an instance of ViewModelBase, and false otherwise. This is used to determine if the ViewLocator can handle the given data and build a corresponding view for it.
     {
         return data is ViewModelBase;
     }

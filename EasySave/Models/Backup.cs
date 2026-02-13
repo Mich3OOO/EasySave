@@ -8,15 +8,21 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     protected SavedJob _savedJob;
     protected BackupInfo _backupInfo;
     protected string _sevenZipPath;
+    private string _password;
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo)
+    public Backup(SavedJob savedJob, BackupInfo backupInfo) // Constructor to initialize the backup with a saved job and backup info
     {
         _savedJob = savedJob;
         _backupInfo = backupInfo;
         _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "7za.exe");
     }
 
-    public abstract void ExecuteBackup();
+    public void SetPassword(string password)
+    {
+        _password = password;
+    }
+
+    public abstract void ExecuteBackup();   // Abstract method to execute the backup, to be implemented by derived classes
 
     //Create a timestamp folder for backup
     protected string _createTimestampedFolder(string subFolderType)
@@ -27,7 +33,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         return fullPath;
     }
 
-    protected void _backupFile(string sourceFilePath, string destinationPath)
+    protected void _backupFile(string sourceFilePath, string destinationPath)   // Method to backup a single file, handling encryption if needed, and updating the backup status
     {
         try
         {
@@ -75,18 +81,15 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
             // Notify observer
             _updateStatus(copyInfo);
         }
-        catch (Exception ex)
+        catch (Exception ex)    // Handle any exceptions that occur during the file backup process
         {
             Console.WriteLine($"Error copying file {sourceFilePath}: {ex.Message}");
         }
     }
 
     // To encrypt file with 7z (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe
-    private void _encryptFile(string sourceFilePath, string targetFilePath)
+    private void _encryptFile(string sourceFilePath, string targetFilePath) // Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
     {
-        // PassWord use to encrypt
-        string password = "azerty";
-
         // a = add (to add fie)
         // -t7z = 7z format
         // -p = password
@@ -97,14 +100,13 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         ProcessStartInfo p = new ProcessStartInfo();
         p.FileName = _sevenZipPath;
 
-        p.Arguments = $"a -t7z -p\"{password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"";
+        p.Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"";
 
         p.WindowStyle = ProcessWindowStyle.Hidden; // To hide black screen
         p.CreateNoWindow = true;
         p.UseShellExecute = false;
 
-        // 3. Start the processus
-        using (Process process = Process.Start(p))
+        using (Process process = Process.Start(p))  // Start the 7z process with the specified arguments
         {
             if (process != null)
             {

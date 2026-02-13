@@ -1,23 +1,21 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EasySave.ViewModels"
-        xmlns:utils="using:EasySave.Utils"
-        xmlns:v="using:EasySave.Views"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="EasySave.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="EasySave - Version 2.0"
-        Width="950" Height="650"
-        Background="#121212"
-        WindowStartupLocation="CenterScreen"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:EasySave.ViewModels"
+		xmlns:utils="using:EasySave.Utils"
+		xmlns:v="using:EasySave.Views"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="EasySave.Views.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
+		Title="EasySave - Version 2.0"
+		Width="950" Height="650"
+		Background="#121212"
+		WindowStartupLocation="CenterScreen"
 		utils:CursorUtils.ImagePath="{Binding CustomCursorPath}"
 		Icon="/Assets/Icon.png">
 
 	<Design.DataContext>
-		<!-- This only sets the DataContext for the previewer in an IDE,
-			 to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 
@@ -42,36 +40,49 @@
 					   HorizontalAlignment="Left"/>
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
-				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="Ouvrir les paramètres">
-					<TextBlock Text="⚙" FontSize="24"/>
+				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="{Binding T_settings_tooltip}">
+					<TextBlock Text="⚙" Classes="emoji" FontSize="24"/>
 				</Button>
 			</StackPanel>
 		</Grid>
 
 		<Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15">
 			<Grid RowDefinitions="Auto, *">
-				<TextBlock Grid.Row="0" Text="Travaux de Sauvegarde" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+				<TextBlock Grid.Row="0" Text="{Binding T_save_sobs}" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
-				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Toggle">
+				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
 					<ListBox.Styles>
-						<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+
+						<Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
 							<Setter Property="Background" Value="Transparent"/>
 						</Style>
+						<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+							<Setter Property="Background" Value="Transparent"/>
+						</Style>
+
 						<Style Selector="ListBoxItem Border#CardBorder">
 							<Setter Property="Background" Value="#252526"/>
 							<Setter Property="BorderBrush" Value="#333333"/>
 							<Setter Property="BorderThickness" Value="1"/>
+							<Setter Property="Transitions">
+								<Transitions>
+									<BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+									<BrushTransition Property="Background" Duration="0:0:0.2"/>
+								</Transitions>
+							</Setter>
 						</Style>
-						<Style Selector="ListBoxItem:selected Border#CardBorder">
+
+						<Style Selector="ListBoxItem:pointerover Border#CardBorder">
+							<Setter Property="Background" Value="#2E2E2E"/>
 							<Setter Property="BorderBrush" Value="#00E676"/>
 							<Setter Property="BorderThickness" Value="2"/>
 						</Style>
+
 						<Style Selector="ListBoxItem Button">
-							<Setter Property="IsHitTestVisible" Value="False"/>
-						</Style>
-						<Style Selector="ListBoxItem:selected Button">
 							<Setter Property="IsHitTestVisible" Value="True"/>
+							<Setter Property="Cursor" Value="Hand"/>
 						</Style>
+
 					</ListBox.Styles>
 
 					<ListBox.ItemTemplate>
@@ -84,21 +95,21 @@
 											<TextBlock Text="{Binding Id}" Foreground="#121212" FontWeight="Bold"/>
 										</StackPanel>
 									</Border>
+
 									<StackPanel Grid.Column="1" VerticalAlignment="Center">
 										<TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold"/>
-
 										<StackPanel Orientation="Horizontal" Margin="0,3,0,0">
 											<TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Source}" Foreground="#AAAAAA" FontSize="12"/>
-
 											<TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
 											<TextBlock Text="{Binding Destination}" Foreground="#AAAAAA" FontSize="12"/>
 										</StackPanel>
 									</StackPanel>
+
 									<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="▷"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="✎"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="❌"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent"><PathIcon Data="M 0 0 L 12 7 L 0 14 Z" Foreground="#2ecc71" Width="12" Height="12" /></Button>
+										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="✏️" Classes="emoji"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="❌" Classes="emoji"/></Button>
 									</StackPanel>
 								</Grid>
 							</Border>
@@ -110,7 +121,8 @@
 
 		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
 			<Button Grid.Column="1"
-					Content="➕ Créer un travail"
+					Content="{Binding T_create_job}"
+					Classes="emoji"
 					Command="{Binding CreateJob}"
 					Width="160" Height="45"
 					VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#2E7D32"
@@ -129,6 +141,9 @@
 					</DataTemplate>
 					<DataTemplate DataType="{x:Type vm:JobSettingsViewModel}">
 						<v:JobSettingsView/>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type vm:RunJobsViewModel}">
+						<v:RunJobsView/>
 					</DataTemplate>
 				</ContentControl.DataTemplates>
 			</ContentControl>

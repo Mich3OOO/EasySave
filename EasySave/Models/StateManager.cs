@@ -8,7 +8,7 @@ namespace EasySave.Models;
 /// Manages the real-time state of backup jobs, handling persistence to a JSON file 
 /// and responding to backup events via the Observer pattern.
 /// </summary>
-public class StateManager: IEventListener
+public class StateManager: IEventListener   // Class representing the state manager, implementing the IEventListener interface, it manages the state of backup jobs and saves it in a local JSON file
 {
     private List<StateInfo> _states;
     
@@ -18,7 +18,7 @@ public class StateManager: IEventListener
     /// Initializes a new instance of the StateManager.
     /// Subscribes to the EventManager and loads existing states from the local JSON file.
     /// </summary>
-    public StateManager()
+    public StateManager()   // Constructor that initializes the state manager, subscribes to events, and loads existing states from the JSON file
     {
         EventManager.GetInstance().Subscribe(this);
 
@@ -43,7 +43,7 @@ public class StateManager: IEventListener
     /// Triggered whenever a file is copied or a job status changes.
     /// </summary>
     /// <param name="data">The current data context of the backup job.</param>
-    public void Update(BackupInfo data)
+    public void Update(BackupInfo data) // Method that updates the state of a backup job based on the provided BackupInfo, it is triggered whenever a file is copied or a job status changes
     {
         StateInfo? editedJobState = _states.FirstOrDefault(s => s.Name == data.SavedJobInfo.Name);
 
@@ -56,7 +56,7 @@ public class StateManager: IEventListener
             _states.Add(editedJobState);
         }
 
-        if (data.CurrentFile != data.TotalFiles)
+        if (data.CurrentFile != data.TotalFiles)    // If the current file being copied is not the last one, update the state to active and fill in the relevant information
         {
             editedJobState.SourceFilePath = data.CurrentCopyInfo.Source;
             editedJobState.TargetFilePath = data.CurrentCopyInfo.Destination;
@@ -84,7 +84,7 @@ public class StateManager: IEventListener
     /// Serializes the current list of states to the JSON file.
     /// Uses UTF8 encoding for the file stream.
     /// </summary>
-    private void _save()
+    private void _save()    // Method that saves the current list of states to the JSON file, it serializes the list of states and writes it to the file using UTF8 encoding
     {
         using (FileStream fs = File.Open(_stateFilePath, FileMode.Create, FileAccess.Write))
         {
@@ -98,7 +98,7 @@ public class StateManager: IEventListener
     /// </summary>
     /// <param name="savedJobName">The name of the job to search for.</param>
     /// <returns>The StateInfo if found; otherwise, null.</returns>
-    public StateInfo? GetStateFrom(string savedJobName)
+    public StateInfo? GetStateFrom(string savedJobName) // Method that retrieves the state information for a specific backup job by name, it searches the list of states for a state with the given name and returns it, or null if not found
     {
         return _states.FirstOrDefault(s => s.Name == savedJobName);
     }

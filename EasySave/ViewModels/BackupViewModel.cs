@@ -13,6 +13,15 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class BackupViewModel : ViewModelBase
 {
+    public LanguageViewModel LanguageViewModel { get; }
+
+    public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
+    public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
+    public string T_start_less_or_equal_end => LanguageViewModel.GetTranslation("start_less_or_equal_end");
+    public string T_invalid_range_format => LanguageViewModel.GetTranslation("invalid_range_format");
+    public string T_error_occured => LanguageViewModel.GetTranslation("error_occured");
+    public string T_invalid_job_id_not_integer => LanguageViewModel.GetTranslation("invalid_job_id_not_integer");
+
     private Config _config = Config.S_GetInstance();
 
     /// <summary>
@@ -35,37 +44,40 @@ public class BackupViewModel : ViewModelBase
     /// </summary>
     public ICommand DeleteJobCommand { get; }
 
-    public BackupViewModel()
+    public BackupViewModel()    // Constructor initializes commands and loads jobs from config
     {
         RunJobCommand = new RelayCommand<SavedJob>(RunJob);
         EditJobCommand = new RelayCommand<SavedJob>(EditJob);
         DeleteJobCommand = new RelayCommand<SavedJob>(DeleteJob);
 
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "dictionary.json");
+        LanguageViewModel = new LanguageViewModel(dictionaryPath);
+
         LoadJobs();
     }
 
-    private void LoadJobs()
+    private void LoadJobs() // Method to load jobs from config and populate the Jobs collection
     {
         Jobs.Clear();
         // TODO: Load jobs from config
         // Example: foreach (var job in _config.GetAllJobs()) Jobs.Add(job);
     }
 
-    private void RunJob(SavedJob? job)
+    private void RunJob(SavedJob? job)  // Method to run a specific backup job, it takes a SavedJob object as a parameter and calls the _runBackup method with the job ID and a default backup type (e.g., Complete)
     {
         if (job == null) return;
         // Run the backup with default type (e.g., Complete)
         _runBackup(job.Id, BackupType.Complete);
     }
 
-    private void EditJob(SavedJob? job)
+    private void EditJob(SavedJob? job) // Method to edit a specific backup job, it takes a SavedJob object as a parameter and opens the edit dialog or navigates to the edit view
     {
         if (job == null) return;
         // TODO: Open edit dialog or navigate to edit view
         System.Diagnostics.Debug.WriteLine($"Editing job: {job.Name}");
     }
 
-    private void DeleteJob(SavedJob? job)
+    private void DeleteJob(SavedJob? job)   // Method to delete a specific backup job, it takes a SavedJob object as a parameter and removes it from the Jobs collection and deletes it from the config
     {
         if (job == null) return;
         Jobs.Remove(job);
@@ -77,8 +89,8 @@ public class BackupViewModel : ViewModelBase
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup
     {
         SavedJob? savedJob = _config.GetJob(jobId);
-        if (savedJob == null) throw new ArgumentException("Invalid backup id");
-        if (isASafeJob(savedJob)) throw new Exception("Source is used by another program");
+        if (savedJob == null) throw new ArgumentException(T_invalid_backup_id);
+        if (isASafeJob(savedJob)) throw new Exception(T_source_in_use);
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = savedJob};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
@@ -94,7 +106,7 @@ public class BackupViewModel : ViewModelBase
         }
     }
 
-    private bool isASafeJob(SavedJob savedJob)
+    private bool isASafeJob(SavedJob savedJob)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
     {
         Process[] allProcesses = Process.GetProcesses();
 
@@ -120,7 +132,7 @@ public class BackupViewModel : ViewModelBase
         catch (Exception ex)
         {
             // Handle exceptions (e.g., log the error, show a message to the user, etc.)
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            Console.WriteLine($"{T_error_occured}{ex.Message}");
         }
     }
 
@@ -131,12 +143,12 @@ public class BackupViewModel : ViewModelBase
             string[] parts = range.Split('-');
             if (parts.Length == 2 && int.TryParse(parts[0], out int start) && int.TryParse(parts[1], out int end))
             {
-                if (start > end) throw new ArgumentException("Start of range must be less than or equal to end.");
+                if (start > end) throw new ArgumentException(T_start_less_or_equal_end);
                 return Enumerable.Range(start, end - start + 1).ToArray();
             }
             else
             {
-                throw new ArgumentException("Invalid range format. Expected format: 'start-end'.");
+                throw new ArgumentException(T_invalid_range_format);
             }
         }
         else if (range.Contains(";"))    //if the range contains a ";", we split it and parse each part as a separate job ID
@@ -151,7 +163,7 @@ public class BackupViewModel : ViewModelBase
                 }
                 else
                 {
-                    throw new ArgumentException($"Invalid job ID: '{part}'. Expected an integer.");
+                    throw new ArgumentException($"'{T_invalid_job_id_not_integer}''{part}'");
                 }
             }
             return jobIds.ToArray();
@@ -164,7 +176,7 @@ public class BackupViewModel : ViewModelBase
             }
             else
             {
-                throw new ArgumentException($"Invalid job ID: '{range}'. Expected an integer.");
+                throw new ArgumentException($"'{T_invalid_job_id_not_integer}''{range}'");
             }
         }
     }

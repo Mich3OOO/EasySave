@@ -4,7 +4,7 @@ public class CompBackup : Backup    // Class representing a complete backup oper
 {
     public CompBackup(SavedJob savedJob, BackupInfo backupInfo) : base(savedJob, backupInfo) { }    //Constructor
 
-    public override void ExecuteBackup()
+    public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a complete backup, creating a timestamped folder and copying all files from the source to the destination
     {
         string destinationPath = _createTimestampedFolder("Complete");
 
