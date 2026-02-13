@@ -1,14 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Models; 
+using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-/// <summary>
-/// Main window ViewModel that manages navigation between different views.
-/// </summary>
 public class MainWindowViewModel : ViewModelBase
 {
     public string Greeting { get; } = "Welcome to EasySave!";
@@ -17,72 +15,64 @@ public class MainWindowViewModel : ViewModelBase
     
     private ViewModelBase _currentViewModel;
 
-    /// <summary>
-    /// The currently displayed ViewModel (BackupViewModel or SettingsViewModel).
-    /// </summary>
-    public ViewModelBase CurrentViewModel
+    public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
         set => SetProperty(ref _currentViewModel, value);
     }
 
-    /// <summary>
-    /// Command to navigate to the settings view.
-    /// </summary>
     public ICommand ShowSettingsCommand { get; }
-
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
     public MainWindowViewModel()
     {
         ShowSettingsCommand = new RelayCommand(ShowSettings);
-
         Jobs = new ObservableCollection<SavedJob>();
         LoadJobsFromConfig();
     }
 
     private void ShowSettings()
     {
-        var settingsViewModel = new SettingsViewModel();
-        settingsViewModel.OnCloseRequested += () => CurrentViewModel = null;
-        CurrentViewModel = settingsViewModel;
+        var settingsVM = new SettingsViewModel();
+        settingsVM.OnCloseRequested += () => CurrentViewModel = null;
+        CurrentViewModel = settingsVM;
     }
 
     private void LoadJobsFromConfig()
     {
-        // Fake data for testing
+        // Données de test
         Jobs.Add(new SavedJob { Id = 1, Name = "Sauvegarde Documents", Source = "C:/Users/Documents", Destination = "D:/Backup/Documents" });
         Jobs.Add(new SavedJob { Id = 2, Name = "Sauvegarde Photos", Source = "C:/Users/Pictures", Destination = "D:/Backup/Pictures" });
-        Jobs.Add(new SavedJob { Id = 3, Name = "Sauvegarde Projet", Source = "C:/Dev/MyProject", Destination = "D:/Backup/MyProject" });
     }
 
-    // --- COMMANDES MISES À JOUR ---
-
-    // Note le paramètre "SavedJob job" !
     public void CreateJob()
     {
-        //Debug.WriteLine("Création d'un nouveau job...");
-        // Ici on ouvrira une fenêtre vide
-    }
-
-    public void RunJob(SavedJob job)
-    {
-        //Debug.WriteLine($"Lancement du job : {job.Name} (ID: {job.Id})");
-        // Ici tu appelleras ta logique de backup V1
+        var jobVM = new JobSettingsViewModel();
+        jobVM.OnSaveRequested += (newJob) =>
+        {
+            int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
+            newJob.Id = newId;
+            Jobs.Add(newJob);
+            CurrentViewModel = null;
+        };
+        jobVM.OnCancelRequested += () => CurrentViewModel = null;
+        CurrentViewModel = jobVM;
     }
 
     public void EditJob(SavedJob job)
     {
-        //Debug.WriteLine($"Modification du job : {job.Name}");
+        var jobVM = new JobSettingsViewModel(job);
+        jobVM.OnSaveRequested += (updatedJob) =>
+        {
+            int index = Jobs.IndexOf(job);
+            if (index != -1) Jobs[index] = updatedJob;
+            CurrentViewModel = null;
+        };
+        jobVM.OnCancelRequested += () => CurrentViewModel = null;
+        CurrentViewModel = jobVM;
     }
 
-    public void DeleteJob(SavedJob job)
-    {
-        //Debug.WriteLine($"Suppression du job : {job.Name}");
+    public void RunJob(SavedJob job) { /* Logique V1 */ }
 
-        // On le retire de la liste visuelle immédiatement
-        Jobs.Remove(job);
-
-        // TODO: Appeler Config.DeleteJob(job.Name) pour le supprimer du json
-    }
+    public void DeleteJob(SavedJob job) => Jobs.Remove(job);
 }
