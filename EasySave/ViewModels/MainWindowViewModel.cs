@@ -156,7 +156,7 @@ public class MainWindowViewModel : ViewModelBase
     public void DeleteJob(SavedJob job)
     {
         // Display a confirmation dialog before deleting the job
-        var confirmDialog = new DeleteJobViewModel();
+        var confirmDialog = new DeleteViewModel();
         confirmDialog.JobName = job.Name;
         confirmDialog.OnResult += (confirmed) =>
         {

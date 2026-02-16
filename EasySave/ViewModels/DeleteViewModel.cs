@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace EasySave.ViewModels;
 
-public class DeleteJobViewModel : ViewModelBase   // ViewModel for the confirmation dialog when deleting a backup job. It contains the job name to display in the dialog and commands for confirming or canceling the deletion.
+public class DeleteViewModel : ViewModelBase   // ViewModel for the confirmation dialog when deleting a backup job. It contains the job name to display in the dialog and commands for confirming or canceling the deletion.
 {
     public LanguageViewModel _languageViewModel { get; }
 
@@ -27,7 +27,7 @@ public class DeleteJobViewModel : ViewModelBase   // ViewModel for the confirmat
     public ICommand CancelCommand { get; }
     public ICommand ConfirmCommand { get; }
 
-    public DeleteJobViewModel()   // Constructor initializes the commands for canceling and confirming the deletion
+    public DeleteViewModel()   // Constructor initializes the commands for canceling and confirming the deletion
     {
         CancelCommand = new RelayCommand(Cancel);
         ConfirmCommand = new RelayCommand(Confirm);
