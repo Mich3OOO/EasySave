@@ -2,13 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:EasySave.ViewModels"
              x:Class="EasySave.Views.DeleteView"
-             x:DataType="vm:DeleteJobViewModel"
+             x:DataType="vm:DeleteViewModel"
              Width="440" Height="350">
 
     <Border Background="#252526" 
             BorderBrush="#3C3C3C" 
             BorderThickness="1" 
-            CornerRadius="12" 
+            CornerRadius="12"
             BoxShadow="0 8 32 0 #AA000000">
         <Grid RowDefinitions="Auto, Auto, Auto, Auto" Margin="10,15,10,10">
 
