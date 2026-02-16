@@ -4,5 +4,5 @@ public enum BackupType  // Enum representing the type of backup operation, eithe
 {
     Differential,
     Complete,
-    
+
 }
