@@ -1,8 +1,9 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Models;
 using EasySave.Interfaces;
-using System.Diagnostics;
+using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
@@ -79,6 +80,7 @@ public class RunJobsViewModel : ViewModelBase
     {
         if (Job == null) throw new ArgumentException(T_invalid_backup_id);
         if (!_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
+        if (!IsPasswordValid(_password)) throw new Exception(_languageViewModel.GetTranslation("password_policy"));
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
@@ -111,6 +113,18 @@ public class RunJobsViewModel : ViewModelBase
         }
         
         return true;
+    }
+
+    // Check if password respect policy
+    public bool IsPasswordValid(string password)
+    {
+        if (string.IsNullOrEmpty(password))
+            return false;
+
+        // Min 12 char, with lower, upper, digits and special character
+        string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$";
+
+        return Regex.IsMatch(password, pattern);
     }
 }
 
