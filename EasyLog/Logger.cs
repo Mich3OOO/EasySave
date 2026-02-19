@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace EasyLog;
 
 public class Logger
@@ -5,6 +7,9 @@ public class Logger
     private static Logger? _instance;
     private readonly string _logsPath = "./logs";
     private string _format;
+    static private readonly object _lockObj = new object();
+
+    private static Mutex _mutex = new Mutex(false, "logger");
 
     private Logger()
     {
@@ -25,19 +30,30 @@ public class Logger
     /// <param name="format"></param>
     public void Log(string message, string format)
     {
-        string path = _getFileName(format);
-        File.AppendAllText(path, message + Environment.NewLine);
+        _mutex.WaitOne(); // Wait until the mutex is available
+        try
+        {
+            string path = _getFileName(format);
+            File.AppendAllText(path, message + Environment.NewLine);
+        }
+        finally
+        {
+            _mutex.ReleaseMutex();
+        }
     }
 
     // Create a Logger singleton or return the existing one
     public static Logger GetInstance()
     {
-        if (_instance == null)
+        lock (_lockObj)
         {
-            _instance = new Logger();
-        }
+            if (_instance == null)
+            {
+                _instance = new Logger();
+            }
 
-        return _instance;
+            return _instance;
+        }
     }
 
     // Return the path of the current log file (based on the current date)
