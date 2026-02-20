@@ -9,6 +9,9 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     protected BackupInfo _backupInfo;
     protected string _sevenZipPath;
     private string _password;
+    
+    private bool _continue = true;
+    private bool _cancel = false;
 
     public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
     {
@@ -23,7 +26,22 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         _password = password;
     }
 
-    public abstract void ExecuteBackup();   // Abstract method to execute the backup, to be implemented by derived classes
+    public abstract void ExecuteBackup();
+    public void Pause()
+    {
+        _continue = false;
+    }
+
+    public void Continue()
+    {
+        _continue = true;
+    }
+
+    public void Cancel()
+    {
+        _cancel = true;
+    }
+    // Abstract method to execute the backup, to be implemented by derived classes
 
     //Create a timestamp folder for backup
     protected string _createTimestampedFolder(string subFolderType)
@@ -81,6 +99,11 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
 
             // Notify observer
             _updateStatus(copyInfo);
+
+            while (!_continue)
+            {
+                
+            }
         }
         catch (Exception ex)    // Handle any exceptions that occur during the file backup process
         {
@@ -139,4 +162,5 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         // Notify Observer
         EventManager.GetInstance().Update(_backupInfo);
     }
+    
 }
