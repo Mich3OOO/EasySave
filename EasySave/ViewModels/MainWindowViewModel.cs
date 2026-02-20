@@ -4,19 +4,20 @@ using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
-using System.Threading.Tasks;
+using EasySave.Interfaces;
 
 namespace EasySave.ViewModels;
 
 /// <summary>
 /// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase, IEventListener
 {
     // UI Display Properties
     public string Greeting { get; } = "Welcome to EasySave!";
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
+    private JobManager _jobManager =  JobManager.GetInstance();
 
     // Localization/Language support
     public LanguageViewModel _languageViewModel { get; }
@@ -70,14 +71,14 @@ public class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         // Initialize language support and load saved jobs
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        string dictionaryPath =
+            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         _languageViewModel.LanguageChanged += OnLanguageChanged;
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
         LogsManager _logsManager = new LogsManager();
-        StateManager _stateManager = new StateManager();
     }
 
     private void OnLanguageChanged()
@@ -140,17 +141,20 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     public void RunJob(SavedJob job)
     {
-        var runJobVM = new RunJobsViewModel(job);
-        runJobVM.OnResult += async (confirmed) =>
+        if (_stateManager.GetStateFrom(job.Name)?.State != StateLevel.Active)
         {
-            CurrentViewModel = null;
-            if (confirmed)
+            RunJobsViewModel runJobVM = new RunJobsViewModel(job);
+            runJobVM.OnResult += async (confirmed) =>
             {
-                Console.WriteLine($"Sauvegarde lancée pour {job.Name}");
-                await ShowSuccessMessage($"✔ {job.Name} : Sauvegarde terminée avec succès !");
-            }
-        };
-        CurrentViewModel = runJobVM;
+                CurrentViewModel = null;
+                if (confirmed)
+                {
+                    Console.WriteLine($"Sauvegarde lancée pour {job.Name}");
+                    await ShowSuccessMessage($"✔ {job.Name} : Sauvegarde terminée avec succès !");
+                }
+            };
+            CurrentViewModel = runJobVM;
+        }
     }
 
     /// <summary>
@@ -172,5 +176,24 @@ public class MainWindowViewModel : ViewModelBase
             }
         };
         CurrentViewModel = confirmDialog;
+    }
+
+    public void PauseJob(SavedJob job)
+    {
+        _jobManager.PauseJob(job);   
+    }
+    
+    public void ContinueJob(SavedJob job)
+    {
+        _jobManager.ContinueJob(job);   
+    }
+    public void CancelJob(SavedJob job)
+    {
+        _jobManager.CancelJob(job);   
+    }
+
+    public void Update(BackupInfo data)
+    {
+      
     }
 }
