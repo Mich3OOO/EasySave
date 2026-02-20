@@ -42,6 +42,10 @@ public class DiffBackup : Backup
                 lastFullBackupDate = lastDir.CreationTime;
             }
         }
+        else
+        {
+            throw new Exception("Can't find a complete backup");
+        }
 
 
         if (lastFullBackupDate == DateTime.MinValue)
