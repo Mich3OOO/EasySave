@@ -154,5 +154,11 @@
     "password_policy": {
         "en": "The password does not comply with the policy: Minimum 12 characters, including at least one uppercase letter, lowercase letter, special character, and number.",
         "fr": "Le mot de passe ne respecte pas la politique de sécurité : minimum 12 caractères, dont au moins une majuscule, une minuscule, un caractère spécial et un chiffre."
+    },
+    
+    "!complete_backup": {
+        "en": "Can't find a complete backup",
+        "fr":  "Nous ne pouvons pas trouver de sauvegarde complète"
     }
+    
 }

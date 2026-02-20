@@ -1,7 +1,11 @@
+using EasySave.ViewModels;
+
 namespace EasySave.Models;
 
 public class DiffBackup : Backup
 {
+    string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+
     public DiffBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }
 
     public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a differential backup, creating a timestamped folder and copying only the files that have been modified since the last complete backup
@@ -44,7 +48,7 @@ public class DiffBackup : Backup
         }
         else
         {
-            throw new Exception("Can't find a complete backup");
+            throw new Exception(LanguageViewModel.GetInstance(dictionaryPath).GetTranslation("!complete_backup"));
         }
 
 
