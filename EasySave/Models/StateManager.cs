@@ -11,6 +11,7 @@ namespace EasySave.Models;
 public class StateManager : IEventListener   // Class representing the state manager, implementing the IEventListener interface, it manages the state of backup jobs and saves it in a local JSON file
 {
     private List<StateInfo> _states;
+    private static StateManager s_instance;
 
     private readonly string _stateFilePath = "./states.json";
 
@@ -18,7 +19,7 @@ public class StateManager : IEventListener   // Class representing the state man
     /// Initializes a new instance of the StateManager.
     /// Subscribes to the EventManager and loads existing states from the local JSON file.
     /// </summary>
-    public StateManager()   // Constructor that initializes the state manager, subscribes to events, and loads existing states from the JSON file
+    private StateManager()   // Constructor that initializes the state manager, subscribes to events, and loads existing states from the JSON file
     {
         EventManager.GetInstance().Subscribe(this);
 
@@ -37,6 +38,9 @@ public class StateManager : IEventListener   // Class representing the state man
             }
         }
     }
+
+
+    public static StateManager GetInstance() => s_instance ?? new();
 
     /// <summary>
     /// Updates the state of a specific backup job based on provided BackupInfo.

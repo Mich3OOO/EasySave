@@ -64,6 +64,9 @@ public class MainWindowViewModel : ViewModelBase
 
     private Config _config = Config.S_GetInstance();
 
+    private StateManager _stateManager = StateManager.GetInstance();
+
+
     public MainWindowViewModel()
     {
         // Initialize language support and load saved jobs
