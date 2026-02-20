@@ -19,6 +19,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_settings => _languageViewModel.GetTranslation("settings_menu");
     public string T_language_selection => _languageViewModel.GetTranslation("language_selection");
     public string T_logs_format => _languageViewModel.GetTranslation("logs_format");
+    public string T_logs_mods => _languageViewModel.GetTranslation("logs_mods");
     public string T_business_software => _languageViewModel.GetTranslation("business_software");
     public string T_business_software_detected => _languageViewModel.GetTranslation("business_software_detected");
     public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
@@ -43,6 +44,34 @@ public class SettingsViewModel : ViewModelBase
 
     public string Extension { get; set; }
     public string Softwares { get; set; }
+
+    private LogsMods _selectedLogsMods;
+    public LogsMods SelectedLogsMods
+    {
+        get => _selectedLogsMods;
+        set
+        {
+            if (_selectedLogsMods != value)
+            {
+                _selectedLogsMods = value;
+                OnPropertyChanged(nameof(SelectedLogsMods));
+            }
+        }
+    }
+
+    private List<LogsMods> _logsModsList = new List<LogsMods>();
+    public List<LogsMods> LogsModsList
+    {
+        get => _logsModsList;
+        set
+        {
+            if (_logsModsList != value)
+            {
+                _logsModsList = value;
+                OnPropertyChanged(nameof(LogsModsList));
+            }
+        }
+    }
 
     private bool _isDarkMode;
     public bool IsDarkMode

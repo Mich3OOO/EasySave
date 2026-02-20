@@ -10,10 +10,16 @@ class JobManager:IEventListener
 
     private JobManager()
     {
+        _runningJobs = new Dictionary<string, IBackup>();
         EventManager.GetInstance().Subscribe(this);
     }
 
-    public static JobManager GetInstance() => s_Instance ?? new();
+    public static JobManager GetInstance()
+    {
+        if (s_Instance == null)
+            s_Instance = new JobManager();
+        return s_Instance;
+    }
 
     public void AddJob(SavedJob job,IBackup backup)
     {
