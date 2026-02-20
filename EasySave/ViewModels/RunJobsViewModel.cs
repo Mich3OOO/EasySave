@@ -81,17 +81,10 @@ public class RunJobsViewModel : ViewModelBase
         if (!_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
+        IBackup backup =  IsDifferential ? new DiffBackup(Job, backupInfo,_password): new CompBackup(Job, backupInfo,_password);
 
-        if (IsDifferential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
-        {
-            IBackup backup = new DiffBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
-        else if (!IsDifferential)
-        {
-            IBackup backup = new CompBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
+        Task.Run(backup.ExecuteBackup);
+        
 
         OnResult?.Invoke(true);
     }
