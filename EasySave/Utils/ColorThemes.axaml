@@ -15,7 +15,7 @@
             <SolidColorBrush x:Key="TextPrimaryBrush" Color="White"/>
             <SolidColorBrush x:Key="TextSecondaryBrush" Color="#AAAAAA"/>
             <SolidColorBrush x:Key="TextInvertedBrush" Color="#121212"/>
-            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#1976D2"/>
+            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#00E676"/>
             <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
             <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="#2E7D32"/>
             <SolidColorBrush x:Key="DangerBrush" Color="#FF5252"/>
@@ -38,8 +38,8 @@
             <SolidColorBrush x:Key="TextSecondaryBrush" Color="#586069"/>
             <SolidColorBrush x:Key="TextInvertedBrush" Color="#FFFFFF"/>
 
-            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#0366D6"/> 
-            <SolidColorBrush x:Key="SuccessBrush" Color="#22863A"/> 
+            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#008CFF"/> 
+            <SolidColorBrush x:Key="SuccessBrush" Color="#008CFF"/> 
             <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="#28A745"/> 
             <SolidColorBrush x:Key="DangerBrush" Color="#D73A49"/> 
             <SolidColorBrush x:Key="DangerTextBrush" Color="#CB2431"/> 
