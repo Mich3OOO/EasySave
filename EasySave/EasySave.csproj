@@ -20,6 +20,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AvaloniaResource Include="Utils\ColorThemes.axaml">
+        <SubType>Designer</SubType>
+      </AvaloniaResource>
+    </ItemGroup>
+
+    <ItemGroup>
         
         <PackageReference Include="Avalonia" Version="11.3.11" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
@@ -51,9 +57,6 @@
       <None Include="CryptoSoft\7za.exe">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <AvaloniaResource Update="Assets\ColorThemes.axaml">
-        <SubType>Designer</SubType>
-      </AvaloniaResource>
       <None Update="Utils\dictionary.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
