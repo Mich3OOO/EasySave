@@ -10,7 +10,7 @@
         x:DataType="vm:MainWindowViewModel"
         Title="EasySave - Version 2.0"
         Width="950" Height="650"
-        Background="#121212"
+        Background="{DynamicResource AppBackgroundBrush}"
         WindowStartupLocation="CenterScreen"
 		utils:CursorUtils.ImagePath="{Binding CustomCursorPath}"
 		Icon="/Assets/Icon.png">
@@ -37,41 +37,41 @@
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
 				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="{Binding T_settings_tooltip}">
-					<TextBlock Text="⚙" FontSize="24"/>
+					<TextBlock Text="⚙" FontSize="24" Foreground="{DynamicResource TextPrimaryBrush}"/>
 				</Button>
 			</StackPanel>
 		</Grid>
 
-		<Border Grid.Row="1" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="15">
+		<Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
 			<Grid RowDefinitions="Auto, *">
-				<TextBlock Grid.Row="0" Text="{Binding T_save_sobs}" Foreground="White" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+				<TextBlock Grid.Row="0" Text="{Binding T_save_sobs}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
 				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
-							<Border Name="CardBorder" Background="#252526" BorderBrush="#333333" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,10">
+							<Border Name="CardBorder" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,10">
 								<Grid ColumnDefinitions="Auto, *, Auto">
-									<Border Grid.Column="0" Background="#00E676" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
+									<Border Grid.Column="0" Background="{DynamicResource SuccessBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
 										<StackPanel Orientation="Horizontal">
-											<TextBlock Text="ID " Foreground="#121212" FontWeight="Bold"/>
-											<TextBlock Text="{Binding Id}" Foreground="#121212" FontWeight="Bold"/>
+											<TextBlock Text="ID " Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold"/>
+											<TextBlock Text="{Binding Id}" Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold"/>
 										</StackPanel>
 									</Border>
 
 									<StackPanel Grid.Column="1" VerticalAlignment="Center">
-										<TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold"/>
+										<TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="Bold"/>
 										<StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-											<TextBlock Text="Source: " Foreground="#AAAAAA" FontSize="12"/>
-											<TextBlock Text="{Binding Source}" Foreground="#AAAAAA" FontSize="12"/>
-											<TextBlock Text="  ➔  Cible: " Foreground="#AAAAAA" FontSize="12"/>
-											<TextBlock Text="{Binding Destination}" Foreground="#AAAAAA" FontSize="12"/>
+											<TextBlock Text="Source: " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+											<TextBlock Text="{Binding Source}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+											<TextBlock Text="  ➔  Cible: " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+											<TextBlock Text="{Binding Destination}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
 										</StackPanel>
 									</StackPanel>
 
 									<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="▷" FontSize="20" Foreground="#00E676"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="✎" FontSize="20" Foreground="White"/></Button>
-										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="❌" FontSize="16" Foreground="#FF5252"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="▷" FontSize="20" Foreground="{DynamicResource SuccessBrush}"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.EditJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="✎" FontSize="20" Foreground="{DynamicResource TextPrimaryBrush}"/></Button>
+										<Button Command="{Binding $parent[Window].DataContext.DeleteJob}" CommandParameter="{Binding}" Background="Transparent"><TextBlock Text="❌" FontSize="16" Foreground="{DynamicResource DangerBrush}"/></Button>
 									</StackPanel>
 								</Grid>
 							</Border>
@@ -84,13 +84,13 @@
 		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
 			<Border Grid.Column="0" 
                     IsVisible="{Binding IsStatusVisible}"
-                    Background="#2E7D32" 
+                    Background="{DynamicResource SuccessBackgroundBrush}" 
                     Padding="15,8" 
                     CornerRadius="6" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Center">
 				<StackPanel Orientation="Horizontal" Spacing="10">
-					<TextBlock Text="{Binding StatusMessage}" Foreground="White" FontWeight="Medium"/>
+					<TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Medium"/>
 				</StackPanel>
 			</Border>
 
@@ -98,11 +98,11 @@
 					Content="{Binding T_create_job}"
 					Command="{Binding CreateJob}"
 					Width="160" Height="45"
-					VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#2E7D32"
-					Foreground="White" FontWeight="Bold" CornerRadius="6" Cursor="Hand"/>
+					VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{DynamicResource SuccessBackgroundBrush}"
+					Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold" CornerRadius="6" Cursor="Hand"/>
 		</Grid>
 
-		<Border Grid.Row="0" Grid.RowSpan="3" Background="#CC000000"
+		<Border Grid.Row="0" Grid.RowSpan="3" Background="{DynamicResource OverlayBrush}"
 				IsVisible="{Binding CurrentViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
 			<ContentControl Content="{Binding CurrentViewModel}">
 				<ContentControl.DataTemplates>

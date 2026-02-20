@@ -5,38 +5,38 @@
              x:DataType="vm:JobSettingsViewModel">
 
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20" MaxWidth="500" MinWidth="400">
-        <Border Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1" CornerRadius="8" Padding="25">
+        <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
             <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
                     <TextBlock Text="📝" Classes="emoji" FontSize="24" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding T_job_settings}" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding T_job_settings}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_job_name}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
-                    <TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="{Binding T_example_job_name}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                    <TextBlock Text="{Binding T_job_name}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="{Binding T_example_job_name}" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_source_folder}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_source_folder}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBox Grid.Column="0" Text="{Binding Source, Mode=TwoWay}" Watermark="{Binding T_source_path}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
-                        <Button Grid.Column="1" Click="SelectSource_Click" Margin="10,0,0,0" Background="#2E2E2E" CornerRadius="6"><TextBlock Text="📂" Classes="emoji"/></Button>
+                        <TextBox Grid.Column="0" Text="{Binding Source, Mode=TwoWay}" Watermark="{Binding T_source_path}" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                        <Button Grid.Column="1" Click="SelectSource_Click" Margin="10,0,0,0" Background="{DynamicResource ButtonBackgroundBrush}" CornerRadius="6"><TextBlock Text="📂" Classes="emoji"/></Button>
                     </Grid>
                 </StackPanel>
 
                 <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_target_folder}" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding T_target_folder}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBox Grid.Column="0" Text="{Binding Destination, Mode=TwoWay}" Watermark="{Binding T_target_path}" Background="#252526" BorderBrush="#333333" Foreground="White" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
-                        <Button Grid.Column="1" Click="SelectDestination_Click" Margin="10,0,0,0" Background="#2E2E2E" CornerRadius="6"><TextBlock Text="📂" Classes="emoji"/></Button>
+                        <TextBox Grid.Column="0" Text="{Binding Destination, Mode=TwoWay}" Watermark="{Binding T_target_path}" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Height="40" VerticalContentAlignment="Center"/>
+                        <Button Grid.Column="1" Click="SelectDestination_Click" Margin="10,0,0,0" Background="{DynamicResource ButtonBackgroundBrush}" CornerRadius="6"><TextBlock Text="📂" Classes="emoji"/></Button>
                     </Grid>
                 </StackPanel>
 
-					<Separator Height="1" Background="#333333" Margin="0,5"/>
+                <Separator Height="1" Background="{DynamicResource BorderMediumBrush}" Margin="0,5"/>
 
                 <TextBlock Text="{Binding ErrorMessage}" 
-                           Foreground="#E53935" 
+                           Foreground="{DynamicResource DangerTextBrush}" 
                            FontSize="12" 
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
@@ -44,8 +44,8 @@
                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
                 <Grid ColumnDefinitions="*, *" Margin="0,10,0,0">
-                    <Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="0,0,10,0" CornerRadius="6" Background="Transparent" BorderBrush="#333333" BorderThickness="1" Foreground="#AAAAAA" FontWeight="Bold" Cursor="Hand"/>
-                    <Button Grid.Column="1" Content="{Binding T_save}" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="10,0,0,0" CornerRadius="6" Background="#1976D2" Foreground="White" FontWeight="Bold" Cursor="Hand"/>
+                    <Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="0,0,10,0" CornerRadius="6" Background="Transparent" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" Foreground="{DynamicResource TextSecondaryBrush}" FontWeight="Bold" Cursor="Hand"/>
+                    <Button Grid.Column="1" Content="{Binding T_save}" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="45" Margin="10,0,0,0" CornerRadius="6" Background="{DynamicResource PrimaryActionBrush}" Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold" Cursor="Hand"/>
                 </Grid>
             </StackPanel>
         </Border>
