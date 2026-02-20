@@ -12,6 +12,8 @@ class ConfigStructure // This class is used to serialize and deserialize the con
     [JsonInclude]  
     public LogsFormats LogsFormat  = LogsFormats.Json;
     [JsonInclude]
+    public LogsMods LogsMods = LogsMods.Local;
+    [JsonInclude]
     public string[] ExtensionsToEncrypt = {};
     [JsonInclude]
     public List<SavedJob> SavedJobs = new();
@@ -24,6 +26,7 @@ class ConfigStructure // This class is used to serialize and deserialize the con
         
         Language = _config.Language;
         LogsFormat  = _config.LogsFormat;
+        LogsMods = _config.LogsMods;
         ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
         SavedJobs = _config.SavedJobs;
         Softwares = _config.Softwares;
@@ -31,9 +34,6 @@ class ConfigStructure // This class is used to serialize and deserialize the con
     }
     public ConfigStructure()
     {}
-    
-    
-    
 
 }
 
@@ -42,6 +42,7 @@ public class Config // Class representing the configuration of the application, 
     // The singleton pattern is used to ensure that there is only one instance of the Config class throughout the application, and it can be accessed globally via the S_GetInstance method
     private Languages _language;
     private LogsFormats _logsFormat;
+    private LogsMods _logsMods;
     private string[] _extensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
     private string[] _softwares;
     private static Config? s_instance;
@@ -49,6 +50,7 @@ public class Config // Class representing the configuration of the application, 
     private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
     public Languages Language { get => _language; set => _language = value; }
     public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
+    public LogsMods LogsMods { get => _logsMods; set => _logsMods = value; }
     public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
     public string[] Softwares { get => _softwares; set => _softwares = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
@@ -110,9 +112,10 @@ public class Config // Class representing the configuration of the application, 
             {
                 _language = config.Language;
                 _logsFormat = config.LogsFormat;
+                _logsMods = config.LogsMods;
                 _extensionsToEncrypt = config.ExtensionsToEncrypt;
                 _savedJobs = config.SavedJobs;
-                _softwares = config.Softwares;
+                _softwares = config.Softwares ?? Array.Empty<string>();
             }
 
         }
@@ -124,6 +127,7 @@ public class Config // Class representing the configuration of the application, 
         _logsFormat = LogsFormats.Json;
         _savedJobs = new List<SavedJob>();
         _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
+        _softwares = new string[] { };
     }
 
     public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false

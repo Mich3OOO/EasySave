@@ -46,10 +46,6 @@ public class RunJobsViewModel : ViewModelBase
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
     public string T_launch => _languageViewModel.GetTranslation("launch");
 
-
-
-
-
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
 
