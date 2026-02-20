@@ -83,18 +83,11 @@ public class RunJobsViewModel : ViewModelBase
         if (!IsPasswordValid(_password)) throw new Exception(_languageViewModel.GetTranslation("password_policy"));
         BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
         backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
+        IBackup backup =  IsDifferential ? new DiffBackup(Job, backupInfo,_password): new CompBackup(Job, backupInfo,_password);
 
-        if (IsDifferential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
-        {
-            IBackup backup = new DiffBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
-        else if (!IsDifferential)
-        {
-            IBackup backup = new CompBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
-
+        Task.Run(backup.ExecuteBackup);
+        
+        JobManager.GetInstance().AddJob(Job,backup);
         OnResult?.Invoke(true);
     }
     private bool _canARunJon(out string processName)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true

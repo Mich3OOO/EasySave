@@ -124,6 +124,7 @@ public class Config // Class representing the configuration of the application, 
         _logsFormat = LogsFormats.Json;
         _savedJobs = new List<SavedJob>();
         _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
+        _softwares = new string[] {};
     }
 
     public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false
