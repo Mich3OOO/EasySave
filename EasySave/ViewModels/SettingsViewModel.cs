@@ -64,6 +64,7 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
+    
     private Config _config = Config.S_GetInstance();
 
     public SettingsViewModel()
@@ -73,11 +74,13 @@ public class SettingsViewModel : ViewModelBase
 
         SelectedLanguage = _config.Language;
         SelectedLogsFormats = _config.LogsFormat;
+        SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
 
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
+        LogsModsList = Enum.GetValues(typeof(LogsMods)).Cast<LogsMods>().ToList();
 
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
@@ -96,6 +99,7 @@ public class SettingsViewModel : ViewModelBase
         _config.LogsFormat = SelectedLogsFormats;
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
+        _config.LogsMods = SelectedLogsMods;
         _config.SaveConfig();
 
         // Signal to save settings (will be handled by MainWindowViewModel)

@@ -59,9 +59,9 @@ public class Logger
     // Return the path of the current log file (based on the current date)
     private string _getFileName(string format)
     {
-        Directory.CreateDirectory(_logsPath); // Create the logs directory if it doesn't exist
-        string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_log." + format; // Assemble the file name based on the current date
-        return Path.Combine(_logsPath, fileName); // Assemble the path with the file name (better than a concatenation because it handles / and )
+        Directory.CreateDirectory(_logsPath);
+        string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_log." + format;
+        return Path.Combine(_logsPath, fileName);
     }
 
 }

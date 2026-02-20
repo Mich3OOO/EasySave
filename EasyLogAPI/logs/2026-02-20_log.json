@@ -1,0 +1,18 @@
+{
+           "Name": "DOCKER",
+           "FileSource": "C:\Users\mazou\Desktop\COURS\FISA INFO 25-28\A3\GENIE_LOGICIEL\HelloWord\index.txt",
+           "FileTarget": "C:\Users\mazou\Desktop\COURS\FISA INFO 25-28\A3\GENIE_LOGICIEL\Complete\2026-02-20_14-33-32\index.txt.7z",
+           "FileSize": 10,
+           "FileTransferTime": 47,5086,
+           "TimeToEncrypt": 47349,
+           "Time": "20/02/2026 14:33:32"
+         }
+{
+           "Name": "DOCKER",
+           "FileSource": "C:\Users\mazou\Desktop\COURS\FISA INFO 25-28\A3\GENIE_LOGICIEL\HelloWord\index.txt",
+           "FileTarget": "C:\Users\mazou\Desktop\COURS\FISA INFO 25-28\A3\GENIE_LOGICIEL\Complete\2026-02-20_14-33-47\index.txt.7z",
+           "FileSize": 10,
+           "FileTransferTime": 46,52,
+           "TimeToEncrypt": 46436,
+           "Time": "20/02/2026 14:33:47"
+         }
