@@ -50,7 +50,7 @@
 
 				<Grid ColumnDefinitions="*, *">
 					<Button Grid.Column="0" Content="{Binding T_cancel}" Command="{Binding CancelCommand}" Margin="0,0,5,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-					<Button Grid.Column="1" Content="{Binding T_launch}" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/>
+					<Button Grid.Column="1" Content="{Binding T_launch}" IsDefault="True" Command="{Binding ConfirmCommand}" Margin="5,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#1976D2" Foreground="White"/> <!--IsDefault="True" is to valide when press enter-->
 				</Grid>
 			</StackPanel>
 		</Border>
