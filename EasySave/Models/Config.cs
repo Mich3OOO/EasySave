@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Models;
 
-class ConfigStructure // This class is used to serialize and deserialize the config file, it is not used in the program itself
+class ConfigData // This class is used to serialize and deserialize the config file, it is not used in the program itself
 {
     // The JsonInclude attribute is used to include the fields in the serialization and deserialization process, even if they are not public properties
     [JsonInclude]
@@ -16,12 +16,14 @@ class ConfigStructure // This class is used to serialize and deserialize the con
     [JsonInclude]
     public string[] ExtensionsToEncrypt = {};
     [JsonInclude]
+    public string[] CriticalExtensions = {};
+    [JsonInclude]
     public List<SavedJob> SavedJobs = new();
     [JsonInclude]
     public string[] Softwares = {};
 
 
-    public ConfigStructure(Config _config)
+    public ConfigData(Config _config)
     { 
         
         Language = _config.Language;
@@ -30,9 +32,10 @@ class ConfigStructure // This class is used to serialize and deserialize the con
         ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
         SavedJobs = _config.SavedJobs;
         Softwares = _config.Softwares;
-        
+        CriticalExtensions = _config.CriticalExtensions;
+
     }
-    public ConfigStructure()
+    public ConfigData()
     {}
 
 }
@@ -45,6 +48,7 @@ public class Config // Class representing the configuration of the application, 
     private LogsMods _logsMods;
     private string[] _extensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
     private string[] _softwares;
+    public string[] _criticalExtensions = {};
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
@@ -54,6 +58,8 @@ public class Config // Class representing the configuration of the application, 
     public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
     public string[] Softwares { get => _softwares; set => _softwares = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
+    public string[] CriticalExtensions { get => _criticalExtensions; set => _criticalExtensions = value; }
+    
     
 
     private Config()    // The constructor is private to prevent instantiation from outside the class
@@ -77,18 +83,18 @@ public class Config // Class representing the configuration of the application, 
         return s_instance;
     }
 
-    public void SaveConfig()    // Method to save the current configuration to the config file, it serializes the ConfigStructure struct and writes it to the file
+    public void SaveConfig()    // Method to save the current configuration to the config file, it serializes the ConfigData struct and writes it to the file
     {
         if (File.Exists(_confPath)) File.Delete(_confPath);
         using (FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
         {
-            ConfigStructure config = new ConfigStructure(this);
+            ConfigData config = new ConfigData(this);
             fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
 
         }
     }
 
-    private void _loadConfig()  //  Method to load the configuration from the config file, it reads the file, deserializes it into a ConfigStructure struct and updates the current configuration accordingly
+    private void _loadConfig()  //  Method to load the configuration from the config file, it reads the file, deserializes it into a ConfigData struct and updates the current configuration accordingly
     {
         using (FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read))
         {
@@ -101,7 +107,7 @@ public class Config // Class representing the configuration of the application, 
                 json += temp.GetString(b);
             }
 
-            ConfigStructure? config = JsonSerializer.Deserialize<ConfigStructure>(json.Trim('\0'));
+            ConfigData? config = JsonSerializer.Deserialize<ConfigData>(json.Trim('\0'));
 
             if (config is null)
             {
@@ -110,12 +116,7 @@ public class Config // Class representing the configuration of the application, 
             }
             else
             {
-                _language = config.Language;
-                _logsFormat = config.LogsFormat;
-                _logsMods = config.LogsMods;
-                _extensionsToEncrypt = config.ExtensionsToEncrypt;
-                _savedJobs = config.SavedJobs;
-                _softwares = config.Softwares ?? Array.Empty<string>();
+                _setConfig(config);
             }
 
         }
@@ -128,6 +129,18 @@ public class Config // Class representing the configuration of the application, 
         _savedJobs = new List<SavedJob>();
         _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
         _softwares = new string[] {};
+        _criticalExtensions = new string[] {};
+    }
+
+    private void _setConfig(ConfigData config)
+    {
+        _language = config.Language;
+        _logsFormat = config.LogsFormat;
+        _logsMods = config.LogsMods;
+        _extensionsToEncrypt = config.ExtensionsToEncrypt;
+        _savedJobs = config.SavedJobs;
+        _softwares = config.Softwares;
+        _criticalExtensions = config.CriticalExtensions;
     }
 
     public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false

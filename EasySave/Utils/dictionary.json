@@ -175,5 +175,9 @@
   "logs_mod_both": {
     "en": "Both",
     "fr": "Local et centralisé"
+  },
+  "critical_extensions": {
+    "en": "Critical files",
+    "fr": "Fichiers critiques"
   }
 }

@@ -25,6 +25,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
     public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
+    public string T_critical_extensions => _languageViewModel.GetTranslation("critical_extensions");
 
     /// <summary>
     /// Command to save the settings.
@@ -42,10 +43,9 @@ public class SettingsViewModel : ViewModelBase
     public LogsFormats SelectedLogsFormats { get; set; }
     public List<LogsFormats> LogsFormatsList { get; set; }
 
-    public string Extension { get; set; }
-    public string Softwares { get; set; }
     public string Extension { get; set; } = "";
     public string Softwares { get; set; } = "";
+    public string CriticalExtensions { get; set; } = "";
 
     private LogsMods _selectedLogsMods;
     public LogsMods SelectedLogsMods
@@ -108,6 +108,7 @@ public class SettingsViewModel : ViewModelBase
         SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
+        CriticalExtensions = string.Join(",", _config.CriticalExtensions);
 
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
@@ -131,6 +132,7 @@ public class SettingsViewModel : ViewModelBase
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
+        _config.CriticalExtensions = CriticalExtensions.Split(',');
         _config.SaveConfig();
 
         // Signal to save settings (will be handled by MainWindowViewModel)
