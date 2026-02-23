@@ -13,13 +13,24 @@ public class DiffBackup : Backup
         // Create the timestamped folder
         string destinationPath = _createTimestampedFolder("Differential");
 
-        string[] filesToCopy = _getFilesList();
+        string[] notCriticalFiles;
+        
+        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
+        
+        
 
-        // Initialize backup info data
-        _backupInfo.TotalFiles = filesToCopy.Length;
+        // Initialize the progress counter
+        _backupInfo.TotalFiles = notCriticalFiles.Length;
         _backupInfo.CurrentFile = 0;
+        
+        foreach (string file in criticalFiles)
+        {
+            _backupFile(file, destinationPath);
+        }
+        
+        _isCriticalFileFinised = true;
 
-        foreach (string file in filesToCopy)
+        foreach (string file in notCriticalFiles)
         {
             _backupFile(file, destinationPath);
         }

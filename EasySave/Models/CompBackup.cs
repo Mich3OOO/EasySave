@@ -9,14 +9,24 @@ public class CompBackup : Backup    // Class representing a complete backup oper
         string destinationPath = _createTimestampedFolder("Complete");
 
         // Get the list of all files
-        string[] files = _getFilesList();
+        string[] notCriticalFiles;
+        
+        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
+        
+        
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = files.Length;
+        _backupInfo.TotalFiles = notCriticalFiles.Length;
         _backupInfo.CurrentFile = 0;
-
+        
+        foreach (string file in criticalFiles)
+        {
+            _backupFile(file, destinationPath);
+        }
+        
+        _isCriticalFileFinised = true;
         // Loop the files and execute copy
-        foreach (string file in files)
+        foreach (string file in notCriticalFiles)
         {
             // backup file
             _backupFile(file, destinationPath);

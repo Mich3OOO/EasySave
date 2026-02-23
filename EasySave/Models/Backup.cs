@@ -12,6 +12,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     
     private bool _continue = true;
     private bool _cancel = false;
+    protected bool _isCriticalFileFinised = false;
 
     public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
     {
@@ -27,6 +28,8 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     }
 
     public abstract void ExecuteBackup();
+    public bool isCriticalCopyFinished() => _isCriticalFileFinised;
+
     public void Pause()
     {
         _continue = false;
@@ -149,6 +152,29 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     {
         // Return all files to backup
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
+    }
+    protected string[] _separateCriticalFiles(out string[] notCriticalFiles)
+    {
+        
+        string[] criticalExtensions = Config.S_GetInstance().CriticalExtensions;
+        List<string> allFiles = new List<string>(_getFilesList()); 
+        List<string> criticalfiles = new List<string>(_getFilesList());
+
+        for (int i = allFiles.Count - 1; i >= 0; i--)
+        {
+            foreach (string extension in criticalExtensions)
+            {
+                if (allFiles[i].EndsWith(extension))
+                {
+                    criticalfiles.Add(allFiles[i]);
+                    allFiles.RemoveAt(i);
+                }
+            }
+        }
+
+        notCriticalFiles = allFiles.ToArray();
+        return criticalfiles.ToArray();
+        
     }
 
     protected void _updateStatus(CopyInfo newCopyInfo)  // Update the backup information and notify the EventManager
