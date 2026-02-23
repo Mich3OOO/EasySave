@@ -183,6 +183,10 @@
     "en": "Light Mode",
     "fr": "Mode clair"
   },
+  "API_URL": {
+    "en": "URL of your API",
+    "fr": "URL de votre API"
+  },
   "file_size": {
     "en": "Large file threshold (KB)",
     "fr": "Seuil fichier volumineux (Ko)"
@@ -190,5 +194,9 @@
   "explain_file_size": {
     "en": "Value at which a file is considered large",
     "fr": "Valeur pour laquelle un fichier est considérer comme volumineux"
+  },
+  "critical_extensions": {
+    "en": "Critical files",
+    "fr": "Fichiers critiques"
   }
 }

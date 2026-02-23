@@ -7,6 +7,7 @@ class JobManager:IEventListener
 {
     private static JobManager s_Instance;
     private Dictionary<string,IBackup> _runningJobs;
+    private object _locker = new object();
 
     private JobManager()
     {
@@ -49,5 +50,18 @@ class JobManager:IEventListener
         {
             _runningJobs.Remove(data.SavedJobInfo.Name);
         }
+    }
+    
+    public bool canRunNotCriticalJobs()
+    {
+        bool canRun = true;
+        foreach (IBackup backup in _runningJobs.Values)
+        {
+            lock (_locker)
+            {
+                canRun &= backup.isCriticalCopyFinished();
+            }
+        }
+        return canRun;
     }
 }

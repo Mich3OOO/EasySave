@@ -6,18 +6,32 @@ public class CompBackup : Backup    // Class representing a complete backup oper
 
     public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a complete backup, creating a timestamped folder and copying all files from the source to the destination
     {
+        JobManager jobManager = JobManager.GetInstance();
         string destinationPath = _createTimestampedFolder("Complete");
-
         // Get the list of all files
-        string[] files = _getFilesList();
+        string[] notCriticalFiles;
+        
+        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
+        
+        
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = files.Length;
+        _backupInfo.TotalFiles = notCriticalFiles.Length;
         _backupInfo.CurrentFile = 0;
-
-        // Loop the files and execute copy
-        foreach (string file in files)
+        
+        foreach (string file in criticalFiles)
         {
+            _backupFile(file, destinationPath);
+        }
+        
+        _isCriticalFileFinised = true;
+        // Loop the files and execute copy
+        foreach (string file in notCriticalFiles)
+        {
+            while (!jobManager.canRunNotCriticalJobs())
+            {
+                
+            }
             // backup file
             _backupFile(file, destinationPath);
         }

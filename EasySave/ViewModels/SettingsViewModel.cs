@@ -29,6 +29,8 @@ public class SettingsViewModel : ViewModelBase
     public string T_explain_file_size => _languageViewModel.GetTranslation("explain_file_size");
     public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
     public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
+    public string T_API_URL => _languageViewModel.GetTranslation("API_URL");
+    public string T_critical_extensions => _languageViewModel.GetTranslation("critical_extensions");
 
     /// <summary>
     /// Command to save the settings.
@@ -46,8 +48,10 @@ public class SettingsViewModel : ViewModelBase
     public LogsFormats SelectedLogsFormats { get; set; }
     public List<LogsFormats> LogsFormatsList { get; set; }
 
-    public string Extension { get; set; }
-    public string Softwares { get; set; }
+    public string Extension { get; set; } = "";
+    public string Softwares { get; set; } = "";
+    public string CriticalExtensions { get; set; } = "";
+    public string API_URL { get; set; } = "";
 
     private LogsMods _selectedLogsMods;
     public LogsMods SelectedLogsMods
@@ -140,6 +144,8 @@ public class SettingsViewModel : ViewModelBase
         SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
+        CriticalExtensions = string.Join(",", _config.CriticalExtensions);
+        API_URL = _config.API_URL;
 
         MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
 
@@ -165,9 +171,11 @@ public class SettingsViewModel : ViewModelBase
         _languageViewModel.SetLanguage(SelectedLanguage);
         _config.Language = SelectedLanguage;
         _config.LogsFormat = SelectedLogsFormats;
-        _config.ExtensionsToEncrypt = Extension.Split(',');
+        _config.ExtensionsToEncrypt = Extension.ToLower().Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
+        _config.CriticalExtensions = CriticalExtensions.ToLower().Split(',');
+        _config.API_URL = API_URL;
         _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo;
         _config.SaveConfig();
 
