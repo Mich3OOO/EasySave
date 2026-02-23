@@ -84,7 +84,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
     private void OnLanguageChanged()
     {
-        OnPropertyChanged(nameof(T_save_sobs));
+        OnPropertyChanged(nameof(T_save_jobs));
         OnPropertyChanged(nameof(T_create_job));
         OnPropertyChanged(nameof(T_settings_tooltip));
     }
