@@ -44,6 +44,8 @@ public class SettingsViewModel : ViewModelBase
 
     public string Extension { get; set; }
     public string Softwares { get; set; }
+    public string Extension { get; set; } = "";
+    public string Softwares { get; set; } = "";
 
     private LogsMods _selectedLogsMods;
     public LogsMods SelectedLogsMods
