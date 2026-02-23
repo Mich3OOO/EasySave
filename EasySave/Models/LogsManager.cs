@@ -52,7 +52,7 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         }
         if (currentLogsMods == LogsMods.Centralized || currentLogsMods == LogsMods.Both)
         {
-            _ = SendLogToApiAsync(logText, formatExtension); // fire-and-forget, pas d'attente
+            _ = SendLogToApiAsync(logText, formatExtension, _config.API_URL); // fire-and-forget, pas d'attente
         }
         Console.WriteLine("[LogsManager] Update: Fin");
     }
@@ -122,14 +122,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
     }
 
     // Centralisation of logs in Docker
-    public async Task SendLogToApiAsync(string logContent, string format)
+    public async Task SendLogToApiAsync(string logContent, string format, string url)
     {
         try
         {
             // Create a new HttpClient instance for sending the request
             using var httpClient = new HttpClient();
             StringContent content;
-            string url = "http://localhost:8080/api/logs";
 
             // Set the appropriate Content-Type header based on the log format
             if (format == "json")

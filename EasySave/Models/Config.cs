@@ -20,6 +20,8 @@ class ConfigStructure // This class is used to serialize and deserialize the con
     [JsonInclude]
     public string[] Softwares = {};
     [JsonInclude]
+    public string API_URL = "http://localhost:8080/api/logs";
+    [JsonInclude]
     public int MaxParallelLargeFileSizeKo = 10240;
 
 
@@ -31,6 +33,8 @@ class ConfigStructure // This class is used to serialize and deserialize the con
         ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
         SavedJobs = _config.SavedJobs;
         Softwares = _config.Softwares;
+        API_URL = _config.API_URL;
+
         MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
     }
     public ConfigStructure()
@@ -46,6 +50,7 @@ public class Config // Class representing the configuration of the application, 
     private LogsMods _logsMods;
     private string[] _extensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
     private string[] _softwares;
+    private string _API_URL;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
@@ -55,6 +60,7 @@ public class Config // Class representing the configuration of the application, 
     public LogsMods LogsMods { get => _logsMods; set => _logsMods = value; }
     public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
     public string[] Softwares { get => _softwares; set => _softwares = value; }
+    public string API_URL { get => _API_URL; set => _API_URL = value; }
     public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
     public int MaxParallelLargeFileSizeKo { get => _maxParallelLargeFileSizeKo; set => _maxParallelLargeFileSizeKo = value; }
 
@@ -118,6 +124,7 @@ public class Config // Class representing the configuration of the application, 
                 _extensionsToEncrypt = config.ExtensionsToEncrypt;
                 _savedJobs = config.SavedJobs;
                 _softwares = config.Softwares ?? Array.Empty<string>();
+                _API_URL = config.API_URL ?? "http://localhost:8080/api/logs";
                 _maxParallelLargeFileSizeKo = config.MaxParallelLargeFileSizeKo;
             }
 
@@ -131,6 +138,7 @@ public class Config // Class representing the configuration of the application, 
         _savedJobs = new List<SavedJob>();
         _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
         _softwares = new string[] {};
+        _API_URL = "http://localhost:8080/api/logs";
         _maxParallelLargeFileSizeKo = 10240;
     }
 

@@ -28,6 +28,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_size_file => _languageViewModel.GetTranslation("file_size");
     public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
     public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
+    public string T_API_URL => _languageViewModel.GetTranslation("API_URL");
 
     /// <summary>
     /// Command to save the settings.
@@ -47,6 +48,7 @@ public class SettingsViewModel : ViewModelBase
 
     public string Extension { get; set; }
     public string Softwares { get; set; }
+    public string API_URL { get; set; }
 
     private LogsMods _selectedLogsMods;
     public LogsMods SelectedLogsMods
@@ -139,6 +141,7 @@ public class SettingsViewModel : ViewModelBase
         SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
+        API_URL = _config.API_URL;
 
         MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
 
@@ -167,6 +170,7 @@ public class SettingsViewModel : ViewModelBase
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
+        _config.API_URL = API_URL;
         _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo;
         _config.SaveConfig();
 
