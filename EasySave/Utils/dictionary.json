@@ -160,27 +160,31 @@
     "fr": "Le mot de passe ne respecte pas la politique de sécurité : minimum 12 caractères, dont au moins une majuscule, une minuscule, un caractère spécial et un chiffre."
   },
   "!complete_backup": {
-      "en": "Can't find a complete backup",
-      "fr": "Nous ne pouvons pas trouver de sauvegarde complète"
+    "en": "Can't find a complete backup",
+    "fr": "Nous ne pouvons pas trouver de sauvegarde complète"
   },
   "logs_mod_local": {
-      "en": "Local",
-      "fr": "Local"
+    "en": "Local",
+    "fr": "Local"
   },
   "logs_mod_centralized": {
-      "en": "Centralized",
-      "fr": "Centralisé"
+    "en": "Centralized",
+    "fr": "Centralisé"
   },
   "logs_mod_both": {
-      "en": "Both",
-      "fr": "Local et centralisé"
+    "en": "Both",
+    "fr": "Local et centralisé"
   },
   "dark_mode": {
-      "en": "Dark Mode",
-      "fr": "Mode sombre"
+    "en": "Dark Mode",
+    "fr": "Mode sombre"
   },
   "light_mode": {
-      "en": "Light Mode",
-      "fr": "Mode clair"
+    "en": "Light Mode",
+    "fr": "Mode clair"
+  },
+  "file_size": {
+    "en": "File size limit (KB)",
+    "fr": "Taille limite fichier (Ko)"
   }
 }
