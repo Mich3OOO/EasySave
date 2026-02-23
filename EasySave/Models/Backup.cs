@@ -4,6 +4,7 @@ using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
+
 public abstract class Backup : IBackup  // Abstract class representing a backup operation, implementing the IBackup interface
 {
     protected SavedJob _savedJob;
