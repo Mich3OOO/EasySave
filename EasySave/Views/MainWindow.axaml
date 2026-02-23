@@ -58,7 +58,7 @@
 
 		<Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
 			<Grid RowDefinitions="Auto, *">
-				<TextBlock Grid.Row="0" Text="{Binding T_save_sobs}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+				<TextBlock Grid.Row="0" Text="{Binding T_save_jobs}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
 				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
 					<ListBox.ItemTemplate>

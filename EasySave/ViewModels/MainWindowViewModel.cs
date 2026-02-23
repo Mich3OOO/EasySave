@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -21,7 +21,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
     // Localization/Language support
     public LanguageViewModel _languageViewModel { get; }
-    public string T_save_sobs => _languageViewModel.GetTranslation("save_jobs");
+    public string T_save_jobs => _languageViewModel.GetTranslation("save_jobs");
     public string T_create_job => _languageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
 
