@@ -13,7 +13,7 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     private string _password;
     
     private bool _continue = true;
-    private bool _cancel = false;
+    protected bool _cancel = false;
     protected bool _isCriticalFileFinised = false;
 
     protected static readonly SemaphoreSlim LargeFileSemaphore = new SemaphoreSlim(1, 1);
