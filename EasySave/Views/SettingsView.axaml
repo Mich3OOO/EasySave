@@ -68,6 +68,11 @@
                         <TextBlock Text="{Binding T_extensions_to_encrypt}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
                         <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding Extension}"/>
                     </StackPanel>
+                    
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_critical_extensions}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                        <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding CriticalExtensions}"/>
+                    </StackPanel>
 
                     <StackPanel Spacing="5">
                         <TextBlock Text="{Binding T_size_file}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>

@@ -190,5 +190,9 @@
   "file_size": {
     "en": "File size limit (KB)",
     "fr": "Taille limite fichier (Ko)"
+  },
+  "critical_extensions": {
+    "en": "Critical files",
+    "fr": "Fichiers critiques"
   }
 }

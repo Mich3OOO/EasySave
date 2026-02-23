@@ -10,17 +10,33 @@ public class DiffBackup : Backup
 
     public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a differential backup, creating a timestamped folder and copying only the files that have been modified since the last complete backup
     {
+        JobManager jobManager = JobManager.GetInstance();
         // Create the timestamped folder
         string destinationPath = _createTimestampedFolder("Differential");
 
-        string[] filesToCopy = _getFilesList();
+        string[] notCriticalFiles;
+        
+        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
+        
+        
 
-        // Initialize backup info data
-        _backupInfo.TotalFiles = filesToCopy.Length;
+        // Initialize the progress counter
+        _backupInfo.TotalFiles = notCriticalFiles.Length;
         _backupInfo.CurrentFile = 0;
-
-        foreach (string file in filesToCopy)
+        
+        foreach (string file in criticalFiles)
         {
+            _backupFile(file, destinationPath);
+        }
+        
+        _isCriticalFileFinised = true;
+
+        foreach (string file in notCriticalFiles)
+        {
+            while (!jobManager.canRunNotCriticalJobs())
+            {
+                
+            }
             _backupFile(file, destinationPath);
         }
     }
