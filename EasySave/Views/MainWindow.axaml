@@ -139,6 +139,9 @@
 					<DataTemplate DataType="{x:Type vm:RunJobsViewModel}">
 						<v:RunJobsView/>
 					</DataTemplate>
+					<DataTemplate DataType="{x:Type vm:JobsStateViewModel}">
+						<v:JobsStateView/>
+					</DataTemplate>
 				</ContentControl.DataTemplates>
 			</ContentControl>
 		</Border>
