@@ -3,99 +3,100 @@
              xmlns:vm="using:EasySave.ViewModels"
              x:Class="EasySave.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20" MaxWidth="500" VerticalAlignment="Center">
 
-    <Grid Margin="20" MaxWidth="500" VerticalAlignment="Center">
+            <Border Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource BorderMediumBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="25" 
+                    BoxShadow="0 4 10 0 #00000000">
 
-        <Border Background="{DynamicResource CardBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderMediumBrush}" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="25" 
-                BoxShadow="0 4 10 0 #00000000">
+                <StackPanel Spacing="15">
 
-            <StackPanel Spacing="15">
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
-                    <TextBlock Text="⚙️" Classes="emoji" FontSize="24" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding T_settings}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_language_selection}"  Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                    <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LanguagesList}" SelectedValue="{Binding SelectedLanguage}">
-
-                    </ComboBox>
-                </StackPanel>
-
-                <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_logs_format}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                    <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsFormatsList}" SelectedValue="{Binding SelectedLogsFormats}">
-                    </ComboBox>
-                </StackPanel>
-
-                <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_logs_mods}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                    <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsModsList}" SelectedItem="{Binding SelectedLogsMods}"/>
-                </StackPanel>
-
-                <Separator Height="1" Background="#333333" Margin="0,5"/>
-                <StackPanel Spacing="5">
-                    <TextBlock Text="Theme" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                    <ToggleSwitch IsChecked="{Binding IsDarkMode}" 
-                                  OffContent="Light Mode" 
-                                  OnContent="Dark Mode" 
-                                  Foreground="{DynamicResource TextPrimaryBrush}" />
-                </StackPanel>
-
-                <Separator Height="1" Background="{DynamicResource BorderMediumBrush}" Margin="0,5"/>
-
-                <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_business_software}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                    <TextBox Watermark="Ex: Calculator.exe, Notepad.exe" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding Softwares}"/>
-                    <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBlock Text="⚠️" Classes="emoji" Foreground="{DynamicResource DangerTextBrush}" FontSize="12"/>
-                        <TextBlock Text="{Binding T_business_software_detected}" Foreground="{DynamicResource DangerTextBrush}" FontSize="11" FontStyle="Italic"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,0,0,10">
+                        <TextBlock Text="⚙️" Classes="emoji" FontSize="24" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding T_settings}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                     </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_language_selection}"  Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LanguagesList}" SelectedValue="{Binding SelectedLanguage}">
+
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_logs_format}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsFormatsList}" SelectedValue="{Binding SelectedLogsFormats}">
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_logs_mods}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsModsList}" SelectedItem="{Binding SelectedLogsMods}"/>
+                    </StackPanel>
+
+                    <Separator Height="1" Background="#333333" Margin="0,5"/>
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="Theme" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <ToggleSwitch IsChecked="{Binding IsDarkMode}" 
+                                      OffContent="Light Mode" 
+                                      OnContent="Dark Mode" 
+                                      Foreground="{DynamicResource TextPrimaryBrush}" />
+                    </StackPanel>
+
+                    <Separator Height="1" Background="{DynamicResource BorderMediumBrush}" Margin="0,5"/>
+
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_business_software}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBox Watermark="Ex: Calculator.exe, Notepad.exe" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding Softwares}"/>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="⚠️" Classes="emoji" Foreground="{DynamicResource DangerTextBrush}" FontSize="12"/>
+                            <TextBlock Text="{Binding T_business_software_detected}" Foreground="{DynamicResource DangerTextBrush}" FontSize="11" FontStyle="Italic"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding T_extensions_to_encrypt}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
+                        <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding Extension}"/>
+                    </StackPanel>
+
+                    <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                        <Button Grid.Column="0" 
+                                Content="{Binding T_cancel}" 
+                                Command="{Binding CancelCommand}"
+                                HorizontalAlignment="Stretch" 
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Height="45"
+                                Margin="0,0,10,0"
+                                CornerRadius="6"
+                                Background="Transparent" 
+                                BorderBrush="{DynamicResource BorderMediumBrush}"
+                                BorderThickness="1"
+                                Foreground="{DynamicResource TextSecondaryBrush}"
+                                FontWeight="Bold"
+                                Cursor="Hand"/>
+
+                        <Button Grid.Column="1" 
+                                Content="{Binding T_save_and_quit}" 
+                                Command="{Binding SaveCommand}"
+                                HorizontalAlignment="Stretch" 
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Height="45"
+                                Margin="10,0,0,0"
+                                CornerRadius="6"
+                                Background="{DynamicResource PrimaryActionBrush}" 
+                                Foreground="{DynamicResource TextInvertedBrush}"
+                                FontWeight="Bold"
+                                Cursor="Hand"/>
+                    </Grid>
                 </StackPanel>
 
-                <StackPanel Spacing="5">
-                    <TextBlock Text="{Binding T_extensions_to_encrypt}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold" />
-                    <TextBox Watermark="Ex: .pdf, .docx, .txt" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding Extension}"/>
-                </StackPanel>
-
-                <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
-                    <Button Grid.Column="0" 
-                            Content="{Binding T_cancel}" 
-                            Command="{Binding CancelCommand}"
-                            HorizontalAlignment="Stretch" 
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Height="45"
-                            Margin="0,0,10,0"
-                            CornerRadius="6"
-                            Background="Transparent" 
-                            BorderBrush="{DynamicResource BorderMediumBrush}"
-                            BorderThickness="1"
-                            Foreground="{DynamicResource TextSecondaryBrush}"
-                            FontWeight="Bold"
-                            Cursor="Hand"/>
-
-                    <Button Grid.Column="1" 
-                            Content="{Binding T_save_and_quit}" 
-                            Command="{Binding SaveCommand}"
-                            HorizontalAlignment="Stretch" 
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Height="45"
-                            Margin="10,0,0,0"
-                            CornerRadius="6"
-                            Background="{DynamicResource PrimaryActionBrush}" 
-                            Foreground="{DynamicResource TextInvertedBrush}"
-                            FontWeight="Bold"
-                            Cursor="Hand"/>
-                </Grid>
-            </StackPanel>
-
-        </Border>
-    </Grid>
+            </Border>
+        </Grid>
+	</ScrollViewer>
 </UserControl>
