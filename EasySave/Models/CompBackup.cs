@@ -21,6 +21,7 @@ public class CompBackup : Backup    // Class representing a complete backup oper
         
         foreach (string file in criticalFiles)
         {
+            if (_cancel) break;
             _backupFile(file, destinationPath);
         }
         
@@ -28,6 +29,7 @@ public class CompBackup : Backup    // Class representing a complete backup oper
         // Loop the files and execute copy
         foreach (string file in notCriticalFiles)
         {
+            if (_cancel) break;
             while (!jobManager.canRunNotCriticalJobs())
             {
                 

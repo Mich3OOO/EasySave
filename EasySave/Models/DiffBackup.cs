@@ -26,6 +26,7 @@ public class DiffBackup : Backup
         
         foreach (string file in criticalFiles)
         {
+            if (_cancel) break;
             _backupFile(file, destinationPath);
         }
         
@@ -33,6 +34,7 @@ public class DiffBackup : Backup
 
         foreach (string file in notCriticalFiles)
         {
+            if (_cancel) break;
             while (!jobManager.canRunNotCriticalJobs())
             {
                 
