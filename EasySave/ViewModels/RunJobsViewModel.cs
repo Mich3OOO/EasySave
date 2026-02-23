@@ -16,7 +16,10 @@ public class RunJobsViewModel : ViewModelBase
     private string _errorMessage = string.Empty;
     
     
-    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
+    /// <summary>
+    /// Used to display validation errors when saving the job settings
+    /// </summary>
+    public string ErrorMessage
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
@@ -30,9 +33,15 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _isDifferential, value);
     }
 
-    public LanguageViewModel _languageViewModel { get; } // Property for the language view model, used to get translations for the UI
+    /// <summary>
+    /// Lnguage view model used to get translations for the UI
+    /// </summary>
+    public LanguageViewModel _languageViewModel { get; }
 
-    public string Password   // Property for the password path, with getter and setter that raises property change notifications
+    /// <summary>
+    /// Password property linked to the password field in the view
+    /// </summary>
+    public string Password
     {
         get => _password;
         set => SetProperty(ref _password, value);
@@ -50,9 +59,16 @@ public class RunJobsViewModel : ViewModelBase
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
 
-    public event Action<bool>? OnResult; // true = Lancer, false = Annuler
+    /// <summary>
+    /// true = Launch, false = Cancel
+    /// </summary>
+    public event Action<bool>? OnResult;
 
-    public RunJobsViewModel(SavedJob job)   //constructor
+    /// <summary>
+    /// Initializes a new instance for the given job.
+    /// </summary>
+    /// <param name="job">The saved job to run.</param>
+    public RunJobsViewModel(SavedJob job)
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
@@ -72,7 +88,10 @@ public class RunJobsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false));
     }
     
-    private void _runBackup()   //private method to run single backup
+    /// <summary>
+    /// Runs a single backup for the current job.
+    /// </summary>
+    private void _runBackup()
     {
         if (Job == null) throw new ArgumentException(T_invalid_backup_id);
         if (!_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
@@ -86,7 +105,13 @@ public class RunJobsViewModel : ViewModelBase
         JobManager.GetInstance().AddJob(Job,backup);
         OnResult?.Invoke(true);
     }
-    private bool _canARunJon(out string processName)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
+
+    /// <summary>
+    /// Checks whether any configured software process is currently running
+    /// </summary>
+    /// <param name="processName">The name of the blocking process</param>
+    /// <returns>true if no blocking process is running; otherwise false</returns>
+    private bool _canARunJon(out string processName)
     {
         Config conf = Config.S_GetInstance();
         Process[] allProcesses = Process.GetProcesses();
@@ -104,7 +129,12 @@ public class RunJobsViewModel : ViewModelBase
         return true;
     }
 
-    // Check if password respect policy
+    /// <summary>
+    /// Checks whether the password meets the required policy
+    /// Min 12 char, with lower, upper, digits and special character
+    /// </summary>
+    /// <param name="password">The password to check</param>
+    /// <returns>true if the password is valid; otherwise false</returns>
     public bool IsPasswordValid(string password)
     {
         if (string.IsNullOrEmpty(password))
