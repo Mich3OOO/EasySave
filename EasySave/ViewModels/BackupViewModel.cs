@@ -46,10 +46,6 @@ public class BackupViewModel : ViewModelBase
 
     public BackupViewModel()    // Constructor initializes commands and loads jobs from config
     {
-        RunJobCommand = new RelayCommand<SavedJob>(RunJob);
-        EditJobCommand = new RelayCommand<SavedJob>(EditJob);
-        DeleteJobCommand = new RelayCommand<SavedJob>(DeleteJob);
-
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
 
@@ -68,27 +64,6 @@ public class BackupViewModel : ViewModelBase
         if (job == null) return;
         // Run the backup with default type (e.g., Complete)
         _runBackup(job.Id, BackupType.Complete);
-    }
-
-    private void EditJob(SavedJob? job) // Method to edit a specific backup job, it takes a SavedJob object as a parameter and opens the edit dialog or navigates to the edit view
-    {
-        if (job == null) return;
-        // TODO: Open edit dialog or navigate to edit view
-        System.Diagnostics.Debug.WriteLine($"Editing job: {job.Name}");
-    }
-
-    private void DeleteJob(SavedJob? job)   // Method to delete a specific backup job, it takes a SavedJob object as a parameter and removes it from the Jobs collection and deletes it from the config
-    {
-        if (job == null) return;
-        Jobs.Remove(job);
-        // TODO: Delete from config
-        // _config.DeleteJob(job.Name);
-        System.Diagnostics.Debug.WriteLine($"Deleted job: {job.Name}");
-    }
-
-    public BackupViewModel(LanguageViewModel languageViewModel)
-    {
-        _languageViewModel = languageViewModel;
     }
 
     private void _runBackup(int jobId, BackupType backupType)   //private method to run single backup

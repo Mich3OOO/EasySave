@@ -184,7 +184,11 @@
     "fr": "Mode clair"
   },
   "file_size": {
-    "en": "File size limit (KB)",
-    "fr": "Taille limite fichier (Ko)"
+    "en": "Large file threshold (KB)",
+    "fr": "Seuil fichier volumineux (Ko)"
+  },
+  "explain_file_size": {
+    "en": "Value at which a file is considered large",
+    "fr": "Valeur pour laquelle un fichier est considérer comme volumineux"
   }
 }
