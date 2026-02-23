@@ -129,10 +129,10 @@ public class SettingsViewModel : ViewModelBase
         _languageViewModel.SetLanguage(SelectedLanguage);
         _config.Language = SelectedLanguage;
         _config.LogsFormat = SelectedLogsFormats;
-        _config.ExtensionsToEncrypt = Extension.Split(',');
+        _config.ExtensionsToEncrypt = Extension.ToLower().Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
-        _config.CriticalExtensions = CriticalExtensions.Split(',');
+        _config.CriticalExtensions = CriticalExtensions.ToLower().Split(',');
         _config.SaveConfig();
 
         // Signal to save settings (will be handled by MainWindowViewModel)
