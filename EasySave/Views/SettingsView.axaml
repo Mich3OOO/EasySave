@@ -42,8 +42,8 @@
                     <StackPanel Spacing="5">
                         <TextBlock Text="Theme" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
                         <ToggleSwitch IsChecked="{Binding IsDarkMode}" 
-                                      OffContent="Light Mode" 
-                                      OnContent="Dark Mode" 
+                                      OffContent="{Binding T_light_mode}" 
+                                      OnContent="{Binding T_dark_mode}" 
                                       Foreground="{DynamicResource TextPrimaryBrush}" />
                     </StackPanel>
 

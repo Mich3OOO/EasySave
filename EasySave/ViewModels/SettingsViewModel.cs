@@ -25,6 +25,8 @@ public class SettingsViewModel : ViewModelBase
     public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
     public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
+    public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
+    public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
 
     /// <summary>
     /// Command to save the settings.
