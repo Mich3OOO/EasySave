@@ -11,23 +11,18 @@ public class Logger
 
     private static Mutex _mutex = new Mutex(false, "logger");
 
+    /// <summary>
+    /// Empty constructor
+    /// </summary>
     private Logger()
     {
-        //throw new NotImplementedException();
-    }
-
-    // Allows to create logs as a text file with "[level] - message"
-    // Is not used by EasySave because logs are requested in JSON
-    public void Log(LogLevel level, string message, string format)
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
     /// Log the data into the file according to the parameters
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="format"></param>
+    /// <param name="message"> Text that will be writen in the file</param>
+    /// <param name="format"> Format of the file (currently json, xml or txt</param>
     public void Log(string message, string format)
     {
         _mutex.WaitOne(); // Wait until the mutex is available
@@ -42,7 +37,10 @@ public class Logger
         }
     }
 
-    // Create a Logger singleton or return the existing one
+    /// <summary>
+    /// Create a Logger singleton or return the existing one
+    /// </summary>
+    /// <returns></returns>
     public static Logger GetInstance()
     {
         lock (_lockObj)
@@ -56,7 +54,11 @@ public class Logger
         }
     }
 
-    // Return the path of the current log file (based on the current date)
+    /// <summary>
+    /// Return the path of the current log file (based on the current date)
+    /// </summary>
+    /// <param name="format"> Format used, it gets applied to the filename </param>
+    /// <returns></returns>
     private string _getFileName(string format)
     {
         Directory.CreateDirectory(_logsPath);
