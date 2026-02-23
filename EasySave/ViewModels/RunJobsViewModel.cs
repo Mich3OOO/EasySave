@@ -9,6 +9,12 @@ namespace EasySave.ViewModels;
 
 public class RunJobsViewModel : ViewModelBase
 {
+    public string T_start_save => LanguageViewModel.GetTranslation("start_save");
+    public string T_save_type => LanguageViewModel.GetTranslation("save_type");
+    public string T_comp => LanguageViewModel.GetTranslation("comp");
+    public string T_confirm_diff => LanguageViewModel.GetTranslation("diff");
+    public string T_password => LanguageViewModel.GetTranslation("password");
+    public string T_enter_password => LanguageViewModel.GetTranslation("enter_password");
     private bool _isDifferential = false;
     private string _password = string.Empty;
     private string _errorMessage = string.Empty;
