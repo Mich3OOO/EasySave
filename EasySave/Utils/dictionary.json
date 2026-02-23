@@ -175,5 +175,9 @@
   "logs_mod_both": {
     "en": "Both",
     "fr": "Local et centralisé"
+  },
+  "file_size": {
+    "en": "File size limit (KB)",
+    "fr": "Taille limite fichier (Ko)"
   }
 }

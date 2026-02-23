@@ -13,6 +13,8 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
     private bool _continue = true;
     private bool _cancel = false;
 
+    protected static readonly SemaphoreSlim LargeFileSemaphore = new SemaphoreSlim(1, 1);
+
     public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
     {
         _password = pw;
@@ -54,19 +56,31 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
 
     protected void _backupFile(string sourceFilePath, string destinationPath)   // Method to backup a single file, handling encryption if needed, and updating the backup status
     {
+        long fileSize = 0;
+        bool isLargeFile = false;
+        Config config = Config.S_GetInstance();
+
         try
         {
             // Prepare copy information
             CopyInfo copyInfo = new CopyInfo();
             copyInfo.Source = sourceFilePath;
-            copyInfo.Size = new FileInfo(sourceFilePath).Length;
+            fileSize = new FileInfo(sourceFilePath).Length;
+            copyInfo.Size = fileSize;
+
+            // Déterminer si le fichier est > n Ko
+            isLargeFile = (fileSize > config.MaxParallelLargeFileSizeKo * 1024);
+            if (isLargeFile)
+            {
+                Console.WriteLine($"[DEBUG] Début transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
+                LargeFileSemaphore.Wait();
+            }
 
             // Calculate relative path to maintain structure
             string relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
 
             // Construct full target path using specific destination folder
             string targetFilePath = Path.Combine(destinationPath, relativePath);
-
 
             // Create destination directory if it doesn't exist
             string? targetDirectory = Path.GetDirectoryName(targetFilePath);
@@ -79,7 +93,6 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
             copyInfo.StartTime = DateTime.Now;
 
             // Check if the file need to be encrypt
-            Config config = Config.S_GetInstance();
             if (config.ExtensionsToEncrypt.Contains(Path.GetExtension(targetFilePath)))
             {
                 // Add .7z to the file path end Check Encrypt time
@@ -102,12 +115,20 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
 
             while (!_continue)
             {
-                
+                // Pause
             }
         }
         catch (Exception ex)    // Handle any exceptions that occur during the file backup process
         {
             Console.WriteLine($"Error copying file {sourceFilePath}: {ex.Message}");
+        }
+        finally
+        {
+            if (isLargeFile)
+            {
+                Console.WriteLine($"[DEBUG] Fin transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
+                LargeFileSemaphore.Release();
+            }
         }
     }
 

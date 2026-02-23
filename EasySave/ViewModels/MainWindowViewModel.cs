@@ -25,6 +25,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public string T_create_job => _languageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
 
+
     // Navigation - holds the current view model being displayed
     private ViewModelBase _currentViewModel;
     public ViewModelBase? CurrentViewModel
