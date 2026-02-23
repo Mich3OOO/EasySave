@@ -71,7 +71,11 @@
                                  Foreground="{DynamicResource TextPrimaryBrush}"
                                  CornerRadius="6"
                                  Text="{Binding MaxParallelLargeFileSizeKo}" />
-                    </StackPanel>
+						    <StackPanel Orientation="Horizontal" Spacing="5">
+						        <TextBlock Text="⚠️" Classes="emoji" Foreground="{DynamicResource DangerTextBrush}" FontSize="12"/>
+						        <TextBlock Text="{Binding T_explain_file_size}" Foreground="{DynamicResource DangerTextBrush}" FontSize="11" FontStyle="Italic"/>
+						    </StackPanel>
+						</StackPanel>
 
                     <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
                         <Button Grid.Column="0" 

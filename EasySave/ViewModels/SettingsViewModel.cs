@@ -26,6 +26,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
     public string T_size_file => _languageViewModel.GetTranslation("file_size");
+    public string T_explain_file_size => _languageViewModel.GetTranslation("explain_file_size");
 
     /// <summary>
     /// Command to save the settings.
