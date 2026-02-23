@@ -6,7 +6,6 @@ public class ConfigViewModel    // Class representing the config view model, it 
 {
     private Config _config;
 
-
     public ConfigViewModel()    // Constructor
     {
         _config = Config.S_GetInstance();
@@ -28,6 +27,11 @@ public class ConfigViewModel    // Class representing the config view model, it 
     public void SetLogsMods(LogsMods mods)    // Method to change the selected logs format, it updates the LogsFormat property of the Config class
     {
         _config.LogsMods = mods;
+    }
+
+    public void SetApiUrl(string url)
+    {
+        _config.API_URL = url;
     }
 
     public void ChangeJobName(string oldJobName, string newJobName) // Method to change the name of a saved job, it takes the old name of the job to update and the new name

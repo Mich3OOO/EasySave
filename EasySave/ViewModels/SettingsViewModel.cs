@@ -27,6 +27,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
     public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
     public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
+    public string T_API_URL => _languageViewModel.GetTranslation("API_URL");
 
     /// <summary>
     /// Command to save the settings.
@@ -46,6 +47,7 @@ public class SettingsViewModel : ViewModelBase
 
     public string Extension { get; set; }
     public string Softwares { get; set; }
+    public string API_URL { get; set; }
 
     private LogsMods _selectedLogsMods;
     public LogsMods SelectedLogsMods
@@ -124,6 +126,7 @@ public class SettingsViewModel : ViewModelBase
         SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
+        API_URL = _config.API_URL;
 
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
@@ -150,6 +153,7 @@ public class SettingsViewModel : ViewModelBase
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
+        _config.API_URL = API_URL;
         _config.SaveConfig();
 
         // Signal to save settings (will be handled by MainWindowViewModel)
