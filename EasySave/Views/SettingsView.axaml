@@ -35,7 +35,7 @@
 
                     <StackPanel Spacing="5">
                         <TextBlock Text="{Binding T_logs_mods}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                        <ComboBox SelectedIndex="0" HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsModsList}" SelectedItem="{Binding SelectedLogsMods}"/>
+                        <ComboBox HorizontalAlignment="Stretch" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" ItemsSource="{Binding LogsModsList}" SelectedItem="{Binding SelectedLogsModsItem}"/>
                     </StackPanel>
 
                     <Separator Height="1" Background="#333333" Margin="0,5"/>

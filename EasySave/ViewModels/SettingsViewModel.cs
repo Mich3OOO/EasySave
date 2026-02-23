@@ -59,8 +59,8 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-    private List<LogsMods> _logsModsList = new List<LogsMods>();
-    public List<LogsMods> LogsModsList
+    private List<LogsModsItem> _logsModsList = new List<LogsModsItem>();
+    public List<LogsModsItem> LogsModsList
     {
         get => _logsModsList;
         set
@@ -69,6 +69,22 @@ public class SettingsViewModel : ViewModelBase
             {
                 _logsModsList = value;
                 OnPropertyChanged(nameof(LogsModsList));
+            }
+        }
+    }
+
+    private LogsModsItem? _selectedLogsModsItem;
+    public LogsModsItem? SelectedLogsModsItem
+    {
+        get => _selectedLogsModsItem;
+        set
+        {
+            if (_selectedLogsModsItem != value)
+            {
+                _selectedLogsModsItem = value;
+                if (value != null)
+                    SelectedLogsMods = value.Value;
+                OnPropertyChanged(nameof(SelectedLogsModsItem));
             }
         }
     }
@@ -109,7 +125,10 @@ public class SettingsViewModel : ViewModelBase
 
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
-        LogsModsList = Enum.GetValues(typeof(LogsMods)).Cast<LogsMods>().ToList();
+        LogsModsList = Enum.GetValues(typeof(LogsMods)).Cast<LogsMods>()
+            .Select(m => new LogsModsItem(m, GetLogsModTranslation(m)))
+            .ToList();
+        SelectedLogsModsItem = LogsModsList.FirstOrDefault(i => i.Value == _config.LogsMods);
 
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
@@ -141,6 +160,14 @@ public class SettingsViewModel : ViewModelBase
         OnCancelRequested?.Invoke();
     }
 
+    private string GetLogsModTranslation(LogsMods mod) => mod switch
+    {
+        LogsMods.Local => _languageViewModel.GetTranslation("logs_mod_local"),
+        LogsMods.Centralized => _languageViewModel.GetTranslation("logs_mod_centralized"),
+        LogsMods.Both => _languageViewModel.GetTranslation("logs_mod_both"),
+        _ => mod.ToString()
+    };
+
     /// <summary>
     /// Event raised when the user wants to save the settings.
     /// </summary>
@@ -150,4 +177,18 @@ public class SettingsViewModel : ViewModelBase
     /// Event raised when the user wants to close the settings view without saving.
     /// </summary>
     public event Action? OnCancelRequested;
+}
+
+public class LogsModsItem
+{
+    public LogsMods Value { get; }
+    public string DisplayName { get; }
+
+    public LogsModsItem(LogsMods value, string displayName)
+    {
+        Value = value;
+        DisplayName = displayName;
+    }
+
+    public override string ToString() => DisplayName;
 }
