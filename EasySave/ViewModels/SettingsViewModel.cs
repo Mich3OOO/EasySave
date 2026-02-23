@@ -25,6 +25,7 @@ public class SettingsViewModel : ViewModelBase
     public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
     public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
     public string T_cancel => _languageViewModel.GetTranslation("cancel");
+    public string T_size_file => _languageViewModel.GetTranslation("file_size");
     public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
     public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
 
@@ -111,7 +112,21 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-    
+    private int _maxParallelLargeFileSizeKo;
+    public int MaxParallelLargeFileSizeKo
+    {
+        get => _maxParallelLargeFileSizeKo;
+        set
+        {
+            if (_maxParallelLargeFileSizeKo != value)
+            {
+                _maxParallelLargeFileSizeKo = value;
+                OnPropertyChanged(nameof(MaxParallelLargeFileSizeKo));
+            }
+        }
+    }
+
+
     private Config _config = Config.S_GetInstance();
 
     public SettingsViewModel()
@@ -124,6 +139,8 @@ public class SettingsViewModel : ViewModelBase
         SelectedLogsMods = _config.LogsMods;
         Extension = string.Join(",", _config.ExtensionsToEncrypt);
         Softwares = string.Join(",", _config.Softwares);
+
+        MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
 
         LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
         LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
@@ -150,6 +167,7 @@ public class SettingsViewModel : ViewModelBase
         _config.ExtensionsToEncrypt = Extension.Split(',');
         _config.Softwares = Softwares.Split(',');
         _config.LogsMods = SelectedLogsMods;
+        _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo;
         _config.SaveConfig();
 
         // Signal to save settings (will be handled by MainWindowViewModel)

@@ -76,11 +76,11 @@
 										<TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="Bold"/>
 										<StackPanel Orientation="Vertical" Margin="0,3,0,0">
 											<StackPanel Orientation="Horizontal">
-												<TextBlock Text="Source: " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+												<TextBlock Text="Source " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
 												<TextBlock Text="{Binding Source, Converter={StaticResource TruncateConverter}}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
 											</StackPanel>
 											<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-												<TextBlock Text="Cible: " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
+												<TextBlock Text="Destination " Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
 												<TextBlock Text="{Binding Destination, Converter={StaticResource TruncateConverter}}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
 											</StackPanel>
 										</StackPanel>
@@ -108,7 +108,7 @@
 		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
 			<Border Grid.Column="0"
                     IsVisible="{Binding IsStatusVisible}"
-                    Background="{DynamicResource SuccessBackgroundBrush}"
+                    Background="{DynamicResource SuccessBrush}"
                     Padding="15,8"
                     CornerRadius="6"
                     HorizontalAlignment="Left"
