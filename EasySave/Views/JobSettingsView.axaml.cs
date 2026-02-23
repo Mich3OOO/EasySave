@@ -37,12 +37,31 @@ public partial class JobSettingsView : UserControl
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel == null) return null;
 
-        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions  // use OpenFolderPickerAsync for folder selection
         {
             Title = title,
             AllowMultiple = false
         });
 
-        return folders.Count > 0 ? folders[0].Path.LocalPath : null;
+        if (folders.Count > 0)  // we check if at least one folder was selected
+        {
+            var uri = folders[0].Path;
+
+            try
+            {
+                if (uri.IsAbsoluteUri)  // If it's a valid URI, we can extract the local path
+                {
+                    var path = uri.LocalPath;
+                    return !string.IsNullOrEmpty(path) ? path : uri.AbsolutePath;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // If the path is not a valid URI, return it as is
+            }
+
+            return uri.ToString();
+        }
+        return null;
     }
 }
