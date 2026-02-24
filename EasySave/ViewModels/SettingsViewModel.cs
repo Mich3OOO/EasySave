@@ -15,7 +15,6 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class SettingsViewModel : ViewModelBase
 {
-    public LanguageViewModel LanguageViewModel { get; }
     public string T_settings => LanguageViewModel.GetTranslation("settings_menu");
     public string T_language_selection => LanguageViewModel.GetTranslation("language_selection");
     public string T_logs_format => LanguageViewModel.GetTranslation("logs_format");
@@ -134,9 +133,6 @@ public class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel()
     {
-        //string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
-
         SelectedLanguage = _config.Language;
         SelectedLogsFormats = _config.LogsFormat;
         SelectedLogsMods = _config.LogsMods;

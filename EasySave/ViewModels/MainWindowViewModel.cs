@@ -24,8 +24,6 @@ public class MainWindowViewModel : ViewModelBase
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
     private readonly JobManager _jobManager =  JobManager.GetInstance();
 
-    // Localization/Language support
-    public LanguageViewModel LanguageViewModel { get; }
     public string T_save_jobs => LanguageViewModel.GetTranslation("save_jobs");
     public string T_create_job => LanguageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
@@ -89,9 +87,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        //var dictionaryPath =
-        //    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         LanguageViewModel.LanguageChanged += OnLanguageChanged;
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);

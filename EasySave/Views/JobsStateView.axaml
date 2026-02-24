@@ -9,7 +9,7 @@
             
             <Grid Grid.Row="0" Margin="0,0,0,20">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Progression des sauvegardes" FontSize="20" FontWeight="Bold" 
+                    <TextBlock Text="{Binding T_saves_progression}" FontSize="20" FontWeight="Bold" 
                                Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
@@ -28,7 +28,7 @@
                                                    FontSize="16" FontWeight="Bold"/>
                                         <Border IsVisible="{Binding IsFinished}" Background="{DynamicResource SuccessBrush}" 
                                                 CornerRadius="4" Padding="6,2">
-                                            <TextBlock Text="Terminée ✅" Foreground="{DynamicResource TextInvertedBrush}" FontSize="12"/>
+                                            <TextBlock Text="{Binding T_finished}" Foreground="{DynamicResource TextInvertedBrush}" FontSize="12"/>
                                         </Border>
                                     </StackPanel>
 
