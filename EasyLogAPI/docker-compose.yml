@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
   api:
-    build: .
+    build:
+      context: ..
+      dockerfile: EasyLogAPI/Dockerfile
     container_name: easylog_api
     ports:
       - "8080:8080"

@@ -1,55 +1,88 @@
-# EasySave - Sauvegarde ProSoft
+# EasySave - ProSoft Backup
 
 ![C#](https://img.shields.io/badge/C%23-11-239120)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![WPF](https://img.shields.io/badge/WPF-MVVM-blue)
 ![Visual Studio](https://img.shields.io/badge/Visual_Studio-2026-purple)
 
-## Contexte du Projet
+## Project's Context
 
-Projet du cursus A3 FISA INFO Bloc Génie Logiciel
+A3 curriculum project for FISAI in the Software Engineering block
 
-Cest une solution de sauvegarde destinée à être commercialisée. Le projet suit un cycle de développement itératif simulant une évolution logicielle réelle, passant d'une application Console à une interface graphique complète avec gestion du parallélisme.
+EasySave is is a backup solution aiming for commercialization. The project followed an iterative development cycle simulating real software evolution, transitioning from a Console application to a full graphical interface with parallelism management.
 
-## Fonctionnalités Principales
+## Main Functionnality
 
-L'application permet de gérer des travaux de sauvegarde (complets ou différentiels) avec une gestion précise des logs et des états en temps réel.
+The app allows de manager backup jobs (complete or differential) with log management and real-time state tracking.
 
-### Capacités Générales
+### General Features
 
-* Création de travaux de sauvegarde : Source, Cible, Type (Complet/Différentiel).
-* Multilingue : Interface disponible en Français et Anglais.
-* Journalisation (Logging) : Historique des actions dans `EasyLog.dll` (JSON/XML).
-* État en temps réel (State) : Suivi de la progression des sauvegardes (JSON).
-* Ligne de commande : Exécution via arguments (ex: `EasySave.exe 1-3`).
+* Multi-instance: Support for multiple backup jobs running simultaneously.
+* Creation of save jobs : Source, Target, Type (Complete/Differential).
+* Multilingual: Interface available in English and French.
+* Logging : Daily log files with detailed information with `EasyLog.dll` (JSON/XML).
+* State Tracking : Real-time tracking of backup progress (JSON).
 
-### Roadmap des Versions (Cycle de Vie)
+### Versions' Roadmap (Life Cycle)
 
-Le développement est découpé en 3 livrables majeurs :
+The development is divided into 3 major releases:
 
-Le tableau suivant détaille l'évolution des fonctionnalités à travers les différentes itérations du projet :
+The following table details the evolution of features across the different iterations of the project :
 
-| Fonction | Version 1.0 | Version 1.1 | Version 2.0 |
+| Function | Version 1.0 | Version 1.1 | Version 2.0 |
 | :--- | :--- | :--- | :--- |
-| **Interface Graphique** | Console | Console | Graphique (WPF) |
-| **Multi-langues** | Anglais et Français | Anglais et Français | Anglais et Français |
-| **Travaux de sauvegarde** | Limité à 5 | Limité à 5 | Illimité |
-| **Fichier Log journalier** | Oui | Oui | Oui (Infos suppl. sur temps de cryptage) |
-| **Utilisation d'une DLL pour le log** | Oui | Oui | Oui |
-| **Fichier Etat** | Oui | Oui | Oui |
-| **Fonctionnement Sauvegarde** | Mono ou séquentielle | Mono ou séquentielle | Mono ou séquentielle |
-| **Arrêt si logiciel métier détecté** | Non | Non | Oui |
-| **Ligne de commande** | Oui | Oui | Identique version 1.0 |
-| **Utilisation de « CryptoSoft »** | Non | Non | Oui |
+| **Grahpical Interface** | Console | Console | Graphical (Avalonia) |
+| **Multilingual** | English and French | English and French | English and French |
+| **Save Jobs** | Limited to 5 | Limited to 5 | Unlimited |
+| **Daily Log File** | Yes | Yes | Yes (Informations about encryption time) |
+| **use of a dll for logging** | Yes | Yes | Yes |
+| **State File** | Yes | Yes | Yes |
+| **Bakcup Operation** | Mono ou séquential | Mono ou séquential | Mono ou séquential |
+| **Stop if business software is detected** | Non | Non | Yes |
+| **Command Line** | Yes | Yes | Identical to version 1.0 |
+| **Use of « CryptoSoft »** | No | No | Yes |
 
 
-## Stack Technique
+## Technical Stack
 
-* Langage : C#
+* Language : C#
 * Framework : .NET 8.0
-* Environnement : Visual Studio 2022
-* Interface Graphique (V2+) : WPF (Architecture MVVM)
-* Modélisation : Darw.io
-* Composants externes :
-* `EasyLog.dll` : Librairie de gestion des logs.
-* `CryptoSoft` : Logiciel de cryptage tiers (Mono-instance en V3).
+* Environment : Visual Studio 2026
+* Graphical Interface (V2+) : Avalonia (MVVM architecture)
+* Modelisation : Draw.io
+* External Components :
+  * `EasyLog.dll` : Logs managment library.
+  * `CryptoSoft` : Third party encrypting software (7zip).
+
+## Centralized Logging with EasyLog API
+
+You can choose to use the EasyLog API to add centralized logging on an external server. You will need a container with the API (deployment described bellow) and to configure the API's URL in the app settings.
+
+To deploy the EasyLog API in a Docker container, you need to execute those commands :
+
+```
+cd /EasyLogAPI
+docker compose up
+```
+
+Then set the API URL in the app settings to point to your server (e.g. `http://localhost:8080/api/logs`).
+
+## How to use EasyLog
+
+EasyLog is a C# logging library designed to provide logging to EasySave.
+
+### Features
+
+- **Singleton** pattern: a single shared instance across the application via `Logger.GetInstance()`.
+- **Thread-safe**: uses a Mutex to safely handle concurrent writes from parallel backup jobs.
+- **Daily log files**: one file per day, named `yyyy-MM-dd_log.<format>`, stored in the `./logs` directory (/app/logs in a container).
+- **Format support**: `json`, `xml`, or plain `txt` — determined by the `format` parameter passed on each call.
+
+### Usage
+
+In order to write logs with EasyLog, you need to add a reference to the `EasyLog.dll` in your project and then use the `Logger` class as follows:
+```
+Logger.GetInstance().Log(logText, formatExtension);
+```
+- `logText` is a string containing the log message. It needs to be already transformed, EasySave Log() method write it as is.
+- `formatExtension` is the extension of the log file. Currently, JSON and XML are supported, any other format will turn into a txt.
