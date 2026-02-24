@@ -9,7 +9,7 @@ namespace EasySave.Models;
 public class EventManager   
 {
     private static EventManager? _instance;
-    private List<IEventListener> _subscribers;
+    private readonly List<IEventListener> _subscribers;
 
     /// <summary>
     /// Create an EventManager singleton or return the existing one
@@ -17,10 +17,7 @@ public class EventManager
     /// <returns></returns>
     public static EventManager GetInstance()
     {
-        if (_instance == null)
-        {
-            _instance = new EventManager();
-        }
+        _instance ??= new EventManager();
 
         return _instance;
     }
@@ -30,13 +27,12 @@ public class EventManager
     /// </summary>
     private EventManager()
     {
-        _subscribers = new List<IEventListener>();
+        _subscribers = [];
     }
 
     /// <summary>
     /// Add the object in parameter to the subscribers list
     /// </summary>
-    /// <param name="listener"></param>
     public void Subscribe(IEventListener listener)
     {
         this._subscribers.Add(listener);
@@ -45,7 +41,6 @@ public class EventManager
     /// <summary>
     /// Notify all subscribers with BackupInfo
     /// </summary>
-    /// <param name="data"></param>
     public void Update(BackupInfo data)
     {
         foreach (IEventListener listener in _subscribers)

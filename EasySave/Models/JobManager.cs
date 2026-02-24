@@ -11,8 +11,8 @@ namespace EasySave.Models;
 /// </summary>
 public class JobManager : IEventListener 
 {
-    private static JobManager s_Instance;
-    private Dictionary<string,IBackup> _runningJobs;
+    private static JobManager? s_Instance;
+    private readonly Dictionary<string,IBackup> _runningJobs;
 
     /// <summary>
     /// Trivate constructor (singleton) that initializes the running 
@@ -20,7 +20,7 @@ public class JobManager : IEventListener
     /// </summary>
     private JobManager()
     {
-        _runningJobs = new Dictionary<string, IBackup>();
+        _runningJobs = [];
         EventManager.GetInstance().Subscribe(this);
     }
 
@@ -30,16 +30,13 @@ public class JobManager : IEventListener
     /// <returns></returns>
     public static JobManager GetInstance() 
     {
-        if (s_Instance == null)
-            s_Instance = new JobManager();
+        s_Instance ??= new JobManager();
         return s_Instance;
     }
 
     /// <summary>
     /// Add a job to the running jobs dictionary with the job name as key and the backup as value
     /// </summary>
-    /// <param name="job"></param>
-    /// <param name="backup"></param>
     public void AddJob(SavedJob job,IBackup backup) 
     {
         _runningJobs.Add(job.Name,backup);
@@ -58,7 +55,6 @@ public class JobManager : IEventListener
     /// <summary>
     /// Pause the job by calling the pause method of the backup
     /// </summary>
-    /// <param name="job"></param>
     public void PauseJob(SavedJob job) 
     {
         _runningJobs[job.Name].Pause();
@@ -67,7 +63,6 @@ public class JobManager : IEventListener
     /// <summary>
     /// Continue the job by calling the continue method of the backup
     /// </summary>
-    /// <param name="job"></param>
     public void ContinueJob(SavedJob job) 
     {
         _runningJobs[job.Name].Continue();
@@ -78,7 +73,6 @@ public class JobManager : IEventListener
     /// checks if the job is completed and if it is, it removes it 
     /// from the running jobs
     /// </summary>
-    /// <param name="data"></param>
     public void Update(BackupInfo data) 
     {
         if (data.CurrentFile == data.TotalFiles)

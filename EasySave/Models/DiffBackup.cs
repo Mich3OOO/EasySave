@@ -8,31 +8,28 @@ namespace EasySave.Models;
 /// a differential backup, creating a timestamped folder and copying only the 
 /// files that have been modified since the last complete backup
 /// </summary>
-public class DiffBackup : Backup 
+public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : Backup(savedJob, backupInfo,pw) 
 {
-    string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-
-    public DiffBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }
+    private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+    string dictionaryPath = dico;
 
     /// <summary>
     /// Override of the ExecuteBackup method to perform a differential backup, 
     /// creating a timestamped folder and copying only the files that have been 
     /// modified since the last complete backup
     /// </summary>
-    public override void ExecuteBackup()    
+    public override void ExecuteBackup()
     {
-        // Create the timestamped folder
-        string destinationPath = _createTimestampedFolder("Differential");
+        string destinationPath = CreateTimestampedFolder("Differential");
 
-        string[] filesToCopy = _getFilesList();
+        string[] filesToCopy = GetFilesList();
 
-        // Initialize backup info data
         _backupInfo.TotalFiles = filesToCopy.Length;
         _backupInfo.CurrentFile = 0;
 
         foreach (string file in filesToCopy)
         {
-            _backupFile(file, destinationPath);
+            BackupFile(file, destinationPath);
         }
     }
 
@@ -43,19 +40,15 @@ public class DiffBackup : Backup
     /// of each file in the source directory, if a file has been modified after the 
     /// last complete backup, it is added to the list of files to copy
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    protected override string[] _getFilesList() 
+    protected override string[] GetFilesList() 
     {
-        // Define the path where Complete backups are stored
         string completeFolderPath = Path.Combine(_savedJob.Destination, "Complete");
 
-        DateTime lastFullBackupDate = DateTime.MinValue; // Default value
+        DateTime lastFullBackupDate = DateTime.MinValue;
 
         // Find the most recent Complete backup folder
         if (Directory.Exists(completeFolderPath))
         {
-            // Get all directories, order by creation date desc
             DirectoryInfo? lastDir = new DirectoryInfo(completeFolderPath)
                 .GetDirectories()
                 .OrderByDescending(d => d.CreationTime)
@@ -74,22 +67,20 @@ public class DiffBackup : Backup
 
         if (lastFullBackupDate == DateTime.MinValue)
         {
-            return base._getFilesList();
+            return base.GetFilesList();
         }
 
-        // Get file list
-        string[] allFiles = base._getFilesList();
-        List<string> modifiedFiles = new List<string>();
+        string[] allFiles = base.GetFilesList();
+        List<string> modifiedFiles = [];
 
         foreach (string file in allFiles)
         {
-            // Check if the source file has been modified AFTER the last full backup
             if (File.GetLastWriteTime(file) > lastFullBackupDate)
             {
                 modifiedFiles.Add(file);
             }
         }
 
-        return modifiedFiles.ToArray();
+        return [.. modifiedFiles];
     }
 }

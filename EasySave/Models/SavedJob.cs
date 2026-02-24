@@ -13,8 +13,6 @@ public class SavedJob
     private string _name;
     private string _source;
     private string _destination;
-    
-
 
     public string GetName()
     {
@@ -29,7 +27,6 @@ public class SavedJob
         return this._source;
     }
 
-
     /// <summary>
     /// Properties for the fields, they are used to set the fields from outside 
     /// the class, they are not used to get the fields because we want to control 
@@ -43,10 +40,6 @@ public class SavedJob
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="name"></param>
-    /// <param name="source"></param>
-    /// <param name="destination"></param>
     public SavedJob(int id, string name, string source, string destination)
     {
         _id = -1;
@@ -75,8 +68,7 @@ public class SavedJob
     /// Copy constructor, it initializes the fields with the values of the 
     /// given SavedJob object
     /// </summary>
-    /// <param name="savedJob"></param>
-    public SavedJob(SavedJob savedJob)  
+    public SavedJob(SavedJob savedJob)
     {
         _id = savedJob._id;
         _name = savedJob._name;
@@ -89,9 +81,7 @@ public class SavedJob
     /// Method to set the destination field, it checks if the given destination 
     /// is a valid path before setting it, if it's not a valid path, it throws an exception
     /// </summary>
-    /// <param name="destination"></param>
-    /// <exception cref="Exception"></exception>
-    public void SetDestination(string destination)  
+    public void SetDestination(string destination)
     {
         if (Path.IsPathRooted(destination))
         {
@@ -107,9 +97,7 @@ public class SavedJob
     /// Method to set the source field, it checks if the given source is a 
     /// valid path before setting it, if it's not a valid path, it throws an exception
     /// </summary>
-    /// <param name="source"></param>
-    /// <exception cref="Exception"></exception>
-    public void SetSource(string source)    
+    public void SetSource(string source)
     {
         if (Path.IsPathRooted(source))
         {

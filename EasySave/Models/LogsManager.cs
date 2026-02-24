@@ -14,22 +14,21 @@ namespace EasySave.Models;
 /// </summary>
 public class LogsManager : IEventListener   
 {
-    Config _config = Config.S_GetInstance();
-    public LogsMods LogsMods { get; set; } = LogsMods.Both; // Par défaut, les deux
+    Config _config = Config.GetInstance();
+    public LogsMods LogsMods { get; set; } = LogsMods.Both;
 
     /// <summary>
     /// Constructor that automatically subscribes to EventManager
     /// </summary>
     public LogsManager()
     {
-        LogsMods = Config.S_GetInstance().LogsMods; // Toujours à jour
+        LogsMods = Config.GetInstance().LogsMods;
         EventManager.GetInstance().Subscribe(this);
     }
 
     /// <summary>
     /// Transform and transfer BackupInfos to Logger
     /// </summary>
-    /// <param name="data"></param>
     public void Update(BackupInfo data)
     {
         string logText = "";
@@ -38,7 +37,7 @@ public class LogsManager : IEventListener
         if (format == LogsFormats.Json)
         {
             formatExtension = "json";
-            logText = this._toJson(data);
+            logText = ToJson(data);
         }
         else if (format == LogsFormats.Xml)
         {
@@ -51,7 +50,7 @@ public class LogsManager : IEventListener
             logText = this._toTxt(data);
         }
 
-        var currentLogsMods = Config.S_GetInstance().LogsMods;
+        var currentLogsMods = Config.GetInstance().LogsMods;
         
         // Gestion des modes
         if (currentLogsMods == LogsMods.Local || currentLogsMods == LogsMods.Both)
@@ -68,13 +67,8 @@ public class LogsManager : IEventListener
     /// <summary>
     /// Transform BackupInfo data into a JSON string
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    private string _toJson(BackupInfo data)
+    private static string ToJson(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
@@ -83,7 +77,6 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-        // Create 'JSON' string with infos from data
         return $@"{{
            ""Name"": ""{data.SavedJobInfo.GetName()}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
@@ -91,20 +84,15 @@ public class LogsManager : IEventListener
            ""FileSize"": {data.CurrentCopyInfo.Size},
            ""FileTransferTime"": {(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds},
            ""TimeToEncrypt"": {data.CurrentCopyInfo.TimeToEncrypt},
-           ""Time"": ""{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}""
+           ""Time"": ""{DateTime.Now:dd/MM/yyyy HH:mm:ss}""
          }}";
     }
 
     /// <summary>
     /// Transform BackupInfo data into a XML string
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    private string _toXml(BackupInfo data)
+    private static string ToXml(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
@@ -113,7 +101,6 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-        // Create 'XML' string with infos from data
         return $@"<Log>
                     <JobName>{data.SavedJobInfo.GetName()}</JobName>
                     <FileSource>{data.CurrentCopyInfo.Source}</FileSource>
@@ -121,20 +108,15 @@ public class LogsManager : IEventListener
                     <FileSize>{data.CurrentCopyInfo.Size}</FileSize>
                     <FileTransferTime>{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}</FileTransferTime>
                     <TimeToEncrypt>{data.CurrentCopyInfo.TimeToEncrypt}</TimeToEncrypt>
-                    <Time>{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}</Time>
+                    <Time>{DateTime.Now:dd/MM/yyyy HH:mm:ss}</Time>
                 </Log>";
     }
 
     /// <summary>
     /// Transform BackupInfo data into a string
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    private string _toTxt(BackupInfo data)
+    private static string ToTxt(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
@@ -143,26 +125,19 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-        // Create string with infos from data
-        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
+        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now:dd/MM/yyyy HH:mm:ss} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
     }
 
     /// <summary>
     /// Centralization of logs in Docker
     /// </summary>
-    /// <param name="logContent"></param>
-    /// <param name="format"></param>
-    /// <param name="url"></param>
-    /// <returns></returns>
-    public async Task SendLogToApiAsync(string logContent, string format, string url)
+    public static async Task SendLogToApiAsync(string logContent, string format, string url)
     {
         try
         {
-            // Create a new HttpClient instance for sending the request
             using var httpClient = new HttpClient();
             StringContent content;
 
-            // Set the appropriate Content-Type header based on the log format
             if (format == "json")
                 content = new StringContent(logContent, Encoding.UTF8, "application/json");
             else if (format == "xml")
@@ -170,14 +145,12 @@ public class LogsManager : IEventListener
             else
                 content = new StringContent(logContent, Encoding.UTF8, "text/plain");
 
-            // Send the POST request to the API endpoint
             var response = await httpClient.PostAsync(url, content);
-            // Throw an exception if the response indicates failure
+
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
         {
-            // Log any error that occurs during the HTTP request
             Console.WriteLine($"Erreur lors de l'envoi du log à l'API : {ex.Message}");
         }
     }
