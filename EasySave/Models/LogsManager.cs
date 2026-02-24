@@ -9,19 +9,27 @@ using System.Threading.Tasks;
 
 namespace EasySave.Models;
 
-public class LogsManager : IEventListener   // Class representing the logs manager, implementing the IEventListener interface
+/// <summary>
+/// Class representing the logs manager, implementing the IEventListener interface
+/// </summary>
+public class LogsManager : IEventListener   
 {
     Config _config = Config.S_GetInstance();
     public LogsMods LogsMods { get; set; } = LogsMods.Both; // Par défaut, les deux
 
-    // Constructor that automatically subscribes to EventManager
+    /// <summary>
+    /// Constructor that automatically subscribes to EventManager
+    /// </summary>
     public LogsManager()
     {
         LogsMods = Config.S_GetInstance().LogsMods; // Toujours à jour
         EventManager.GetInstance().Subscribe(this);
     }
 
-    // Transform and transfer BackupInfos to Logger
+    /// <summary>
+    /// Transform and transfer BackupInfos to Logger
+    /// </summary>
+    /// <param name="data"></param>
     public void Update(BackupInfo data)
     {
         string logText = "";
@@ -57,7 +65,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         Console.WriteLine("[LogsManager] Update: Fin");
     }
 
-    // Transform BackupInfo data into a JSON string
+    /// <summary>
+    /// Transform BackupInfo data into a JSON string
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private string _toJson(BackupInfo data)
     {
         // Check if the data sent
@@ -81,7 +95,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
          }}";
     }
 
-    // Transform BackupInfo data into a XML string
+    /// <summary>
+    /// Transform BackupInfo data into a XML string
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private string _toXml(BackupInfo data)
     {
         // Check if the data sent
@@ -105,7 +125,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
                 </Log>";
     }
 
-    // Transform BackupInfo data into a string
+    /// <summary>
+    /// Transform BackupInfo data into a string
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private string _toTxt(BackupInfo data)
     {
         // Check if the data sent
@@ -121,7 +147,13 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
     }
 
-    // Centralisation of logs in Docker
+    /// <summary>
+    /// Centralization of logs in Docker
+    /// </summary>
+    /// <param name="logContent"></param>
+    /// <param name="format"></param>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public async Task SendLogToApiAsync(string logContent, string format, string url)
     {
         try
