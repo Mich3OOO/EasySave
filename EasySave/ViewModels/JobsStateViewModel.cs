@@ -76,14 +76,11 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     private void TogglePause()
     {
         IsPaused = !IsPaused;
-
-        // force the UI to refresh pause icon
         OnPropertyChanged(nameof(PauseIcon));
 
-        // 1. On récupère le "vrai" objet SavedJob grâce à son nom (JobName)
+        // Get SavedJobs object by his name
         var jobToPause = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
 
-        // 2. Si on l'a trouvé, on l'envoie au JobManager
         if (jobToPause != null)
         {
             if (IsPaused)
@@ -102,7 +99,6 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     {
         IsFinished = true;
 
-        // Même chose pour l'arrêt
         var jobToStop = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
         if (jobToStop != null)
         {
