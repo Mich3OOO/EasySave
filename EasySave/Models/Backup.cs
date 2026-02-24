@@ -47,6 +47,10 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     public void Cancel()
     {
         _cancel = true;
+        // inform to event listener that backup has finisihed;
+        _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
+        EventManager.GetInstance().Update(_backupInfo);
+            
     }
 
     protected string CreateTimestampedFolder(string subFolderType)
