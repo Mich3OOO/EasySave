@@ -16,7 +16,7 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class MainWindowViewModel : ViewModelBase, IEventListener
 {
-    // manage progress window
+    // Manage progress window
     private JobsStateViewModel? _sharedProgressViewModel;
     private Window? _progressWindow;
 
@@ -55,14 +55,19 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         set => SetProperty(ref _isStatusVisible, value);
     }
 
-    //Logic for mulltiple selection jobs (with the checkbox)
-    public bool HasSelectedJobs => Jobs.Any(j => j.IsSelected); // Check if any jobs are selected
+    // MULTIPLE SELECTION PROPERTIES
+
+    // Checks if at least one job is checked
+    public bool HasSelectedJobs => Jobs.Any(j => j.IsSelected);
+
+    // Command for the "Run Selected Jobs" button
     public ICommand RunSelectedJobsCommand { get; }
-    public void RefreshSelectionStatus()    //refresh UI
+
+    // Public method to force UI refresh from Code-Behind
+    public void RefreshSelectionStatus()
     {
         OnPropertyChanged(nameof(HasSelectedJobs));
     }
-
 
     /// <summary>
     /// Displays a success message temporarily (4 seconds) in the UI
@@ -91,12 +96,12 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);
 
-        // Command for multiple job executionn
+        // Initialize command for multiple selection
         RunSelectedJobsCommand = new RelayCommand(RunSelectedJobs);
 
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
-        // init managers (Logs and State)
+        // Init managers (Logs and State)
         LogsManager _logsManager = new LogsManager();
     }
 
@@ -146,18 +151,112 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         CurrentViewModel = jobVM;
     }
 
-    // Method To launch all thz slected jobs at once, linked to "Run Selected Jobs" button in the UI
+    /// <summary>
+    /// Method to launch all selected jobs simultaneously via a single configuration popup.
+    /// </summary>
     private void RunSelectedJobs()
     {
-        var selectedJobs = Jobs.Where(j => j.IsSelected).ToList();  // get all selected jobs
-        foreach (var job in selectedJobs)   //foreach job selected, we call RunJob
+        var selectedJobs = Jobs.Where(j => j.IsSelected).ToList();
+        if (selectedJobs.Count == 0) return;
+
+        // We use combined names for display in the popup, but the actual job objects are passed for execution
+        string combinedNames = string.Join(" - ", selectedJobs.Select(j => j.Name));
+
+        // pass the combined names to the popup instead of the count heree
+        var runJobVM = new RunJobsViewModel(selectedJobs.First(), isMultiple: true, combinedNames: combinedNames);
+
+        // Wait for popup result
+        runJobVM.OnResult += async (confirmed, isDiff, password) =>
         {
-            RunJob(job);
-        }
+            CurrentViewModel = null; // Close config dialog
+
+            if (confirmed)
+            {
+                // Init shared progress view model if null
+                if (_sharedProgressViewModel == null)
+                {
+                    _sharedProgressViewModel = new JobsStateViewModel();
+                    _sharedProgressViewModel.OnCloseRequested += () => _progressWindow?.Close();
+                }
+
+                // Setup separate progress window
+                if (_progressWindow == null)
+                {
+                    _progressWindow = new Window
+                    {
+                        Title = "EasySave - Progression",
+                        Width = 700,
+                        Height = 450,
+                        Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://EasySave/Assets/Icon.png"))),
+                        Content = new EasySave.Views.JobsStateView { DataContext = _sharedProgressViewModel },
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    };
+
+                    _progressWindow.Closed += (s, e) =>
+                    {
+                        _progressWindow = null;
+                        _sharedProgressViewModel?.ActiveJobs.Clear();
+                    };
+                    _progressWindow.Show();
+                }
+                else
+                {
+                    _progressWindow.Activate(); // Bring window to front
+                }
+
+                // Optional success message
+                await ShowSuccessMessage($"Launching {combinedNames} backups...");
+
+                // Loop through all true jobs and launch them in parallel
+                foreach (var job in selectedJobs)
+                {
+                    // Avoid launching a job that is already running
+                    if (_stateManager.GetStateFrom(job.Name)?.State == StateLevel.Active) continue;
+
+                    // Create progress bar
+                    var progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
+
+                    // Subscribe to event manager
+                    EventManager.GetInstance().Subscribe(progressBarObserver);
+
+                    // Run backup in background thread so UI doesn't freeze. 
+                    // No 'await' here ensures true parallelism for all selected jobs.
+                    _ = Task.Run(() =>
+                    {
+                        try
+                        {
+                            // Init backup info
+                            BackupInfo backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
+
+                            // Create the correct backup type
+                            IBackup backup;
+                            if (isDiff)
+                                backup = new DiffBackup(job, backupInfo, password);
+                            else
+                                backup = new CompBackup(job, backupInfo, password);
+
+                            // Run backup
+                            backup.ExecuteBackup();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[BACKUP ERROR] {job.Name}: {ex.Message}");
+                        }
+                    });
+                }
+
+                // Clean up the UI by unchecking all boxes
+                foreach (var j in selectedJobs) j.IsSelected = false;
+                RefreshSelectionStatus();
+            }
+        };
+
+        // Show the popup
+        CurrentViewModel = runJobVM;
     }
 
     /// <summary>
-    /// Executes a save job and opens the progress window
+    /// Executes a single save job and opens the progress window
     /// </summary>
     public void RunJob(SavedJob job)
     {
@@ -165,27 +264,27 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         {
             var runJobVM = new RunJobsViewModel(job);
 
-            // wait for popup result
+            // Wait for popup result
             runJobVM.OnResult += async (confirmed, isDiff, password) =>
             {
-                CurrentViewModel = null; // close config dialog
+                CurrentViewModel = null; // Close config dialog
 
                 if (confirmed)
                 {
-                    // init shared progress view model if null
+                    // Init shared progress view model if null
                     if (_sharedProgressViewModel == null)
                     {
                         _sharedProgressViewModel = new JobsStateViewModel();
                         _sharedProgressViewModel.OnCloseRequested += () => _progressWindow?.Close();
                     }
 
-                    // create progress bar
+                    // Create progress bar
                     var progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
 
-                    // subscribe to event manager
+                    // Subscribe to event manager
                     EventManager.GetInstance().Subscribe(progressBarObserver);
 
-                    // setup separate progress window
+                    // Setup separate progress window
                     if (_progressWindow == null)
                     {
                         _progressWindow = new Window
@@ -207,28 +306,28 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
                     }
                     else
                     {
-                        _progressWindow.Activate(); // bring window to front
+                        _progressWindow.Activate(); // Bring window to front
                     }
 
-                    // optional success message
+                    // Optional success message
                     await ShowSuccessMessage($"🚀 {job.Name} : Backup starting...");
 
-                    // run backup in background thread so UI dont freeze
+                    // Run backup in background thread so UI doesn't freeze
                     await Task.Run(() =>
                     {
                         try
                         {
-                            // init backup info
+                            // Init backup info
                             BackupInfo backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
-                            // create the correct backup type
+                            // Create the correct backup type
                             IBackup backup;
                             if (isDiff)
                                 backup = new DiffBackup(job, backupInfo, password);
                             else
                                 backup = new CompBackup(job, backupInfo, password);
 
-                            // run backup
+                            // Run backup
                             backup.ExecuteBackup();
                         }
                         catch (Exception ex)

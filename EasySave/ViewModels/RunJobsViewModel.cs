@@ -53,9 +53,7 @@ public class RunJobsViewModel : ViewModelBase
         get => _displayTitle;
     }
 
-    // =======================================================
     // TRANSLATIONS
-    // =======================================================
     public string T_start_save => _languageViewModel.GetTranslation("start_save");
     public string T_save_type => _languageViewModel.GetTranslation("save_type");
     public string T_comp => _languageViewModel.GetTranslation("comp");
@@ -70,7 +68,6 @@ public class RunJobsViewModel : ViewModelBase
     public string T_launch => _languageViewModel.GetTranslation("launch");
     public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
     public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
-    // =======================================================
 
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
@@ -79,7 +76,7 @@ public class RunJobsViewModel : ViewModelBase
     public event Action<bool, bool, string>? OnResult;
 
     // Constructor updated to handle multiple selection flag and count
-    public RunJobsViewModel(SavedJob job, bool isMultiple = false, int selectedCount = 1)
+    public RunJobsViewModel(SavedJob job, bool isMultiple = false, string combinedNames = "")
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
@@ -88,9 +85,9 @@ public class RunJobsViewModel : ViewModelBase
         _isMultipleSelection = isMultiple;
 
         // Set the title dynamically based on the execution mode
-        if (_isMultipleSelection)
+        if (_isMultipleSelection && !string.IsNullOrEmpty(combinedNames))
         {
-            _displayTitle = $"Multiple Selection ({selectedCount} jobs)";
+            _displayTitle = combinedNames;
         }
         else
         {
@@ -119,7 +116,7 @@ public class RunJobsViewModel : ViewModelBase
 
                 ErrorMessage = string.Empty;
 
-                // Send data to MainWindowViewModel (Confirm: yes, Backup type, Password)
+                // send data to MainWindowViewModel (Confirm: yes, Backup type, Password)
                 OnResult?.Invoke(true, IsDifferential, Password);
             }
             catch (Exception e)
@@ -132,7 +129,7 @@ public class RunJobsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false, false, string.Empty));
     }
 
-    // Method to check if the source of the backup job is currently being used by another program
+    // Method to check if the source of the backup job is currently being used by another programm
     private bool _canARunJon(out string processName)
     {
         Config conf = Config.S_GetInstance();
@@ -149,7 +146,7 @@ public class RunJobsViewModel : ViewModelBase
         return true;
     }
 
-    // Check if password respect policy
+    // Check password policy
     public bool IsPasswordValid(string password)
     {
         if (string.IsNullOrEmpty(password))
