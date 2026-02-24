@@ -9,8 +9,8 @@ public class Logger
 {
     private static Logger? _instance;
     private readonly string _logsPath = "./logs";
-    static private readonly object _lockObj = new object();
-    private static Mutex _mutex = new Mutex(false, "logger");
+    static private readonly object _lockObj = new();
+    private static readonly Mutex _mutex = new(false, "logger");
 
     private Logger(){}
 
@@ -22,7 +22,7 @@ public class Logger
         _mutex.WaitOne();
         try
         {
-            string path = _getFileName(format);
+            string path = GetFileName(format);
             File.AppendAllText(path, message + Environment.NewLine);
         }
         finally
@@ -38,14 +38,11 @@ public class Logger
     {
         lock (_lockObj)
         {
-            if (_instance == null)
-            {
-                _instance = new Logger();
-            }
+            _instance ??= new Logger();
             return _instance;
         }
     }
-    private string _getFileName(string format)
+    private string GetFileName(string format)
     {
         Directory.CreateDirectory(_logsPath);
         string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_log." + format;
