@@ -162,7 +162,12 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-    private void Save()
+    /// <summary>
+    /// This method saves the settings to the Config singleton and raises 
+    /// the OnSaveRequested event to notify that the settings should be saved 
+    /// (handled by MainWindowViewModel)
+    /// </summary>
+    private void Save() 
     {
         _languageViewModel.SetLanguage(SelectedLanguage);
         _config.Language = SelectedLanguage;
@@ -203,7 +208,11 @@ public class SettingsViewModel : ViewModelBase
     public event Action? OnCancelRequested;
 }
 
-public class LogsModsItem
+/// <summary>
+/// This class is used to represent an item in the LogsMods ComboBox, it contains
+/// the LogsMods value and its display name (translation)
+/// </summary>
+public class LogsModsItem 
 {
     public LogsMods Value { get; }
     public string DisplayName { get; }

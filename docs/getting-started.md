@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - .NET 8.0 
-- Visual Studio 2022
+- Visual Studio 2026
 - Git
 
 ## Installation
