@@ -14,7 +14,7 @@ namespace EasySave.ViewModels;
 /// <summary>
 /// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase, IEventListener
+public class MainWindowViewModel : ViewModelBase
 {
     // Manage progress window
     private JobsStateViewModel? _sharedProgressViewModel;
@@ -235,6 +235,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
                             else
                                 backup = new CompBackup(job, backupInfo, password);
 
+                            _jobManager.AddJob(job, backup);
                             // Run backup
                             backup.ExecuteBackup();
                         }
@@ -327,6 +328,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
                             else
                                 backup = new CompBackup(job, backupInfo, password);
 
+                            _jobManager.AddJob(job, backup);
                             // Run backup
                             backup.ExecuteBackup();
                         }
@@ -370,10 +372,5 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public void CancelJob(SavedJob job)
     {
         _jobManager.CancelJob(job);
-    }
-
-    public void Update(BackupInfo data)
-    {
-
     }
 }

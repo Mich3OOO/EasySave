@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -80,13 +80,20 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
         // force the UI to refresh pause icon
         OnPropertyChanged(nameof(PauseIcon));
 
-        if (IsPaused)
+        // 1. On récupère le "vrai" objet SavedJob grâce à son nom (JobName)
+        var jobToPause = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+
+        // 2. Si on l'a trouvé, on l'envoie au JobManager
+        if (jobToPause != null)
         {
-            // TBD : call pause
-        }
-        else
-        {
-            // TBD : call play
+            if (IsPaused)
+            {
+                JobManager.GetInstance().PauseJob(jobToPause);
+            }
+            else
+            {
+                JobManager.GetInstance().ContinueJob(jobToPause);
+            }
         }
     }
 
@@ -94,8 +101,14 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     private void Stop()
     {
         IsFinished = true;
-        JobName += " (Canceled)";
 
-        // TBD : call Stop
+        // Même chose pour l'arrêt
+        var jobToStop = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+        if (jobToStop != null)
+        {
+            JobManager.GetInstance().CancelJob(jobToStop);
+        }
+
+        JobName += " (Canceled)";
     }
 }
