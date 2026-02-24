@@ -87,7 +87,7 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
         OnPropertyChanged(nameof(PauseIcon));
 
         // Get SavedJobs object by his name
-        var jobToPause = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+        var jobToPause = Config.GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
 
         if (jobToPause != null)
         {
@@ -107,7 +107,7 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     {
         IsFinished = true;
 
-        var jobToStop = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+        var jobToStop = Config.GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
         if (jobToStop != null)
         {
             JobManager.GetInstance().CancelJob(jobToStop);
