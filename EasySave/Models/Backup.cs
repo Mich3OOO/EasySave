@@ -130,8 +130,9 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     }
 
     /// <summary>
-    /// Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
-    /// (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe)
+    /// Method to encrypt a file using 7-Zip, constructing the appropriate 
+    /// command-line arguments and handling the process execution (it work 
+    /// only if the 7za.exe is placed at the same emplacement that EasySave.exe)
     /// </summary>
     private void EncryptFile(string sourceFilePath, string targetFilePath)
     {
