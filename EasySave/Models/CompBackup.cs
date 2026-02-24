@@ -14,7 +14,8 @@ public class CompBackup : Backup
     public CompBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }   
 
     /// <summary>
-    /// Override of the ExecuteBackup method to perform a complete backup, creating a timestamped folder and copying all files from the source to the destination
+    /// Override of the ExecuteBackup method to perform a complete backup, creating a 
+    /// timestamped folder and copying all files from the source to the destination
     /// </summary>
     public override void ExecuteBackup()    
     {

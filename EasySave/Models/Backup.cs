@@ -174,7 +174,9 @@ public abstract class Backup : IBackup
     /// <param name="sourceFilePath"></param>
     /// <param name="targetFilePath"></param>
     /// <exception cref="Exception"></exception>
-    private void _encryptFile(string sourceFilePath, string targetFilePath) // Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
+    private void _encryptFile(string sourceFilePath, string targetFilePath) // Method to encrypt a file using 7-Zip,
+                                                                            // constructing the appropriate command-line
+                                                                            // arguments and handling the process execution
     {
         // a = add (to add fie)
         // -t7z = 7z format
