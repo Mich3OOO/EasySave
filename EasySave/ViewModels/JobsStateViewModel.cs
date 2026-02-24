@@ -84,17 +84,21 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     private void TogglePause()
     {
         IsPaused = !IsPaused;
-
-        // force the UI to refresh pause icon
         OnPropertyChanged(nameof(PauseIcon));
 
-        if (IsPaused)
+        // Get SavedJobs object by his name
+        var jobToPause = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+
+        if (jobToPause != null)
         {
-            // TBD : call pause
-        }
-        else
-        {
-            // TBD : call play
+            if (IsPaused)
+            {
+                JobManager.GetInstance().PauseJob(jobToPause);
+            }
+            else
+            {
+                JobManager.GetInstance().ContinueJob(jobToPause);
+            }
         }
     }
 
@@ -102,8 +106,13 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     private void Stop()
     {
         IsFinished = true;
-        JobName += " (Canceled)";
 
-        // TBD : call Stop
+        var jobToStop = Config.S_GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+        if (jobToStop != null)
+        {
+            JobManager.GetInstance().CancelJob(jobToStop);
+        }
+
+        JobName += " (Canceled)";
     }
 }

@@ -230,6 +230,7 @@ public class MainWindowViewModel : ViewModelBase
                             else
                                 backup = new CompBackup(job, backupInfo, password);
 
+                            _jobManager.AddJob(job, backup);
                             // Run backup
                             backup.ExecuteBackup();
                         }
@@ -320,6 +321,7 @@ public class MainWindowViewModel : ViewModelBase
                             else
                                 backup = new CompBackup(job, backupInfo, password);
 
+                            _jobManager.AddJob(job, backup);
                             // Run backup
                             backup.ExecuteBackup();
                         }
