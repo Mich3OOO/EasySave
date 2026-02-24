@@ -27,7 +27,7 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
         
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = notCriticalFiles.Length;
+        _backupInfo.TotalFiles = notCriticalFiles.Length + criticalFiles.Length;
         _backupInfo.CurrentFile = 0;
         
         foreach (var file in criticalFiles)
