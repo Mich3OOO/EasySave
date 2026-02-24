@@ -57,7 +57,7 @@
       <None Include="CryptoSoft\7za.exe">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Utils\dictionary.json">
+      <None Update="Utils\Dictionary.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

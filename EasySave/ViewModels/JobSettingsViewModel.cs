@@ -79,7 +79,7 @@ public class JobSettingsViewModel : ViewModelBase
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
 
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
@@ -112,7 +112,7 @@ public class JobSettingsViewModel : ViewModelBase
 
             OnSaveRequested?.Invoke(job);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorMessage = _languageViewModel.GetTranslation("error_path");
         }

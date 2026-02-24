@@ -10,7 +10,7 @@ namespace EasySave.Models;
 /// </summary>
 public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : Backup(savedJob, backupInfo,pw) 
 {
-    private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+    private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
     string dictionaryPath = dico;
 
     /// <summary>

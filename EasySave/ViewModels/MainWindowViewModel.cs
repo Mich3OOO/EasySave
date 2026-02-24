@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
@@ -11,13 +9,13 @@ namespace EasySave.ViewModels;
 /// <summary>
 /// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase, IEventListener
+public class MainWindowViewModel : ViewModelBase
 {
     // UI Display Properties
     public string Greeting { get; } = "Welcome to EasySave!";
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
-    private JobManager _jobManager =  JobManager.GetInstance();
+    private readonly JobManager _jobManager =  JobManager.GetInstance();
 
     // Localization/Language support
     public LanguageViewModel _languageViewModel { get; }
@@ -64,22 +62,21 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
-    private Config _config = Config.GetInstance();
+    private readonly Config _config = Config.GetInstance();
 
-    private StateManager _stateManager = StateManager.GetInstance();
+    private readonly StateManager _stateManager = StateManager.GetInstance();
 
 
     public MainWindowViewModel()
     {
-        // Initialize language support and load saved jobs
         string dictionaryPath =
-            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         _languageViewModel.LanguageChanged += OnLanguageChanged;
         ShowSettingsCommand = new RelayCommand(ShowSettings);
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
-        LogsManager _logsManager = new LogsManager();
+        LogsManager _logsManager = new();
     }
 
     private void OnLanguageChanged()
@@ -89,9 +86,6 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         OnPropertyChanged(nameof(T_settings_tooltip));
     }
 
-    /// <summary>
-    /// Opens the settings view
-    /// </summary>
     private void ShowSettings()
     {
         var settingsVM = new SettingsViewModel();
@@ -100,12 +94,9 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         CurrentViewModel = settingsVM;
     }
 
-    /// <summary>
-    /// Opens the job creation dialog and adds new job to collection
-    /// </summary>
     public void CreateJob()
     {
-        JobSettingsViewModel jobVM = new JobSettingsViewModel();
+        JobSettingsViewModel jobVM = new();
         jobVM.OnSaveRequested += (newJob) =>
         {
             int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
@@ -119,12 +110,9 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         CurrentViewModel = jobVM;
     }
 
-    /// <summary>
-    /// Opens the job editing dialog and updates existing job
-    /// </summary>
     public void EditJob(SavedJob job)
     {
-        JobSettingsViewModel jobVM = new JobSettingsViewModel(job);
+        JobSettingsViewModel jobVM = new(job);
         jobVM.OnSaveRequested += (updatedJob) =>
         {
             int index = Jobs.IndexOf(job);
@@ -137,14 +125,11 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         CurrentViewModel = jobVM;
     }
 
-    /// <summary>
-    /// Executes a save job and displays a success message when complete
-    /// </summary>
     public void RunJob(SavedJob job)
     {
         if (_stateManager.GetStateFrom(job.Name)?.State != StateLevel.Active)
         {
-            RunJobsViewModel runJobVM = new RunJobsViewModel(job);
+            RunJobsViewModel runJobVM = new(job);
             runJobVM.OnResult += async (confirmed) =>
             {
                 CurrentViewModel = null;
@@ -158,12 +143,8 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         }
     }
 
-    /// <summary>
-    /// Opens a confirmation dialog and deletes the job if confirmed
-    /// </summary>
     public void DeleteJob(SavedJob job)
     {
-        // Display a confirmation dialog before deleting the job
         var confirmDialog = new DeleteViewModel();
         confirmDialog.JobName = job.Name;
         confirmDialog.OnResult += (confirmed) =>
@@ -181,20 +162,15 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
     public void PauseJob(SavedJob job)
     {
-        _jobManager.PauseJob(job);   
+        _jobManager.PauseJob(job);
     }
     
     public void ContinueJob(SavedJob job)
     {
-        _jobManager.ContinueJob(job);   
+        _jobManager.ContinueJob(job);
     }
     public void CancelJob(SavedJob job)
     {
-        _jobManager.CancelJob(job);   
-    }
-
-    public void Update(BackupInfo data)
-    {
-      
+        _jobManager.CancelJob(job);
     }
 }

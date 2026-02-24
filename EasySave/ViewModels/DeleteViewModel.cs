@@ -8,7 +8,7 @@ namespace EasySave.ViewModels;
 /// ViewModel for the confirmation dialog when deleting a backup job. It contains 
 /// the job name to display in the dialog and commands for confirming or canceling the deletion.
 /// </summary>
-public class DeleteViewModel : ViewModelBase   
+public class DeleteViewModel : ViewModelBase
 {
     public LanguageViewModel _languageViewModel { get; }
 
@@ -30,7 +30,7 @@ public class DeleteViewModel : ViewModelBase
     /// Event to notify the result of the confirmation, it takes a boolean 
     /// parameter indicating whether the user confirmed (true) or canceled (false) the deletion
     /// </summary>
-    public event Action<bool>? OnResult;    
+    public event Action<bool>? OnResult;
 
     public ICommand CancelCommand { get; }
     public ICommand ConfirmCommand { get; }
@@ -38,12 +38,12 @@ public class DeleteViewModel : ViewModelBase
     /// <summary>
     /// Constructor initializes the commands for canceling and confirming the deletion
     /// </summary>
-    public DeleteViewModel()   
+    public DeleteViewModel()
     {
         CancelCommand = new RelayCommand(Cancel);
         ConfirmCommand = new RelayCommand(Confirm);
 
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
@@ -51,7 +51,7 @@ public class DeleteViewModel : ViewModelBase
     /// Method to handle the cancel action, it invokes the OnResult event with false 
     /// to indicate that the user canceled the deletion
     /// </summary>
-    private void Cancel()    
+    private void Cancel()
     {
         OnResult?.Invoke(false);
     }
@@ -60,7 +60,7 @@ public class DeleteViewModel : ViewModelBase
     /// Method to handle the confirm action, it invokes the OnResult event with true
     /// to indicate that the user confirmed the deletion
     /// </summary>
-    private void Confirm()  
+    private void Confirm()
     {
         OnResult?.Invoke(true);
     }

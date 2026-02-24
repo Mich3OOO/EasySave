@@ -145,25 +145,25 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
         // -mx=1 = fast compression
         // -y = to remplace existing file
 
-        ProcessStartInfo p = new ProcessStartInfo();
-        p.FileName = _sevenZipPath;
-
-        p.Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"";
-
-        p.WindowStyle = ProcessWindowStyle.Hidden; // To hide black screen
-        p.CreateNoWindow = true;
-        p.UseShellExecute = false;
-
-        using (Process process = Process.Start(p))
+        ProcessStartInfo p = new()
         {
-            if (process != null)
-            {
-                process.WaitForExit();
+            FileName = _sevenZipPath,
 
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"7-Zip failed with exit code {process.ExitCode}");
-                }
+            Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"",
+
+            WindowStyle = ProcessWindowStyle.Hidden, // To hide black screen
+            CreateNoWindow = true,
+            UseShellExecute = false
+        };
+
+        using Process process = Process.Start(p);
+        if (process != null)
+        {
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                throw new Exception($"7-Zip failed with exit code {process.ExitCode}");
             }
         }
     }
