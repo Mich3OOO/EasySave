@@ -59,7 +59,7 @@ public class StateManager : IEventListener
             _states.Add(editedJobState);
         }
 
-        if (data.CurrentFile != data.TotalFiles)
+        if (data.CurrentFile < data.TotalFiles)
         {
             editedJobState.SourceFilePath = data.CurrentCopyInfo.Source;
             editedJobState.TargetFilePath = data.CurrentCopyInfo.Destination;
