@@ -28,6 +28,7 @@ public class SavedJob
     public string GetSource()
     {
         return this._source;
+    }
 
 
     public bool IsSelected

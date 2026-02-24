@@ -51,8 +51,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
     protected string CreateTimestampedFolder(string subFolderType)
     {
-        string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        string fullPath = Path.Combine(_savedJob.Destination, subFolderType, timestamp);
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        var fullPath = Path.Combine(_savedJob.Destination, subFolderType, timestamp);
         Directory.CreateDirectory(fullPath);
         return fullPath;
     }
@@ -63,8 +63,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     protected void BackupFile(string sourceFilePath, string destinationPath)   
     {
         long fileSize = 0;
-        bool isLargeFile = false;
-        Config config = Config.GetInstance();
+        var isLargeFile = false;
+        var config = Config.GetInstance();
 
         try
         {
@@ -82,11 +82,11 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 LargeFileSemaphore.Wait();
             }
 
-            string relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
+            var relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
 
-            string targetFilePath = Path.Combine(destinationPath, relativePath);
+            var targetFilePath = Path.Combine(destinationPath, relativePath);
 
-            string? targetDirectory = Path.GetDirectoryName(targetFilePath);
+            var targetDirectory = Path.GetDirectoryName(targetFilePath);
             if (targetDirectory != null && !Directory.Exists(targetDirectory))
             {
                 Directory.CreateDirectory(targetDirectory);
@@ -158,7 +158,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             UseShellExecute = false
         };
 
-        using Process process = Process.Start(p);
+        using var process = Process.Start(p);
         if (process != null)
         {
             process.WaitForExit();
@@ -177,16 +177,16 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
-    protected string[] _separateCriticalFiles(out string[] notCriticalFiles)
+    protected string[] SeparateCriticalFiles(out string[] notCriticalFiles)
     {
         
-        string[] criticalExtensions = Config.S_GetInstance().CriticalExtensions;
-        List<string> allFiles = new List<string>(_getFilesList()); 
-        List<string> criticalfiles = new List<string>(_getFilesList());
+        var criticalExtensions = Config.GetInstance().CriticalExtensions;
+        var allFiles = new List<string>(GetFilesList()); 
+        var criticalfiles = new List<string>(GetFilesList());
 
-        for (int i = allFiles.Count - 1; i >= 0; i--)
+        for (var i = allFiles.Count - 1; i >= 0; i--)
         {
-            foreach (string extension in criticalExtensions)
+            foreach (var extension in criticalExtensions)
             {
                 if (allFiles[i].EndsWith(extension))
                 {
@@ -196,8 +196,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             }
         }
 
-        notCriticalFiles = allFiles.ToArray();
-        return criticalfiles.ToArray();
+        notCriticalFiles = [.. allFiles];
+        return [.. criticalfiles];
         
     }
 

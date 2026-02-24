@@ -13,14 +13,11 @@ public class CompBackup : Backup
     /// </summary>
     public override void ExecuteBackup()
     {
-        string destinationPath = CreateTimestampedFolder("Complete");
-        JobManager jobManager = JobManager.GetInstance();
-        
-        string[] notCriticalFiles;
+        var destinationPath = CreateTimestampedFolder("Complete");
+        var jobManager = JobManager.GetInstance();
 
-        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
-
-        string[] files = GetFilesList();
+        var criticalFiles = SeparateCriticalFiles(out var notCriticalFiles);
+        var files = GetFilesList();
 
         // Initialize the progress counter
         _backupInfo.TotalFiles = notCriticalFiles.Length + criticalFiles.Length;
@@ -28,7 +25,7 @@ public class CompBackup : Backup
         _backupInfo.CurrentFile = 0;
 
         
-        foreach (string file in criticalFiles)
+        foreach (var file in criticalFiles)
         {
             if (_cancel) break;
             BackupFile(file, destinationPath);
@@ -36,7 +33,7 @@ public class CompBackup : Backup
 
         _isCriticalFileFinised = true;
         // Loop the files and execute copy
-        foreach (string file in notCriticalFiles)
+        foreach (var file in notCriticalFiles)
         {
             if (_cancel) break;
             while (!jobManager.canRunNotCriticalJobs())

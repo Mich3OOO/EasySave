@@ -43,7 +43,7 @@ public class DeleteViewModel : ViewModelBase
         CancelCommand = new RelayCommand(Cancel);
         ConfirmCommand = new RelayCommand(Confirm);
 
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 

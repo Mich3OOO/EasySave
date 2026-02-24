@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,7 +11,7 @@ namespace EasySave.ViewModels;
 public partial class JobsStateViewModel : ViewModelBase
 {
     // List of the jobs who are running right now
-    public ObservableCollection<JobProgressViewModel> ActiveJobs { get; } = new();
+    public ObservableCollection<JobProgressViewModel> ActiveJobs { get; } = [];
 
     // Event delegate to tell the main window to close this
     public event Action? OnCloseRequested;
@@ -54,7 +54,7 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
 
         if (data.TotalFiles <= 0) return;
 
-        double percentage = ((double)data.CurrentFile / data.TotalFiles) * 100;
+        var percentage = ((double)data.CurrentFile / data.TotalFiles) * 100;
 
         // asynchrous send to the UI
         Dispatcher.UIThread.Post(() =>

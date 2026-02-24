@@ -14,7 +14,7 @@ namespace EasySave.Models;
 /// </summary>
 public class LogsManager : IEventListener   
 {
-    Config _config = Config.GetInstance();
+    private readonly Config _config = Config.GetInstance();
     public LogsMods LogsMods { get; set; } = LogsMods.Both;
 
     /// <summary>
@@ -50,7 +50,7 @@ public class LogsManager : IEventListener
             logText = ToTxt(data);
         }
 
-        var currentLogsMods = Config.GetInstance().LogsMods;
+        LogsMods currentLogsMods = Config.GetInstance().LogsMods;
         
         // Gestion des modes
         if (currentLogsMods == LogsMods.Local || currentLogsMods == LogsMods.Both)
@@ -145,7 +145,7 @@ public class LogsManager : IEventListener
             else
                 content = new StringContent(logContent, Encoding.UTF8, "text/plain");
 
-            var response = await httpClient.PostAsync(url, content);
+            HttpResponseMessage response = await httpClient.PostAsync(url, content);
 
             response.EnsureSuccessStatusCode();
         }

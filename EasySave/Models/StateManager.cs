@@ -29,8 +29,8 @@ public class StateManager : IEventListener
         {
             try
             {
-                string json = File.ReadAllText(_stateFilePath);
-                _states = JsonSerializer.Deserialize<List<StateInfo>>(json) ?? new List<StateInfo>();
+                var json = File.ReadAllText(_stateFilePath);
+                _states = JsonSerializer.Deserialize<List<StateInfo>>(json) ?? [];
             }
             catch
             {

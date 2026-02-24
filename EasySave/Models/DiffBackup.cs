@@ -11,7 +11,7 @@ namespace EasySave.Models;
 public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : Backup(savedJob, backupInfo,pw) 
 {
     private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-    string dictionaryPath = dico;
+    private readonly string dictionaryPath = dico;
 
     /// <summary>
     /// Override of the ExecuteBackup method to perform a differential backup, 
@@ -20,23 +20,20 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
     /// </summary>
     public override void ExecuteBackup()
     {
-        string destinationPath = CreateTimestampedFolder("Differential");
-        JobManager jobManager = JobManager.GetInstance();
-
-        string[] notCriticalFiles;
+        var destinationPath = CreateTimestampedFolder("Differential");
+        var jobManager = JobManager.GetInstance();
         
-        string[] criticalFiles = SeparateCriticalFiles(out notCriticalFiles);
-        
+        var criticalFiles = SeparateCriticalFiles(out var notCriticalFiles);
         
 
         // Initialize the progress counter
         _backupInfo.TotalFiles = notCriticalFiles.Length;
         _backupInfo.CurrentFile = 0;
         
-        foreach (string file in criticalFiles)
+        foreach (var file in criticalFiles)
         {
             if (_cancel) break;
-            _backupFile(file, destinationPath);
+            BackupFile(file, destinationPath);
         }
         
         _isCriticalFileFinised = true;
@@ -48,7 +45,7 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
             {
                 
             }
-            _backupFile(file, destinationPath);
+            BackupFile(file, destinationPath);
         }
     }
 
@@ -61,7 +58,7 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
     /// </summary>
     protected override string[] GetFilesList() 
     {
-        string completeFolderPath = Path.Combine(_savedJob.Destination, "Complete");
+        var completeFolderPath = Path.Combine(_savedJob.Destination, "Complete");
 
         DateTime lastFullBackupDate = DateTime.MinValue;
 
@@ -89,10 +86,10 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
             return base.GetFilesList();
         }
 
-        string[] allFiles = base.GetFilesList();
+        var allFiles = base.GetFilesList();
         List<string> modifiedFiles = [];
 
-        foreach (string file in allFiles)
+        foreach (var file in allFiles)
         {
             if (File.GetLastWriteTime(file) > lastFullBackupDate)
             {

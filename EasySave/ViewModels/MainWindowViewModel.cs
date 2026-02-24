@@ -25,10 +25,10 @@ public class MainWindowViewModel : ViewModelBase
     private readonly JobManager _jobManager =  JobManager.GetInstance();
 
     // Localization/Language support
-    public LanguageViewModel _languageViewModel { get; }
-    public string T_save_jobs => _languageViewModel.GetTranslation("save_jobs");
-    public string T_create_job => _languageViewModel.GetTranslation("create_job");
-    public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
+    public LanguageViewModel LanguageViewModel { get; }
+    public string T_save_jobs => LanguageViewModel.GetTranslation("save_jobs");
+    public string T_create_job => LanguageViewModel.GetTranslation("create_job");
+    public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
 
     // Navigation - holds the current view model being displayed
     private ViewModelBase? _currentViewModel;
@@ -88,10 +88,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        string dictionaryPath =
+        var dictionaryPath =
             System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
-        _languageViewModel.LanguageChanged += OnLanguageChanged;
+        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        LanguageViewModel.LanguageChanged += OnLanguageChanged;
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);
 
@@ -123,7 +123,7 @@ public class MainWindowViewModel : ViewModelBase
         JobSettingsViewModel jobVM = new();
         jobVM.OnSaveRequested += (newJob) =>
         {
-            int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
+            var newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
             newJob.Id = newId;
             _config.AddJob(newJob);
             _config.SaveConfig();
@@ -139,7 +139,7 @@ public class MainWindowViewModel : ViewModelBase
         JobSettingsViewModel jobVM = new(job);
         jobVM.OnSaveRequested += (updatedJob) =>
         {
-            int index = Jobs.IndexOf(job);
+            var index = Jobs.IndexOf(job);
             if (index != -1) Jobs[index] = updatedJob;
             _config.UpdateJob(job.Name, updatedJob);
             _config.SaveConfig();
@@ -158,7 +158,7 @@ public class MainWindowViewModel : ViewModelBase
         if (selectedJobs.Count == 0) return;
 
         // We use combined names for display in the popup, but the actual job objects are passed for execution
-        string combinedNames = string.Join(" - ", selectedJobs.Select(j => j.Name));
+        var combinedNames = string.Join(" - ", selectedJobs.Select(j => j.Name));
 
         // pass the combined names to the popup instead of the count heree
         var runJobVM = new RunJobsViewModel(selectedJobs.First(), isMultiple: true, combinedNames: combinedNames);
@@ -206,13 +206,13 @@ public class MainWindowViewModel : ViewModelBase
                 await ShowSuccessMessage($"Launching {combinedNames} backups...");
 
                 // Loop through all true jobs and launch them in parallel
-                foreach (var job in selectedJobs)
+                foreach (SavedJob? job in selectedJobs)
                 {
                     // Avoid launching a job that is already running
                     if (_stateManager.GetStateFrom(job.Name)?.State == StateLevel.Active) continue;
 
                     // Create progress bar
-                    var progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
+                    JobProgressViewModel progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
 
                     // Subscribe to event manager
                     EventManager.GetInstance().Subscribe(progressBarObserver);
@@ -224,7 +224,7 @@ public class MainWindowViewModel : ViewModelBase
                         try
                         {
                             // Init backup info
-                            BackupInfo backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
+                            var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
                             // Create the correct backup type
                             IBackup backup;
@@ -244,7 +244,7 @@ public class MainWindowViewModel : ViewModelBase
                 }
 
                 // Clean up the UI by unchecking all boxes
-                foreach (var j in selectedJobs) j.IsSelected = false;
+                foreach (SavedJob? j in selectedJobs) j.IsSelected = false;
                 RefreshSelectionStatus();
             }
         };
@@ -275,7 +275,7 @@ public class MainWindowViewModel : ViewModelBase
                     }
 
                     // Create progress bar
-                    var progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
+                    JobProgressViewModel progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
 
                     // Subscribe to event manager
                     EventManager.GetInstance().Subscribe(progressBarObserver);
@@ -314,7 +314,7 @@ public class MainWindowViewModel : ViewModelBase
                         try
                         {
                             // Init backup info
-                            BackupInfo backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
+                            var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
                             // Create the correct backup type
                             IBackup backup;
@@ -339,8 +339,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public void DeleteJob(SavedJob job)
     {
-        var confirmDialog = new DeleteViewModel();
-        confirmDialog.JobName = job.Name;
+        var confirmDialog = new DeleteViewModel
+        {
+            JobName = job.Name
+        };
         confirmDialog.OnResult += (confirmed) =>
         {
             CurrentViewModel = null;

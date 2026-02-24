@@ -18,10 +18,7 @@ public class LanguageViewModel
         {
             lock (_lock)
             {
-                if (_instance == null)
-                {
-                    _instance = new LanguageViewModel(dictionaryPath);
-                }
+                _instance ??= new LanguageViewModel(dictionaryPath);
             }
         }
         return _instance;
@@ -97,8 +94,8 @@ public class LanguageViewModel
         {
             if (File.Exists(_dictionaryPath))
             {
-                string jsonContent = File.ReadAllText(_dictionaryPath);
-                var loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<Languages, string>>>(jsonContent);
+                var jsonContent = File.ReadAllText(_dictionaryPath);
+                Dictionary<string, Dictionary<Languages, string>>? loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<Languages, string>>>(jsonContent);
                 
                 if (loadedDictionary != null)
                 {

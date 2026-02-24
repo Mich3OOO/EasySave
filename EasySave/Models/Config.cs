@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Models;
 
-class ConfigData // This class is used to serialize and deserialize the config file, it is not used in the program itself
 /// <summary>
 /// This class is used to serialize and deserialize the config file, it is not 
 /// used in the program itself
 /// </summary>
+class ConfigData
 {
     [JsonInclude]
     public Languages Language = Languages.En;
-    [JsonInclude]  
-    public LogsFormats LogsFormat  = LogsFormats.Json;
+    [JsonInclude]
+    public LogsFormats LogsFormat = LogsFormats.Json;
     [JsonInclude]
     public LogsMods LogsMods = LogsMods.Local;
     [JsonInclude]
@@ -31,10 +31,10 @@ class ConfigData // This class is used to serialize and deserialize the config f
 
 
     public ConfigData(Config _config)
-    { 
-        
+    {
+
         Language = _config.Language;
-        LogsFormat  = _config.LogsFormat;
+        LogsFormat = _config.LogsFormat;
         LogsMods = _config.LogsMods;
         ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
         SavedJobs = _config.SavedJobs;
@@ -45,8 +45,7 @@ class ConfigData // This class is used to serialize and deserialize the config f
         CriticalExtensions = _config.CriticalExtensions;
 
     }
-    public ConfigData()
-    {}
+    public ConfigData() { }
 
 }
 
@@ -62,23 +61,23 @@ public class Config
     private string[] _extensionsToEncrypt;
 
     private string[] _softwares;
-    public string[] _criticalExtensions = {};
+    public string[] _criticalExtensions;
     private string _API_URL;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";
 
-    private int _maxParallelLargeFileSizeKo = 10240; 
+    private int _maxParallelLargeFileSizeKo = 10240;
     public Languages Language { get => _language; set => _language = value; }
     public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
     public LogsMods LogsMods { get => _logsMods; set => _logsMods = value; }
     public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
     public string[] Softwares { get => _softwares; set => _softwares = value; }
     public string API_URL { get => _API_URL; set => _API_URL = value; }
-    public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
+    public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs); }
     public string[] CriticalExtensions { get => _criticalExtensions; set => _criticalExtensions = value; }
-    
-    
+
+
     public int MaxParallelLargeFileSizeKo { get => _maxParallelLargeFileSizeKo; set => _maxParallelLargeFileSizeKo = value; }
 
     /// <summary>
@@ -125,12 +124,12 @@ public class Config
     /// Method to load the configuration from the config file, it reads the file, 
     /// deserializes it into a ConfigStructure struct and updates the current configuration accordingly
     /// </summary>
-    private void LoadConfig()  
+    private void LoadConfig()
     {
         using FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read);
-        string json = "";
-        byte[] b = new byte[1024];
-        UTF8Encoding temp = new UTF8Encoding(true);
+        var json = "";
+        var b = new byte[1024];
+        var temp = new UTF8Encoding(true);
 
         while (fs.Read(b, 0, b.Length) > 0)
         {
@@ -139,17 +138,16 @@ public class Config
 
         ConfigData? config = JsonSerializer.Deserialize<ConfigData>(json.Trim('\0'));
 
-            if (config is null)
-            {
-                SetDefaultConfig();
-                SaveConfig();
-            }
-            else
-            {
-                SetConfig(config);
-            }
-
+        if (config is null)
+        {
+            SetDefaultConfig();
+            SaveConfig();
         }
+        else
+        {
+            SetConfig(config);
+        }
+
     }
 
     /// <summary>
@@ -168,7 +166,7 @@ public class Config
         _maxParallelLargeFileSizeKo = 10240;
     }
 
-    private void _setConfig(ConfigData config)
+    private void SetConfig(ConfigData config)
     {
         _language = config.Language;
         _logsFormat = config.LogsFormat;
@@ -181,7 +179,6 @@ public class Config
         _maxParallelLargeFileSizeKo = config.MaxParallelLargeFileSizeKo;
     }
 
-    public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false
     /// <summary>
     /// Method to add a new job to the list of saved jobs, it takes a SavedJob 
     /// object as a parameter and checks if a job with the same name and ID already 
@@ -221,7 +218,7 @@ public class Config
     /// Method to get a saved job by its name, it searches for the job with the 
     /// given name and returns a copy of it if found, otherwise it returns null 
     /// </summary>
-    public SavedJob? GetJob(string jobName) 
+    public SavedJob? GetJob(string jobName)
     {
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Name == jobName);
         return job is null ? null : new(job);

@@ -20,7 +20,7 @@ public class RunJobsViewModel : ViewModelBase
     public SavedJob Job { get; }
 
     // Property for the language view model, used to get translations for the UI
-    public LanguageViewModel _languageViewModel { get; }
+    public LanguageViewModel LanguageViewModel { get; }
 
     // Property for error messages, used to display validation errors when saving the job settings.
     public string ErrorMessage
@@ -57,8 +57,6 @@ public class RunJobsViewModel : ViewModelBase
     public string T_save_type => LanguageViewModel.GetTranslation("save_type");
     public string T_comp => LanguageViewModel.GetTranslation("comp");
     public string T_confirm_diff => LanguageViewModel.GetTranslation("diff");
-
-
     public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
     public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
     public string T_launch_save => LanguageViewModel.GetTranslation("launch_save");
@@ -101,7 +99,7 @@ public class RunJobsViewModel : ViewModelBase
                 if (Job == null) throw new ArgumentException(T_invalid_backup_id);
 
                 // Group feature: check if forbidden software is running
-                if (!_canARunJon(out string openedProcess))
+                if (!CanARunJob(out var openedProcess))
                 {
                     ErrorMessage = T_source_in_use + " : " + openedProcess;
                     return;
@@ -110,7 +108,7 @@ public class RunJobsViewModel : ViewModelBase
                 // Check if password is valid
                 if (!IsPasswordValid(_password))
                 {
-                    ErrorMessage = _languageViewModel.GetTranslation("password_policy");
+                    ErrorMessage = LanguageViewModel.GetTranslation("password_policy");
                     return;
                 }
 
@@ -132,7 +130,7 @@ public class RunJobsViewModel : ViewModelBase
     // Method to check if the source of the backup job is currently being used by another programm
     private bool CanARunJob(out string processName)
     {
-        Config conf = Config.GetInstance();
+        var conf = Config.GetInstance();
         Process[] allProcesses = Process.GetProcesses();
         processName = "";
         foreach (Process process in allProcesses)
