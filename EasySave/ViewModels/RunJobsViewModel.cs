@@ -77,8 +77,8 @@ public class RunJobsViewModel : ViewModelBase
     // Constructor updated to handle multiple selection flag and count
     public RunJobsViewModel(SavedJob job, bool isMultiple = false, string combinedNames = "")
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        //string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
         _isMultipleSelection = isMultiple;
 

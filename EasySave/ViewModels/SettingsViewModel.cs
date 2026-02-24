@@ -134,8 +134,8 @@ public class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel()
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        //string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
 
         SelectedLanguage = _config.Language;
         SelectedLogsFormats = _config.LogsFormat;

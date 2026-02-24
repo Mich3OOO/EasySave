@@ -94,8 +94,8 @@ public class LanguageViewModel
         {
             if (File.Exists(_dictionaryPath))
             {
-                var jsonContent = File.ReadAllText(_dictionaryPath);
-                Dictionary<string, Dictionary<Languages, string>>? loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<Languages, string>>>(jsonContent);
+                //var jsonContent = File.ReadAllText(_dictionaryPath);
+                //Dictionary<string, Dictionary<Languages, string>>? loadedDictionary = JsonSerializer.Deserialize<Dictionary<string, Dictionary<Languages, string>>>(jsonContent);
                 
                 if (loadedDictionary != null)
                 {

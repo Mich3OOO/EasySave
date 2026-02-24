@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
+
 namespace EasySave.ViewModels;
 
 /// <summary>
@@ -9,4 +10,10 @@ namespace EasySave.ViewModels;
 /// </summary>
 public abstract class ViewModelBase : ObservableObject
 {
+    public LanguageViewModel _languageViewModel { get; }
+    public ViewModelBase()
+    {
+        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+    }
 }

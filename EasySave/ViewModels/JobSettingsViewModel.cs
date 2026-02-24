@@ -13,7 +13,7 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class JobSettingsViewModel : ViewModelBase 
 {
-    public LanguageViewModel LanguageViewModel { get; }
+    //public LanguageViewModel LanguageViewModel { get; }
 
     public string T_job_settings => LanguageViewModel.GetTranslation("job_settings");
     public string T_job_name => LanguageViewModel.GetTranslation("job_name");
@@ -79,8 +79,8 @@ public class JobSettingsViewModel : ViewModelBase
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
 
-        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        //var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
     public JobSettingsViewModel(SavedJob jobToEdit) : this() 

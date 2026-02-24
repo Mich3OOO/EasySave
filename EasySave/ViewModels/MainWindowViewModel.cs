@@ -89,9 +89,9 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        var dictionaryPath =
-            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        //var dictionaryPath =
+        //    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        //LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         LanguageViewModel.LanguageChanged += OnLanguageChanged;
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);

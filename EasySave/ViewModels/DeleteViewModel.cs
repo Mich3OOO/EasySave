@@ -10,7 +10,7 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class DeleteViewModel : ViewModelBase
 {
-    public LanguageViewModel _languageViewModel { get; }
+    //public LanguageViewModel _languageViewModel { get; }
 
     public string T_confirm_deletion => _languageViewModel.GetTranslation("confirm_deletion");
     public string T_are_you_sure_deletion => _languageViewModel.GetTranslation("are_you_sure_deletion");
@@ -43,8 +43,8 @@ public class DeleteViewModel : ViewModelBase
         CancelCommand = new RelayCommand(Cancel);
         ConfirmCommand = new RelayCommand(Confirm);
 
-        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        //var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        //_languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
     /// <summary>
