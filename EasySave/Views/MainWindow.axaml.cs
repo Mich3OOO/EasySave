@@ -25,6 +25,8 @@ public partial class MainWindow : Window
 
     protected override void OnClosing(WindowClosingEventArgs e)
     {
+        base.OnClosing(e);
         JobManager.GetInstance().AbortAll();
+        Environment.Exit(0);
     }
 }
