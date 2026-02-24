@@ -13,6 +13,8 @@ public partial class JobsStateViewModel : ViewModelBase
     // List of the jobs who are running right now
     public ObservableCollection<JobProgressViewModel> ActiveJobs { get; } = [];
 
+    public string T_saves_progression => LanguageViewModel.GetTranslation("saves_progression");
+
     // Event delegate to tell the main window to close this
     public event Action? OnCloseRequested;
 
@@ -40,6 +42,8 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     [ObservableProperty] private bool _isFinished;
 
     public string PauseIcon => IsPaused ? "▷" : "⏸";
+    public string T_saves_progression => LanguageViewModel.GetTranslation("saves_progression");
+    public string T_finished => LanguageViewModel.GetTranslation("finished");
 
     public JobProgressViewModel(string jobName)
     {

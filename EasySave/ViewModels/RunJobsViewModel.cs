@@ -19,8 +19,6 @@ public class RunJobsViewModel : ViewModelBase
     // Properties 
     public SavedJob Job { get; }
 
-    // Property for the language view model, used to get translations for the UI
-    public LanguageViewModel LanguageViewModel { get; }
 
     // Property for error messages, used to display validation errors when saving the job settings.
     public string ErrorMessage
@@ -77,8 +75,6 @@ public class RunJobsViewModel : ViewModelBase
     // Constructor updated to handle multiple selection flag and count
     public RunJobsViewModel(SavedJob job, bool isMultiple = false, string combinedNames = "")
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
         _isMultipleSelection = isMultiple;
 
