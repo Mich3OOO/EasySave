@@ -13,7 +13,7 @@ public class SavedJob
     private string _name;
     private string _source;
     private string _destination;
-    private bool _isSelected;
+    private bool _isSelected = false;
 
 
 

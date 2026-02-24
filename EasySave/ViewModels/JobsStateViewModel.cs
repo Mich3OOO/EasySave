@@ -52,6 +52,10 @@ public partial class JobProgressViewModel : ViewModelBase, IEventListener
     {
         Console.WriteLine($"[DEBUG BARRE] Receive update for {data.SavedJobInfo.Name} : File {data.CurrentFile} / {data.TotalFiles}");
 
+        // Only update this progress bar if the event is for this specific job
+        if (data.SavedJobInfo.Name != JobName)
+            return;
+
         if (data.TotalFiles <= 0) return;
 
         var percentage = ((double)data.CurrentFile / data.TotalFiles) * 100;
