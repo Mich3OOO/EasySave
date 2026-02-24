@@ -38,6 +38,19 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Views\DeleteView.axaml.cs">
+        <DependentUpon>DeleteView.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="App.axaml.cs">
+        <DependentUpon>App.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 
     <ItemGroup>
       <None Include="CryptoSoft\7za.exe">
