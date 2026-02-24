@@ -4,7 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Models;
 
-class ConfigStructure // This class is used to serialize and deserialize the config file, it is not used in the program itself
+/// <summary>
+/// This class is used to serialize and deserialize the config file, it is not used in the program itself
+/// </summary>
+class ConfigStructure
 {
     // The JsonInclude attribute is used to include the fields in the serialization and deserialization process, even if they are not public properties
     [JsonInclude]

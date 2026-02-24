@@ -4,8 +4,10 @@ using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
-
-public abstract class Backup : IBackup  // Abstract class representing a backup operation, implementing the IBackup interface
+/// <summary>
+/// Abstract class representing a backup operation, implementing the IBackup interface
+/// </summary>
+public abstract class Backup : IBackup
 {
     protected SavedJob _savedJob;
     protected BackupInfo _backupInfo;
@@ -17,7 +19,13 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
 
     protected static readonly SemaphoreSlim LargeFileSemaphore = new SemaphoreSlim(1, 1);
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
+    /// <summary>
+    /// Constructor to initialize the backup with a saved job and backup info
+    /// </summary>
+    /// <param name="savedJob"> SavedJob that will be executed </param>
+    /// <param name="backupInfo"> BackupInfo object that will be used </param>
+    /// <param name="pw"> Password </param>
+    public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "")
     {
         _password = pw;
         _savedJob = savedJob;
@@ -25,29 +33,49 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
     }
 
+    /// <summary>
+    /// Setter for _password
+    /// </summary>
+    /// <param name="password"></param>
     public void SetPassword(string password)
     {
         _password = password;
     }
 
+    /// <summary>
+    /// Abstract method to execute the backup, to be implemented by derived classes
+    /// </summary>
     public abstract void ExecuteBackup();
+
+    /// <summary>
+    /// Pause the backup by setting _continue to false
+    /// </summary>
     public void Pause()
     {
         _continue = false;
     }
 
+    /// <summary>
+    /// Resume the backup by setting _continue to true
+    /// </summary>
     public void Continue()
     {
         _continue = true;
     }
 
+    /// <summary>
+    /// Cancel the bakcup by setting _cancel to true
+    /// </summary>
     public void Cancel()
     {
         _cancel = true;
     }
-    // Abstract method to execute the backup, to be implemented by derived classes
 
-    //Create a timestamp folder for backup
+    /// <summary>
+    /// Create a timestamp folder for backup
+    /// </summary>
+    /// <param name="subFolderType"></param>
+    /// <returns></returns>
     protected string _createTimestampedFolder(string subFolderType)
     {
         string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -56,7 +84,12 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         return fullPath;
     }
 
-    protected void _backupFile(string sourceFilePath, string destinationPath)   // Method to backup a single file, handling encryption if needed, and updating the backup status
+    /// <summary>
+    /// Method to backup a single file, handling encryption if needed, and updating the backup status
+    /// </summary>
+    /// <param name="sourceFilePath"></param>
+    /// <param name="destinationPath"></param>
+    protected void _backupFile(string sourceFilePath, string destinationPath)   
     {
         long fileSize = 0;
         bool isLargeFile = false;
@@ -134,7 +167,13 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         }
     }
 
-    // To encrypt file with 7z (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe
+    /// <summary>
+    /// Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
+    /// (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe)
+    /// </summary>
+    /// <param name="sourceFilePath"></param>
+    /// <param name="targetFilePath"></param>
+    /// <exception cref="Exception"></exception>
     private void _encryptFile(string sourceFilePath, string targetFilePath) // Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
     {
         // a = add (to add fie)
@@ -174,7 +213,11 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
 
-    protected void _updateStatus(CopyInfo newCopyInfo)  // Update the backup information and notify the EventManager
+    /// <summary>
+    /// Update the backup information and notify the EventManager
+    /// </summary>
+    /// <param name="newCopyInfo"></param>
+    protected void _updateStatus(CopyInfo newCopyInfo)
     {
         // Update general info
         _backupInfo.SavedJobInfo = _savedJob;
