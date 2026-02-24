@@ -2,7 +2,10 @@ using EasySave.Models;
 
 namespace EasySave.Interfaces;
 
-public interface IEventListener // Interface for event listeners that respond to backup events
+/// <summary>
+/// Interface for event listeners that respond to backup events
+/// </summary>
+public interface IEventListener
 {
     public void Update(BackupInfo data);
 }

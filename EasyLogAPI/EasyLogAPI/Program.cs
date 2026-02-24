@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.Http;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-// POST endpoint to receive logs from EasySave
+app.MapGet("/", () => "API EasyLog OK!");
+
+///<summary>
+/// POST endpoint to receive logs from EasySave
+///</summary>
 app.MapPost("/api/logs", async (HttpContext context) =>
 {
     // Read the raw content from the request body

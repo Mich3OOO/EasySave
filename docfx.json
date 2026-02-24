@@ -6,7 +6,8 @@
         {
           "files": [
             "EasySave/EasySave.csproj",
-            "EasyLog/EasyLog.csproj"
+            "EasyLog/EasyLog.csproj",
+            "EasyLogAPI/EasyLogAPI.csproj"
           ],
           "src": "."
         }
@@ -28,7 +29,7 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          "docs/Images/**"
         ]
       }
     ],
