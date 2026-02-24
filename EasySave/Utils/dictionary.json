@@ -1,202 +1,206 @@
-﻿{
-  "save_jobs": {
-    "en": "Save Jobs",
-    "fr": "Travaux de Sauvegarde"
-  },
-  "create_job": {
-    "en": "Create Job",
-    "fr": "Créer un travail"
-  },
-  "settings_tooltip": {
-    "en": "Open Settings",
-    "fr": "Ouvrir les paramètres"
-  },
-  "settings_menu": {
-    "en": "Settings",
-    "fr": "Paramètres"
-  },
-  "language_selection": {
-    "en": "App language",
-    "fr": "Langage de l'application"
-  },
-  "logs_format": {
-    "en": "Logs format",
-    "fr": "Format des logs"
-  },
-  "logs_mods": {
-    "en": "Logs mod",
-    "fr": "Mode des logs"
-  },
-  "business_software": {
-    "en": "Business software (pause the save job)",
-    "fr": "Logiciel Métier (interromp la sauvegarde)"
-  },
-  "business_software_detected": {
-    "en": "If a business software is detected, the save job will be paused",
-    "fr": "Si détecté, les travaux seront mis en pause."
-  },
-  "extensions_to_encrypt": {
-    "en": "Extensions to encrypt (separated by a comma)",
-    "fr": " Extensions à chiffrer (séparées par une virgule)"
-  },
-  "save_and_quit": {
-    "en": "Save and Quit",
-    "fr": "Enregistrer et quitter"
-  },
-  "job_settings": {
-    "en": "Job Settings",
-    "fr": "Paramètres du travail"
-  },
-  "job_name": {
-    "en": "Job Name",
-    "fr": "Nom du travail"
-  },
-  "example_job_name": {
-    "en": "Ex: Desktop backup",
-    "fr": "Ex: Sauvegarde du Bureau"
-  },
-  "source_folder": {
-    "en": "Source Folder",
-    "fr": "Dossier source"
-  },
-  "source_path": {
-    "en": "Source Path",
-    "fr": "Chemin source"
-  },
-  "target_folder": {
-    "en": "Target Path",
-    "fr": "Chemin cible"
-  },
-  "target_path": {
-    "en": "Target Folder",
-    "fr": "Dossier cible"
-  },
-  "cancel": {
-    "en": "Cancel",
-    "fr": "Annuler"
-  },
-  "save": {
-    "en": "Save",
-    "fr": "Enregistrer"
-  },
-  "confirm_deletion": {
-    "en": "Confirm deletion",
-    "fr": "Confirmer la suppression"
-  },
-  "are_you_sure_deletion": {
-    "en": "Are you sure you want to delete this job?",
-    "fr": "Êtes-vous sûr de vouloir supprimer ce travail ?"
-  },
-  "irreversible_action": {
-    "en": "This action is irreversible",
-    "fr": "Cette action est irréversible"
-  },
-  "delete": {
-    "en": "🗑️ Delete",
-    "fr": "🗑️ Supprimer"
-  },
-  "invald_backup_id": {
-    "en": "Invalid backup ID",
-    "fr": "ID de sauvegarde invalide"
-  },
-  "source_in_use": {
-    "en": "Source is used by another program",
-    "fr": "La source est utilisée par un autre programme"
-  },
-  "start_less_or_equal_end": {
-    "en": "Start of the range must be less than or equal to end",
-    "fr": "Le début de la plage doit être inférieur ou égal à la fin"
-  },
-  "invalid_range_format": {
-    "en": "Invalid range format",
-    "fr": "Format de plage invalide"
-  },
-  "error_occured": {
-    "en": "⚠️ An error occurred : ",
-    "fr": "⚠️ Une erreur s'est produite : "
-  },
-  "invalid_job_id_not_integer": {
-    "en": "Invalid job ID, following value is not an integer : ",
-    "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
-  },
-  "error_loading_dictionary": {
-    "en": "⚠️ Error loading dictionary : ",
-    "fr": "⚠️ Erreur lors du chargement du dictionnaire : "
-  },
-  "launch_save": {
-    "en": "Launch Save",
-    "fr": "Lancer la sauvegarde"
-  },
-  "complete": {
-    "en": "Complete",
-    "fr": "Complète"
-  },
-  "differential": {
-    "en": "Differential",
-    "fr": "Différentielle"
-  },
-  "password": {
-    "en": "Password",
-    "fr": "Mot de passe"
-  },
-  "launch": {
-    "en": "Launch",
-    "fr": "Démarrer"
-  },
-  "error_path": {
-    "en": "⚠️ Invalid path destination ",
-    "fr": "⚠️ Chemin invalide"
-  },
-  "what_type_save": {
-    "en": "What type of save do you want to launch ?",
-    "fr": "Quel type de sauvegarde voulez-vous lancer ?"
-  },
-  "enter_password": {
-    "en": "Enter the password",
-    "fr": "Entrez le mot de passe"
-  },
-  "password_policy": {
-    "en": "The password does not comply with the policy: Minimum 12 characters, including at least one uppercase letter, lowercase letter, special character, and number.",
-    "fr": "Le mot de passe ne respecte pas la politique de sécurité : minimum 12 caractères, dont au moins une majuscule, une minuscule, un caractère spécial et un chiffre."
-  },
-  "!complete_backup": {
-    "en": "Can't find a complete backup",
-    "fr": "Nous ne pouvons pas trouver de sauvegarde complète"
-  },
-  "logs_mod_local": {
-    "en": "Local",
-    "fr": "Local"
-  },
-  "logs_mod_centralized": {
-    "en": "Centralized",
-    "fr": "Centralisé"
-  },
-  "logs_mod_both": {
-    "en": "Both",
-    "fr": "Local et centralisé"
-  },
-  "dark_mode": {
-    "en": "Dark Mode",
-    "fr": "Mode sombre"
-  },
-  "light_mode": {
-    "en": "Light Mode",
-    "fr": "Mode clair"
-  },
-  "API_URL": {
-    "en": "URL of your API",
-    "fr": "URL de votre API"
-  },
-  "file_size": {
-    "en": "Large file threshold (KB)",
-    "fr": "Seuil fichier volumineux (Ko)"
-  },
-  "explain_file_size": {
-    "en": "Value at which a file is considered large",
-    "fr": "Valeur pour laquelle un fichier est considérer comme volumineux"
-  },
-  "critical_extensions": {
-    "en": "Critical files",
-    "fr": "Fichiers critiques"
-  }
+{
+    "save_jobs": {
+        "en": "Save Jobs",
+        "fr": "Travaux de Sauvegarde"
+    },
+    "create_job": {
+        "en": "Create Job",
+        "fr": "Créer un travail"
+    },
+    "settings_tooltip": {
+        "en": "Open Settings",
+        "fr": "Ouvrir les paramètres"
+    },
+    "settings_menu": {
+        "en": "Settings",
+        "fr": "Paramètres"
+    },
+    "language_selection": {
+        "en": "App language",
+        "fr": "Langage de l'application"
+    },
+    "logs_format": {
+        "en": "Logs format",
+        "fr": "Format des logs"
+    },
+    "logs_mods": {
+        "en": "Logs mod",
+        "fr": "Mode des logs"
+    },
+    "business_software": {
+        "en": "Business software (pause the save job)",
+        "fr": "Logiciel Métier (interromp la sauvegarde)"
+    },
+    "business_software_detected": {
+        "en": "If a business software is detected, the save job will be paused",
+        "fr": "Si détecté, les travaux seront mis en pause."
+    },
+    "extensions_to_encrypt": {
+        "en": "Extensions to encrypt (separated by a comma)",
+        "fr": " Extensions à chiffrer (séparées par une virgule)"
+    },
+    "save_and_quit": {
+        "en": "Save and Quit",
+        "fr": "Enregistrer et quitter"
+    },
+    "job_settings": {
+        "en": "Job Settings",
+        "fr": "Paramètres du travail"
+    },
+    "job_name": {
+        "en": "Job Name",
+        "fr": "Nom du travail"
+    },
+    "example_job_name": {
+        "en": "Ex: Desktop backup",
+        "fr": "Ex: Sauvegarde du Bureau"
+    },
+    "source_folder": {
+        "en": "Source Folder",
+        "fr": "Dossier source"
+    },
+    "source_path": {
+        "en": "Source Path",
+        "fr": "Chemin source"
+    },
+    "target_folder": {
+        "en": "Target Path",
+        "fr": "Chemin cible"
+    },
+    "target_path": {
+        "en": "Target Folder",
+        "fr": "Dossier cible"
+    },
+    "cancel": {
+        "en": "Cancel",
+        "fr": "Annuler"
+    },
+    "save": {
+        "en": "Save",
+        "fr": "Enregistrer"
+    },
+    "confirm_deletion": {
+        "en": "Confirm deletion",
+        "fr": "Confirmer la suppression"
+    },
+    "are_you_sure_deletion": {
+        "en": "Are you sure you want to delete this job?",
+        "fr": "Êtes-vous sûr de vouloir supprimer ce travail ?"
+    },
+    "irreversible_action": {
+        "en": "This action is irreversible",
+        "fr": "Cette action est irréversible"
+    },
+    "delete": {
+        "en": "🗑️ Delete",
+        "fr": "🗑️ Supprimer"
+    },
+    "invald_backup_id": {
+        "en": "Invalid backup ID",
+        "fr": "ID de sauvegarde invalide"
+    },
+    "source_in_use": {
+        "en": "Source is used by another program",
+        "fr": "La source est utilisée par un autre programme"
+    },
+    "start_less_or_equal_end": {
+        "en": "Start of the range must be less than or equal to end",
+        "fr": "Le début de la plage doit être inférieur ou égal à la fin"
+    },
+    "invalid_range_format": {
+        "en": "Invalid range format",
+        "fr": "Format de plage invalide"
+    },
+    "error_occured": {
+        "en": "⚠️ An error occurred : ",
+        "fr": "⚠️ Une erreur s'est produite : "
+    },
+    "invalid_job_id_not_integer": {
+        "en": "Invalid job ID, following value is not an integer : ",
+        "fr": "ID de travail invalide, la valeur suivante n'est pas un entier : "
+    },
+    "error_loading_dictionary": {
+        "en": "⚠️ Error loading dictionary : ",
+        "fr": "⚠️ Erreur lors du chargement du dictionnaire : "
+    },
+    "launch_save": {
+        "en": "Launch Save",
+        "fr": "Lancer la sauvegarde"
+    },
+    "complete": {
+        "en": "Complete",
+        "fr": "Complète"
+    },
+    "differential": {
+        "en": "Differential",
+        "fr": "Différentielle"
+    },
+    "password": {
+        "en": "Password",
+        "fr": "Mot de passe"
+    },
+    "launch": {
+        "en": "Launch",
+        "fr": "Démarrer"
+    },
+    "error_path": {
+        "en": "⚠️ Invalid path destination ",
+        "fr": "⚠️ Chemin invalide"
+    },
+    "what_type_save": {
+        "en": "What type of save do you want to launch ?",
+        "fr": "Quel type de sauvegarde voulez-vous lancer ?"
+    },
+    "enter_password": {
+        "en": "Enter the password",
+        "fr": "Entrez le mot de passe"
+    },
+    "password_policy": {
+        "en": "The password does not comply with the policy: Minimum 12 characters, including at least one uppercase letter, lowercase letter, special character, and number.",
+        "fr": "Le mot de passe ne respecte pas la politique de sécurité : minimum 12 caractères, dont au moins une majuscule, une minuscule, un caractère spécial et un chiffre."
+    },
+    "!complete_backup": {
+        "en": "Can't find a complete backup",
+        "fr": "Nous ne pouvons pas trouver de sauvegarde complète"
+    },
+    "logs_mod_local": {
+        "en": "Local",
+        "fr": "Local"
+    },
+    "logs_mod_centralized": {
+        "en": "Centralized",
+        "fr": "Centralisé"
+    },
+    "logs_mod_both": {
+        "en": "Both",
+        "fr": "Local et centralisé"
+    },
+    "dark_mode": {
+        "en": "Dark Mode",
+        "fr": "Mode sombre"
+    },
+    "light_mode": {
+        "en": "Light Mode",
+        "fr": "Mode clair"
+    },
+    "API_URL": {
+        "en": "URL of your API",
+        "fr": "URL de votre API"
+    },
+    "file_size": {
+        "en": "Large file threshold (KB)",
+        "fr": "Seuil fichier volumineux (Ko)"
+    },
+    "explain_file_size": {
+        "en": "Value at which a file is considered large",
+        "fr": "Valeur pour laquelle un fichier est considérer comme volumineux"
+    },
+    "critical_extensions": {
+        "en": "Critical files",
+        "fr": "Fichiers critiques"
+    },
+    "run_selection" : {
+        "en": "Run the selection",
+        "fr": "Lancer la sélection"
+    }
 }

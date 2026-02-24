@@ -31,6 +31,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public string T_save_jobs => _languageViewModel.GetTranslation("save_jobs");
     public string T_create_job => _languageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
+    public string T_run_selection => _languageViewModel.GetTranslation("run_selection");
 
     // Navigation - holds the current view model being displayed
     private ViewModelBase? _currentViewModel;
@@ -110,6 +111,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         OnPropertyChanged(nameof(T_save_jobs));
         OnPropertyChanged(nameof(T_create_job));
         OnPropertyChanged(nameof(T_settings_tooltip));
+        OnPropertyChanged(nameof(T_run_selection));
     }
 
     private void ShowSettings()

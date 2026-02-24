@@ -107,7 +107,7 @@
 
 		<Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,25,0,0">
 			<Button Grid.Column="0"
-					Content="Lancer la sélection"
+					Content="{Binding T_run_selection}"       
 					Command="{Binding RunSelectedJobsCommand}"
 					IsVisible="{Binding HasSelectedJobs}"
 					Padding="15,10"
