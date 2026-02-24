@@ -38,7 +38,7 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         
         _dictionaryPath = dictionaryPath;
         _dictionary = new Dictionary<string, Dictionary<Languages, string>>();
-        _conf = Config.S_GetInstance();
+        _conf = Config.GetInstance();
         _currentLanguage = _conf.Language;
         _loadDictionary();
     }

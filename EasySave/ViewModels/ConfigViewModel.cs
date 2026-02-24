@@ -12,7 +12,7 @@ public class ConfigViewModel
 
     public ConfigViewModel()    // Constructor
     {
-        _config = Config.S_GetInstance();
+        _config = Config.GetInstance();
     }
     
     public void SaveConfig()    // Method to save the current configuration, it calls the SaveConfig method of the Config class

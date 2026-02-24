@@ -64,7 +64,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
-    private Config _config = Config.S_GetInstance();
+    private Config _config = Config.GetInstance();
 
     private StateManager _stateManager = StateManager.GetInstance();
 

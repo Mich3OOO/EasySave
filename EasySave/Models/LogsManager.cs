@@ -31,9 +31,9 @@ public class LogsManager : IEventListener
     /// </summary>
     public void Update(BackupInfo data)
     {
-        string logText = "";
-        string formatExtension = "";
         LogsFormats format = _config.LogsFormat;
+        string logText;
+        string formatExtension;
         if (format == LogsFormats.Json)
         {
             formatExtension = "json";
@@ -42,12 +42,12 @@ public class LogsManager : IEventListener
         else if (format == LogsFormats.Xml)
         {
             formatExtension = "xml";
-            logText = this._toXml(data);
+            logText = ToXml(data);
         }
         else
         {
             formatExtension = "unknown";
-            logText = this._toTxt(data);
+            logText = ToTxt(data);
         }
 
         var currentLogsMods = Config.GetInstance().LogsMods;

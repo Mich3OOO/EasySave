@@ -129,7 +129,7 @@ public class SettingsViewModel : ViewModelBase
     }
 
 
-    private Config _config = Config.S_GetInstance();
+    private Config _config = Config.GetInstance();
 
     public SettingsViewModel()
     {

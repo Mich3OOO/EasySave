@@ -62,12 +62,14 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         long fileSize = 0;
         bool isLargeFile = false;
-        Config config = Config.S_GetInstance();
+        Config config = Config.GetInstance();
 
         try
         {
-            CopyInfo copyInfo = new CopyInfo();
-            copyInfo.Source = sourceFilePath;
+            CopyInfo copyInfo = new()
+            {
+                Source = sourceFilePath
+            };
             fileSize = new FileInfo(sourceFilePath).Length;
             copyInfo.Size = fileSize;
 

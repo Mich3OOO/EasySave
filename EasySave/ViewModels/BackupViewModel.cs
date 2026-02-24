@@ -22,7 +22,7 @@ public class BackupViewModel : ViewModelBase
     public string T_error_occured => _languageViewModel.GetTranslation("error_occured");
     public string T_invalid_job_id_not_integer => _languageViewModel.GetTranslation("invalid_job_id_not_integer");
 
-    private Config _config = Config.S_GetInstance();
+    private Config _config = Config.GetInstance();
 
     /// <summary>
     /// Observable collection of backup jobs to display in the UI.

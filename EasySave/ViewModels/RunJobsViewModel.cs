@@ -113,7 +113,7 @@ public class RunJobsViewModel : ViewModelBase
     /// <returns>true if no blocking process is running; otherwise false</returns>
     private bool _canARunJon(out string processName)
     {
-        Config conf = Config.S_GetInstance();
+        Config conf = Config.GetInstance();
         Process[] allProcesses = Process.GetProcesses();
         processName = "";
         foreach (Process process in allProcesses)
