@@ -25,11 +25,11 @@ public class MainWindowViewModel : ViewModelBase
     private readonly JobManager _jobManager =  JobManager.GetInstance();
 
     // Localization/Language support
-    public LanguageViewModel _languageViewModel { get; }
-    public string T_save_jobs => _languageViewModel.GetTranslation("save_jobs");
-    public string T_create_job => _languageViewModel.GetTranslation("create_job");
-    public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
-    public string T_run_selection => _languageViewModel.GetTranslation("run_selection");
+    public LanguageViewModel LanguageViewModel { get; }
+    public string T_save_jobs => LanguageViewModel.GetTranslation("save_jobs");
+    public string T_create_job => LanguageViewModel.GetTranslation("create_job");
+    public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
+    public string T_run_selection => LanguageViewModel.GetTranslation("run_selection");
 
     // Navigation - holds the current view model being displayed
     private ViewModelBase? _currentViewModel;
