@@ -1,6 +1,9 @@
 namespace EasySave.Models;
 
-public enum LogsFormats   // Enum representing the supported languages in the application
+/// <summary>
+/// Enum representing the supported languages in the application
+/// </summary>
+public enum LogsFormats   
 {
     Json,
     Xml

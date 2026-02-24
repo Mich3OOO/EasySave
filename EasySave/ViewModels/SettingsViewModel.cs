@@ -15,22 +15,22 @@ namespace EasySave.ViewModels;
 /// </summary>
 public class SettingsViewModel : ViewModelBase
 {
-    public LanguageViewModel _languageViewModel { get; }
-    public string T_settings => _languageViewModel.GetTranslation("settings_menu");
-    public string T_language_selection => _languageViewModel.GetTranslation("language_selection");
-    public string T_logs_format => _languageViewModel.GetTranslation("logs_format");
-    public string T_logs_mods => _languageViewModel.GetTranslation("logs_mods");
-    public string T_business_software => _languageViewModel.GetTranslation("business_software");
-    public string T_business_software_detected => _languageViewModel.GetTranslation("business_software_detected");
-    public string T_extensions_to_encrypt => _languageViewModel.GetTranslation("extensions_to_encrypt");
-    public string T_save_and_quit => _languageViewModel.GetTranslation("save_and_quit");
-    public string T_cancel => _languageViewModel.GetTranslation("cancel");
-    public string T_size_file => _languageViewModel.GetTranslation("file_size");
-    public string T_explain_file_size => _languageViewModel.GetTranslation("explain_file_size");
-    public string T_dark_mode => _languageViewModel.GetTranslation("dark_mode");
-    public string T_light_mode => _languageViewModel.GetTranslation("light_mode");
-    public string T_API_URL => _languageViewModel.GetTranslation("API_URL");
-    public string T_critical_extensions => _languageViewModel.GetTranslation("critical_extensions");
+    public LanguageViewModel LanguageViewModel { get; }
+    public string T_settings => LanguageViewModel.GetTranslation("settings_menu");
+    public string T_language_selection => LanguageViewModel.GetTranslation("language_selection");
+    public string T_logs_format => LanguageViewModel.GetTranslation("logs_format");
+    public string T_logs_mods => LanguageViewModel.GetTranslation("logs_mods");
+    public string T_business_software => LanguageViewModel.GetTranslation("business_software");
+    public string T_business_software_detected => LanguageViewModel.GetTranslation("business_software_detected");
+    public string T_extensions_to_encrypt => LanguageViewModel.GetTranslation("extensions_to_encrypt");
+    public string T_save_and_quit => LanguageViewModel.GetTranslation("save_and_quit");
+    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
+    public string T_size_file => LanguageViewModel.GetTranslation("file_size");
+    public string T_explain_file_size => LanguageViewModel.GetTranslation("explain_file_size");
+    public string T_dark_mode => LanguageViewModel.GetTranslation("dark_mode");
+    public string T_light_mode => LanguageViewModel.GetTranslation("light_mode");
+    public string T_api_url => LanguageViewModel.GetTranslation("api_url");
+    public string T_critical_extensions => LanguageViewModel.GetTranslation("critical_extensions");
 
     /// <summary>
     /// Command to save the settings.
@@ -67,7 +67,7 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-    private List<LogsModsItem> _logsModsList = new List<LogsModsItem>();
+    private List<LogsModsItem> _logsModsList = [];
     public List<LogsModsItem> LogsModsList
     {
         get => _logsModsList;
@@ -108,7 +108,6 @@ public class SettingsViewModel : ViewModelBase
                 _isDarkMode = value;
                 OnPropertyChanged(nameof(IsDarkMode));
 
-                // Apply new theme
                 if (Application.Current != null)
                 {
                     Application.Current.RequestedThemeVariant = value ? ThemeVariant.Dark : ThemeVariant.Light;
@@ -131,13 +130,12 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-
-    private Config _config = Config.S_GetInstance();
+    private readonly Config _config = Config.GetInstance();
 
     public SettingsViewModel()
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
 
         SelectedLanguage = _config.Language;
         SelectedLogsFormats = _config.LogsFormat;
@@ -149,26 +147,23 @@ public class SettingsViewModel : ViewModelBase
 
         MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
 
-        LanguagesList = new List<Languages>(Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray());
-        LogsFormatsList = new List<LogsFormats>(LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray());
-        LogsModsList = Enum.GetValues(typeof(LogsMods)).Cast<LogsMods>()
-            .Select(m => new LogsModsItem(m, GetLogsModTranslation(m)))
-            .ToList();
+        LanguagesList = [.. Languages.GetValuesAsUnderlyingType<Languages>().Cast<Languages>().ToArray()];
+        LogsFormatsList = [.. LogsFormats.GetValuesAsUnderlyingType<LogsFormats>().Cast<LogsFormats>().ToArray()];
+        LogsModsList = [.. Enum.GetValues(typeof(LogsMods)).Cast<LogsMods>().Select(m => new LogsModsItem(m, GetLogsModTranslation(m)))];
+        
         SelectedLogsModsItem = LogsModsList.FirstOrDefault(i => i.Value == _config.LogsMods);
 
         SaveCommand = new RelayCommand(Save);
         CancelCommand = new RelayCommand(Cancel);
 
-        // Update UI Switch with the current value
         if (Application.Current != null)
         {
             _isDarkMode = Application.Current.RequestedThemeVariant == ThemeVariant.Dark;
         }
     }
-
     private void Save()
     {
-        _languageViewModel.SetLanguage(SelectedLanguage);
+        LanguageViewModel.SetLanguage(SelectedLanguage);
         _config.Language = SelectedLanguage;
         _config.LogsFormat = SelectedLogsFormats;
         _config.ExtensionsToEncrypt = Extension.ToLower().Split(',');
@@ -179,21 +174,19 @@ public class SettingsViewModel : ViewModelBase
         _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo;
         _config.SaveConfig();
 
-        // Signal to save settings (will be handled by MainWindowViewModel)
         OnSaveRequested?.Invoke();
     }
 
     private void Cancel()
     {
-        // Signal to cancel settings (will be handled by MainWindowViewModel)
         OnCancelRequested?.Invoke();
     }
 
     private string GetLogsModTranslation(LogsMods mod) => mod switch
     {
-        LogsMods.Local => _languageViewModel.GetTranslation("logs_mod_local"),
-        LogsMods.Centralized => _languageViewModel.GetTranslation("logs_mod_centralized"),
-        LogsMods.Both => _languageViewModel.GetTranslation("logs_mod_both"),
+        LogsMods.Local => LanguageViewModel.GetTranslation("logs_mod_local"),
+        LogsMods.Centralized => LanguageViewModel.GetTranslation("logs_mod_centralized"),
+        LogsMods.Both => LanguageViewModel.GetTranslation("logs_mod_both"),
         _ => mod.ToString()
     };
 

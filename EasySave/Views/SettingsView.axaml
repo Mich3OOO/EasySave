@@ -39,7 +39,7 @@
                     </StackPanel>
 
 					<StackPanel Spacing="5">
-						<TextBlock Text="{Binding T_API_URL}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
+						<TextBlock Text="{Binding T_api_url}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
 						<TextBox Watermark="Ex: http://127.0.0.1:8080/api/logs" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" Foreground="{DynamicResource TextPrimaryBrush}" CornerRadius="6" Text = "{Binding API_URL}"/>
 					</StackPanel>
 

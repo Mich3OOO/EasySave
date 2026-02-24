@@ -183,7 +183,7 @@
     "en": "Light Mode",
     "fr": "Mode clair"
   },
-  "API_URL": {
+  "api_url": {
     "en": "URL of your API",
     "fr": "URL de votre API"
   },

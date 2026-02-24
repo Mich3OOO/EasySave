@@ -3,48 +3,78 @@ using EasySave.Interfaces;
 
 namespace EasySave.Models;
 
-class JobManager:IEventListener
+/// <summary>
+/// This class is responsible for managing the running jobs, it is a 
+/// singleton class that keeps track of the running jobs and allows to 
+/// cancel, pause and continue them, it also listens to the BackupInfo 
+/// updates to remove the job from the running jobs when it is completed
+/// </summary>
+public class JobManager : IEventListener 
 {
-    private static JobManager s_Instance;
-    private Dictionary<string,IBackup> _runningJobs;
+    private static JobManager? s_Instance;
+    private readonly Dictionary<string,IBackup> _runningJobs;
     private object _locker = new object();
 
+    /// <summary>
+    /// Trivate constructor (singleton) that initializes the running 
+    /// jobs dictionary and subscribes to the EventManager
+    /// </summary>
     private JobManager()
     {
-        _runningJobs = new Dictionary<string, IBackup>();
+        _runningJobs = [];
         EventManager.GetInstance().Subscribe(this);
     }
 
-    public static JobManager GetInstance()
+    /// <summary>
+    /// Singleton pattern to get the instance of the JobManager
+    /// </summary>
+    /// <returns></returns>
+    public static JobManager GetInstance() 
     {
-        if (s_Instance == null)
-            s_Instance = new JobManager();
+        s_Instance ??= new JobManager();
         return s_Instance;
     }
 
-    public void AddJob(SavedJob job,IBackup backup)
+    /// <summary>
+    /// Add a job to the running jobs dictionary with the job name as key and the backup as value
+    /// </summary>
+    public void AddJob(SavedJob job,IBackup backup) 
     {
         _runningJobs.Add(job.Name,backup);
     }
 
-    public void CancelJob(SavedJob job)
+    /// <summary>
+    /// Cancel the job by removing it from the running jobs and calling the cancel method of the backup
+    /// </summary>
+    /// <param name="job"></param>
+    public void CancelJob(SavedJob job) 
     {
         _runningJobs.Remove(job.Name,out IBackup backup);
         backup.Cancel();
     }
 
-    public void PauseJob(SavedJob job)
+    /// <summary>
+    /// Pause the job by calling the pause method of the backup
+    /// </summary>
+    public void PauseJob(SavedJob job) 
     {
         _runningJobs[job.Name].Pause();
     }
 
-    public void ContinueJob(SavedJob job)
+    /// <summary>
+    /// Continue the job by calling the continue method of the backup
+    /// </summary>
+    public void ContinueJob(SavedJob job) 
     {
         _runningJobs[job.Name].Continue();
     }
 
-
-    public void Update(BackupInfo data)
+    /// <summary>
+    /// This method is called when the BackupInfo is updated, it 
+    /// checks if the job is completed and if it is, it removes it 
+    /// from the running jobs
+    /// </summary>
+    public void Update(BackupInfo data) 
     {
         if (data.CurrentFile == data.TotalFiles)
         {

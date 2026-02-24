@@ -2,3 +2,7 @@
 obj/
 bin/
 .vs/
+
+# DocFX
+_site/
+api/

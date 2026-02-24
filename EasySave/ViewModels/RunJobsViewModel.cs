@@ -35,7 +35,6 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _isDifferential, value);
     }
 
-    // Property for the password path, with getter and setter that raises property change notifications
     public string Password
     {
         get => _password;
@@ -54,20 +53,22 @@ public class RunJobsViewModel : ViewModelBase
     }
 
     // TRANSLATIONS
-    public string T_start_save => _languageViewModel.GetTranslation("start_save");
-    public string T_save_type => _languageViewModel.GetTranslation("save_type");
-    public string T_comp => _languageViewModel.GetTranslation("comp");
-    public string T_confirm_diff => _languageViewModel.GetTranslation("diff");
-    public string T_launch_save => _languageViewModel.GetTranslation("launch_save");
-    public string T_what_type_save => _languageViewModel.GetTranslation("what_type_save");
-    public string T_complete => _languageViewModel.GetTranslation("complete");
-    public string T_differential => _languageViewModel.GetTranslation("differential");
-    public string T_password => _languageViewModel.GetTranslation("password");
-    public string T_enter_password => _languageViewModel.GetTranslation("enter_password");
-    public string T_cancel => _languageViewModel.GetTranslation("cancel");
-    public string T_launch => _languageViewModel.GetTranslation("launch");
-    public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
-    public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
+    public string T_start_save => LanguageViewModel.GetTranslation("start_save");
+    public string T_save_type => LanguageViewModel.GetTranslation("save_type");
+    public string T_comp => LanguageViewModel.GetTranslation("comp");
+    public string T_confirm_diff => LanguageViewModel.GetTranslation("diff");
+
+
+    public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
+    public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
+    public string T_launch_save => LanguageViewModel.GetTranslation("launch_save");
+    public string T_what_type_save => LanguageViewModel.GetTranslation("what_type_save");
+    public string T_complete => LanguageViewModel.GetTranslation("complete");
+    public string T_differential => LanguageViewModel.GetTranslation("differential");
+    public string T_password => LanguageViewModel.GetTranslation("password");
+    public string T_enter_password => LanguageViewModel.GetTranslation("enter_password");
+    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
+    public string T_launch => LanguageViewModel.GetTranslation("launch");
 
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
@@ -78,9 +79,8 @@ public class RunJobsViewModel : ViewModelBase
     // Constructor updated to handle multiple selection flag and count
     public RunJobsViewModel(SavedJob job, bool isMultiple = false, string combinedNames = "")
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
-
+        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
         _isMultipleSelection = isMultiple;
 
@@ -130,9 +130,9 @@ public class RunJobsViewModel : ViewModelBase
     }
 
     // Method to check if the source of the backup job is currently being used by another programm
-    private bool _canARunJon(out string processName)
+    private bool CanARunJob(out string processName)
     {
-        Config conf = Config.S_GetInstance();
+        Config conf = Config.GetInstance();
         Process[] allProcesses = Process.GetProcesses();
         processName = "";
         foreach (Process process in allProcesses)
@@ -146,13 +146,15 @@ public class RunJobsViewModel : ViewModelBase
         return true;
     }
 
-    // Check password policy
-    public bool IsPasswordValid(string password)
+    /// <summary>
+    /// Checks whether the password meets the required policy
+    /// Min 12 char, with lower, upper, digits and special character
+    /// </summary>
+    public static bool IsPasswordValid(string password)
     {
         if (string.IsNullOrEmpty(password))
             return false;
 
-        // Min 12 char, with lower, upper, digits and special character
         string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$";
 
         return Regex.IsMatch(password, pattern);

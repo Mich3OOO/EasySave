@@ -1,6 +1,4 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
@@ -14,7 +12,7 @@ namespace EasySave.ViewModels;
 /// <summary>
 /// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase, IEventListener
+public class MainWindowViewModel : ViewModelBase
 {
     // Manage progress window
     private JobsStateViewModel? _sharedProgressViewModel;
@@ -24,7 +22,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public string Greeting { get; } = "Welcome to EasySave!";
     public string CustomCursorPath { get; set; } = "avares://EasySave/Assets/cursor.cur";
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
-    private JobManager _jobManager = JobManager.GetInstance();
+    private readonly JobManager _jobManager =  JobManager.GetInstance();
 
     // Localization/Language support
     public LanguageViewModel _languageViewModel { get; }
@@ -84,13 +82,14 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public ICommand ShowSettingsCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
-    private Config _config = Config.S_GetInstance();
-    private StateManager _stateManager = StateManager.GetInstance();
+    private readonly Config _config = Config.GetInstance();
+
+    private readonly StateManager _stateManager = StateManager.GetInstance();
 
     public MainWindowViewModel()
     {
-        // Initialize language support and load saved jobs
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+        string dictionaryPath =
+            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         _languageViewModel.LanguageChanged += OnLanguageChanged;
 
@@ -101,8 +100,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
-        // Init managers (Logs and State)
-        LogsManager _logsManager = new LogsManager();
+        LogsManager _logsManager = new();
     }
 
     private void OnLanguageChanged()
@@ -122,7 +120,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
     public void CreateJob()
     {
-        JobSettingsViewModel jobVM = new JobSettingsViewModel();
+        JobSettingsViewModel jobVM = new();
         jobVM.OnSaveRequested += (newJob) =>
         {
             int newId = Jobs.Any() ? Jobs.Max(j => j.Id) + 1 : 1;
@@ -138,7 +136,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
 
     public void EditJob(SavedJob job)
     {
-        JobSettingsViewModel jobVM = new JobSettingsViewModel(job);
+        JobSettingsViewModel jobVM = new(job);
         jobVM.OnSaveRequested += (updatedJob) =>
         {
             int index = Jobs.IndexOf(job);
@@ -262,9 +260,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     {
         if (_stateManager.GetStateFrom(job.Name)?.State != StateLevel.Active)
         {
-            var runJobVM = new RunJobsViewModel(job);
-
-            // Wait for popup result
+            RunJobsViewModel runJobVM = new(job);
             runJobVM.OnResult += async (confirmed, isDiff, password) =>
             {
                 CurrentViewModel = null; // Close config dialog
@@ -370,10 +366,5 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public void CancelJob(SavedJob job)
     {
         _jobManager.CancelJob(job);
-    }
-
-    public void Update(BackupInfo data)
-    {
-
     }
 }

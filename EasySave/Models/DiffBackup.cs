@@ -2,21 +2,30 @@ using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
-public class DiffBackup : Backup
+/// <summary>
+/// Class representing a differential backup, it inherits from the Backup 
+/// class and overrides the ExecuteBackup and _getFilesList methods to perform 
+/// a differential backup, creating a timestamped folder and copying only the 
+/// files that have been modified since the last complete backup
+/// </summary>
+public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : Backup(savedJob, backupInfo,pw) 
 {
-    string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
+    private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+    string dictionaryPath = dico;
 
-    public DiffBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }
-
-    public override void ExecuteBackup()    // Override of the ExecuteBackup method to perform a differential backup, creating a timestamped folder and copying only the files that have been modified since the last complete backup
+    /// <summary>
+    /// Override of the ExecuteBackup method to perform a differential backup, 
+    /// creating a timestamped folder and copying only the files that have been 
+    /// modified since the last complete backup
+    /// </summary>
+    public override void ExecuteBackup()
     {
+        string destinationPath = CreateTimestampedFolder("Differential");
         JobManager jobManager = JobManager.GetInstance();
-        // Create the timestamped folder
-        string destinationPath = _createTimestampedFolder("Differential");
 
         string[] notCriticalFiles;
         
-        string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
+        string[] criticalFiles = SeparateCriticalFiles(out notCriticalFiles);
         
         
 
@@ -43,17 +52,22 @@ public class DiffBackup : Backup
         }
     }
 
-    protected override string[] _getFilesList() // Override of the _getFilesList method to return only the files that have been modified since the last complete backup, it checks the creation date of the last complete backup folder and compares it with the last write time of each file in the source directory, if a file has been modified after the last complete backup, it is added to the list of files to copy
+    /// <summary>
+    /// Override of the _getFilesList method to return only the files that have 
+    /// been modified since the last complete backup, it checks the creation date 
+    /// of the last complete backup folder and compares it with the last write time 
+    /// of each file in the source directory, if a file has been modified after the 
+    /// last complete backup, it is added to the list of files to copy
+    /// </summary>
+    protected override string[] GetFilesList() 
     {
-        // Define the path where Complete backups are stored
         string completeFolderPath = Path.Combine(_savedJob.Destination, "Complete");
 
-        DateTime lastFullBackupDate = DateTime.MinValue; // Default value
+        DateTime lastFullBackupDate = DateTime.MinValue;
 
         // Find the most recent Complete backup folder
         if (Directory.Exists(completeFolderPath))
         {
-            // Get all directories, order by creation date desc
             DirectoryInfo? lastDir = new DirectoryInfo(completeFolderPath)
                 .GetDirectories()
                 .OrderByDescending(d => d.CreationTime)
@@ -72,22 +86,20 @@ public class DiffBackup : Backup
 
         if (lastFullBackupDate == DateTime.MinValue)
         {
-            return base._getFilesList();
+            return base.GetFilesList();
         }
 
-        // Get file list
-        string[] allFiles = base._getFilesList();
-        List<string> modifiedFiles = new List<string>();
+        string[] allFiles = base.GetFilesList();
+        List<string> modifiedFiles = [];
 
         foreach (string file in allFiles)
         {
-            // Check if the source file has been modified AFTER the last full backup
             if (File.GetLastWriteTime(file) > lastFullBackupDate)
             {
                 modifiedFiles.Add(file);
             }
         }
 
-        return modifiedFiles.ToArray();
+        return [.. modifiedFiles];
     }
 }

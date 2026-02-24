@@ -1,6 +1,9 @@
 ﻿namespace EasySave.Models;
 
-public enum LogsMods
+/// <summary>
+/// Enum used to specify the type of logs saving methods
+/// </summary>
+public enum LogsMods 
 {
     Local,
     Centralized,
