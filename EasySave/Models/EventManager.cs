@@ -39,6 +39,17 @@ public class EventManager
     }
 
     /// <summary>
+    /// Remove the object from the subscribers list
+    /// </summary>
+    public void Unsubscribe(IEventListener listener)
+    {
+        if (this._subscribers.Contains(listener))
+        {
+            this._subscribers.Remove(listener);
+        }
+    }
+
+    /// <summary>
     /// Notify all subscribers with BackupInfo
     /// </summary>
     public void Update(BackupInfo data)

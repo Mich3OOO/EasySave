@@ -181,8 +181,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         
         var criticalExtensions = Config.GetInstance().CriticalExtensions;
-        var allFiles = new List<string>(GetFilesList()); 
-        var criticalfiles = new List<string>(GetFilesList());
+        var allFiles = new List<string>(GetFilesList());    
+        var criticalfiles = new List<string>();     // We iterate backward to avoid issues when removing items from the list
 
         for (var i = allFiles.Count - 1; i >= 0; i--)
         {
@@ -192,6 +192,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 {
                     criticalfiles.Add(allFiles[i]);
                     allFiles.RemoveAt(i);
+                    break;      //if found, stop checking
                 }
             }
         }

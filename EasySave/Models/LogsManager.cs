@@ -14,16 +14,25 @@ namespace EasySave.Models;
 /// </summary>
 public class LogsManager : IEventListener   
 {
+    private static LogsManager? _instance; // Singleton instance
     private readonly Config _config = Config.GetInstance();
     public LogsMods LogsMods { get; set; } = LogsMods.Both;
 
     /// <summary>
     /// Constructor that automatically subscribes to EventManager
     /// </summary>
-    public LogsManager()
+    // Private constructor (singleton) that initializes the LogsMods property from the configuration and subscribes to the EventManager
+    private LogsManager()
     {
         LogsMods = Config.GetInstance().LogsMods;
         EventManager.GetInstance().Subscribe(this);
+    }
+
+    // public static instance for singleton pattern
+    public static LogsManager GetInstance()
+    {
+        _instance ??= new LogsManager();
+        return _instance;
     }
 
     /// <summary>
