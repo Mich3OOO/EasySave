@@ -2,6 +2,7 @@ namespace EasySave.Models;
 
 /// <summary>
 /// Class representing information about a file copy operation, used for event updates
+/// this class is used to pass informations
 /// </summary>
 public class CopyInfo   
 {

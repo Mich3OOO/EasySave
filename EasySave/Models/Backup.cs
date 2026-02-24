@@ -168,8 +168,9 @@ public abstract class Backup : IBackup
     }
 
     /// <summary>
-    /// Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
-    /// (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe)
+    /// Method to encrypt a file using 7-Zip, constructing the appropriate 
+    /// command-line arguments and handling the process execution (it work 
+    /// only if the 7za.exe is placed at the same emplacement that EasySave.exe)
     /// </summary>
     /// <param name="sourceFilePath"></param>
     /// <param name="targetFilePath"></param>

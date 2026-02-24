@@ -5,7 +5,8 @@ using System.Globalization;
 namespace EasySave.Utils
 {
     /// <summary>
-    /// Value converter that truncates a string to a specified maximum length and appends '...' if it exceeds that length.
+    /// Value converter that truncates a string to a specified maximum length and
+    /// appends '...' if it exceeds that length
     /// </summary>
     public class TruncateConverter : IValueConverter
     {

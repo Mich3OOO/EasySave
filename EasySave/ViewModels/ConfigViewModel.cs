@@ -2,7 +2,11 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class ConfigViewModel    // Class representing the config view model, it is responsible for managing the configuration of the application, such as the language and the saved jobs
+/// <summary>
+/// Class representing the config view model, it is responsible for managing
+/// the configuration of the application, such as the language and the saved jobs
+/// </summary>
+public class ConfigViewModel    
 {
     private Config _config;
 

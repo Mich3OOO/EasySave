@@ -121,7 +121,12 @@ public class SavedJob
         }
     }
 
-    public override string ToString()   // Override the ToString method to return a string representation of the SavedJob object, it is used to display the SavedJob object in the UI
+    /// <summary>
+    /// Override the ToString method to return a string representation of the 
+    /// SavedJob object, it is used to display the SavedJob object in the UI
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()   
     {
         return $"{_id} -  {_name} | {_destination} -> {_source}";
     }
