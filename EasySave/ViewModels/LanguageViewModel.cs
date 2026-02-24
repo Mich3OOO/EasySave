@@ -3,7 +3,11 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class LanguageViewModel  // Class responsible for managing the translations of the application based on a given dictionary JSON file and the current language set in the config
+/// <summary>
+/// Class responsible for managing the translations of the application 
+/// based on a given dictionary JSON file and the current language set in the config
+/// </summary>
+public class LanguageViewModel  
 {
     private static LanguageViewModel? _instance;
     private static readonly object _lock = new object();
@@ -23,7 +27,9 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         return _instance;
     }
 
-    // The dictionary is a nested dictionary where the first key is the word to translate, and the value is another dictionary where the key is the language and the value is the translation of the word in that language
+    // The dictionary is a nested dictionary where the first key is the word
+    // to translate, and the value is another dictionary where the key is the
+    // language and the value is the translation of the word in that language
     private readonly string _dictionaryPath;
     private Dictionary<string, Dictionary<Languages, string>> _dictionary;
     Config _conf ;
@@ -33,7 +39,12 @@ public class LanguageViewModel  // Class responsible for managing the translatio
 
     public string T_error_loading_dictionary => this.GetTranslation("error_loading_dictionary");
 
-    private LanguageViewModel(string dictionaryPath) // Constructor that initializes the dictionary and loads it from the given JSON file path, also sets the current language based on the config
+    /// <summary>
+    /// Constructor that initializes the dictionary and loads it from the 
+    /// given JSON file path, also sets the current language based on the config
+    /// </summary>
+    /// <param name="dictionaryPath"></param>
+    private LanguageViewModel(string dictionaryPath) 
     {
         
         _dictionaryPath = dictionaryPath;
@@ -43,7 +54,13 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         _loadDictionary();
     }
 
-    public void SetLanguage(Languages language) // Method to change the current language, it updates the _currentLanguage field and also updates the Language property of the Config class, then it saves the updated configuration
+    /// <summary>
+    /// Method to change the current language, it updates the _currentLanguage 
+    /// field and also updates the Language property of the Config class, then 
+    /// it saves the updated configuration
+    /// </summary>
+    /// <param name="language"></param>
+    public void SetLanguage(Languages language) 
     {
         _currentLanguage = language;
         _conf.Language = language;
@@ -51,12 +68,19 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         LanguageChanged?.Invoke();
     }
 
-    public Languages GetCurrentLanguage()   // Method to get the current language
+    public Languages GetCurrentLanguage()
     {
         return _currentLanguage;
     }
 
-    public string GetTranslation(string word)   // Method to get the translation of a given word based on the current language, it looks up the word in the dictionary and returns the corresponding translation, if the word or the translation is not found, it returns the original word
+    /// <summary>
+    /// Method to get the translation of a given word based on the current language,
+    /// it looks up the word in the dictionary and returns the corresponding translation, 
+    /// if the word or the translation is not found, it returns the original word
+    /// </summary>
+    /// <param name="word"></param>
+    /// <returns></returns>
+    public string GetTranslation(string word)
     {
         if (_dictionary.TryGetValue(word, out var translations))
         {
@@ -68,7 +92,12 @@ public class LanguageViewModel  // Class responsible for managing the translatio
         return word;
     }
 
-    private void _loadDictionary()  // Private method to load the dictionary from the JSON file, it reads the file content and deserializes it into the _dictionary field, if there is an error during loading, it initializes an empty dictionary
+    /// <summary>
+    /// Private method to load the dictionary from the JSON file, it reads the file
+    /// content and deserializes it into the _dictionary field, if there is an error
+    /// during loading, it initializes an empty dictionary
+    /// </summary>
+    private void _loadDictionary()  
     {
         try
         {
@@ -83,7 +112,10 @@ public class LanguageViewModel  // Class responsible for managing the translatio
                 }
             }
         }
-        catch (Exception ex)    // Handle any exceptions that occur during the loading of the dictionary, such as file not found, invalid JSON format, etc., and initialize an empty dictionary in case of error
+        catch (Exception ex)    // Handle any exceptions that occur during the loading
+                                // of the dictionary, such as file not found, invalid
+                                // JSON format, etc., and initialize an empty dictionary
+                                // in case of error
         {
             Console.WriteLine($"{T_error_loading_dictionary}{ex.Message}");
             _dictionary = new Dictionary<string, Dictionary<Languages, string>>();

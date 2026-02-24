@@ -5,7 +5,13 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class JobSettingsViewModel : ViewModelBase
+/// <summary>
+/// ViewModel for the job settings dialog, it contains properties for the
+/// job name, source and destination paths, and commands for saving or canceling 
+/// the changes. It also has an event to notify when the user wants to save the 
+/// changes, passing the updated job as a parameter.
+/// </summary>
+public class JobSettingsViewModel : ViewModelBase 
 {
     public LanguageViewModel _languageViewModel { get; }
 
@@ -43,12 +49,12 @@ public class JobSettingsViewModel : ViewModelBase
         set => SetProperty(ref _destination, value);
     }
 
-    public string Password   // Property for the password path, with getter and setter that raises property change notifications
+    public string Password   
     {
         get => _destination;
         set => SetProperty(ref _password, value);
     }
-    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
+    public string ErrorMessage  
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
@@ -64,7 +70,10 @@ public class JobSettingsViewModel : ViewModelBase
     public event Action<SavedJob>? OnSaveRequested;
     public event Action? OnCancelRequested;
 
-    public JobSettingsViewModel()
+    /// <summary>
+    /// Constructor 
+    /// </summary>
+    public JobSettingsViewModel() 
     {
         IsEditMode = false;
         SaveCommand = new RelayCommand(Save);
@@ -74,7 +83,7 @@ public class JobSettingsViewModel : ViewModelBase
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 
-    public JobSettingsViewModel(SavedJob jobToEdit) : this()
+    public JobSettingsViewModel(SavedJob jobToEdit) : this() 
     {
         IsEditMode = true;
         _originalJob = jobToEdit;
@@ -83,7 +92,13 @@ public class JobSettingsViewModel : ViewModelBase
         Destination = jobToEdit.Destination;
     }
 
-    private void Save()
+    /// <summary>
+    /// This method validates the input and creates or updates a SavedJob 
+    /// instance, then invokes the OnSaveRequested event with the job as a
+    /// parameter. If there's an error (like invalid paths), it sets the 
+    /// ErrorMessage property to display an error message to the user.
+    /// </summary>
+    private void Save() 
     {
         try
         {
