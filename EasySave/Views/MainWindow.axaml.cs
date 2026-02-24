@@ -2,6 +2,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using EasySave.Models;
 using EasySave.ViewModels;
 
 namespace EasySave.Views;
@@ -20,5 +21,10 @@ public partial class MainWindow : Window
             // Refresh the selection status of the jobs in the viewmodel
             vm.RefreshSelectionStatus();
         }
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        JobManager.GetInstance().AbortAll();
     }
 }
