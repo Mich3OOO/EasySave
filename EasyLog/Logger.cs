@@ -2,30 +2,24 @@ using System.Threading;
 
 namespace EasyLog;
 
+/// <summary>
+/// Provides a threadsafe singleton logger for writing messages to log files in various formats
+/// </summary>
 public class Logger
 {
     private static Logger? _instance;
     private readonly string _logsPath = "./logs";
-    private string _format;
     static private readonly object _lockObj = new object();
-
     private static Mutex _mutex = new Mutex(false, "logger");
 
-    /// <summary>
-    /// Empty constructor
-    /// </summary>
-    private Logger()
-    {
-    }
+    private Logger(){}
 
     /// <summary>
-    /// Log the data into the file according to the parameters
+    /// Log a message to a file with the specified format (txt, json, xml)
     /// </summary>
-    /// <param name="message"> Text that will be writen in the file</param>
-    /// <param name="format"> Format of the file (currently json, xml or txt</param>
     public void Log(string message, string format)
     {
-        _mutex.WaitOne(); // Wait until the mutex is available
+        _mutex.WaitOne();
         try
         {
             string path = _getFileName(format);
@@ -40,7 +34,6 @@ public class Logger
     /// <summary>
     /// Create a Logger singleton or return the existing one
     /// </summary>
-    /// <returns></returns>
     public static Logger GetInstance()
     {
         lock (_lockObj)
@@ -49,16 +42,9 @@ public class Logger
             {
                 _instance = new Logger();
             }
-
             return _instance;
         }
     }
-
-    /// <summary>
-    /// Return the path of the current log file (based on the current date)
-    /// </summary>
-    /// <param name="format"> Format used, it gets applied to the filename </param>
-    /// <returns></returns>
     private string _getFileName(string format)
     {
         Directory.CreateDirectory(_logsPath);

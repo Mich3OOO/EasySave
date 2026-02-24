@@ -5,7 +5,6 @@ namespace EasySave.Models;
 /// </summary>
 public enum BackupType  
 {
-    Differential,
     Complete,
-
+    Differential
 }

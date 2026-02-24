@@ -5,12 +5,6 @@ namespace EasySave.Models;
 /// </summary>
 public class CompBackup : Backup    
 {
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="savedJob"></param>
-    /// <param name="backupInfo"></param>
-    /// <param name="pw"></param>
     public CompBackup(SavedJob savedJob, BackupInfo backupInfo,string pw = "") : base(savedJob, backupInfo,pw) { }   
 
     /// <summary>
@@ -18,20 +12,16 @@ public class CompBackup : Backup
     /// </summary>
     public override void ExecuteBackup()    
     {
-        string destinationPath = _createTimestampedFolder("Complete");
+        string destinationPath = CreateTimestampedFolder("Complete");
 
-        // Get the list of all files
-        string[] files = _getFilesList();
+        string[] files = GetFilesList();
 
-        // Initialize the progress counter
         _backupInfo.TotalFiles = files.Length;
         _backupInfo.CurrentFile = 0;
 
-        // Loop the files and execute copy
         foreach (string file in files)
         {
-            // backup file
-            _backupFile(file, destinationPath);
+            BackupFile(file, destinationPath);
         }
     }
 }
