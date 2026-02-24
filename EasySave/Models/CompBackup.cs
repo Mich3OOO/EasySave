@@ -10,21 +10,21 @@ public class CompBackup : Backup    // Class representing a complete backup oper
         string destinationPath = _createTimestampedFolder("Complete");
         // Get the list of all files
         string[] notCriticalFiles;
-        
+
         string[] criticalFiles = _separateCriticalFiles(out notCriticalFiles);
-        
-        
+
+
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = notCriticalFiles.Length;
+        _backupInfo.TotalFiles = notCriticalFiles.Length + criticalFiles.Length;
         _backupInfo.CurrentFile = 0;
-        
+
         foreach (string file in criticalFiles)
         {
             if (_cancel) break;
             _backupFile(file, destinationPath);
         }
-        
+
         _isCriticalFileFinised = true;
         // Loop the files and execute copy
         foreach (string file in notCriticalFiles)
@@ -32,7 +32,7 @@ public class CompBackup : Backup    // Class representing a complete backup oper
             if (_cancel) break;
             while (!jobManager.canRunNotCriticalJobs())
             {
-                
+
             }
             // backup file
             _backupFile(file, destinationPath);
