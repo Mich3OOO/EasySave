@@ -9,7 +9,8 @@ public class SavedJob   // Class representing a saved job, it holds the informat
     private string _name;
     private string _source;
     private string _destination;
-    
+    private bool _isSelected;
+
 
 
     public string GetName() // Getters for the fields, they are used to access the fields from outside the class, they are not properties because we want to control the setting of the destination and source fields
@@ -24,7 +25,16 @@ public class SavedJob   // Class representing a saved job, it holds the informat
     {
         return this._source;
     }
-    
+
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            _isSelected = value;
+        }
+    }
+
 
     // Properties for the fields, they are used to set the fields from outside the class, they are not used to get the fields because we want to control the setting of the destination and source fields
     public int Id { get => _id; set => _id = value; }

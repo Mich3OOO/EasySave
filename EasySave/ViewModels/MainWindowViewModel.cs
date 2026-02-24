@@ -33,7 +33,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     public string T_settings_tooltip => _languageViewModel.GetTranslation("settings_tooltip");
 
     // Navigation - holds the current view model being displayed
-    private ViewModelBase _currentViewModel;
+    private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
@@ -41,7 +41,7 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
     }
 
     // Status message display - shows temporary success/error messages
-    private string _statusMessage;
+    private string _statusMessage = string.Empty;
     public string StatusMessage
     {
         get => _statusMessage;
@@ -54,6 +54,15 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         get => _isStatusVisible;
         set => SetProperty(ref _isStatusVisible, value);
     }
+
+    //Logic for mulltiple selection jobs (with the checkbox)
+    public bool HasSelectedJobs => Jobs.Any(j => j.IsSelected); // Check if any jobs are selected
+    public ICommand RunSelectedJobsCommand { get; }
+    public void RefreshSelectionStatus()    //refresh UI
+    {
+        OnPropertyChanged(nameof(HasSelectedJobs));
+    }
+
 
     /// <summary>
     /// Displays a success message temporarily (4 seconds) in the UI
@@ -81,6 +90,10 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         _languageViewModel.LanguageChanged += OnLanguageChanged;
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);
+
+        // Command for multiple job executionn
+        RunSelectedJobsCommand = new RelayCommand(RunSelectedJobs);
+
         Jobs = new ObservableCollection<SavedJob>(_config.SavedJobs);
 
         // init managers (Logs and State)
@@ -131,6 +144,16 @@ public class MainWindowViewModel : ViewModelBase, IEventListener
         };
         jobVM.OnCancelRequested += () => CurrentViewModel = null;
         CurrentViewModel = jobVM;
+    }
+
+    // Method To launch all thz slected jobs at once, linked to "Run Selected Jobs" button in the UI
+    private void RunSelectedJobs()
+    {
+        var selectedJobs = Jobs.Where(j => j.IsSelected).ToList();  // get all selected jobs
+        foreach (var job in selectedJobs)   //foreach job selected, we call RunJob
+        {
+            RunJob(job);
+        }
     }
 
     /// <summary>

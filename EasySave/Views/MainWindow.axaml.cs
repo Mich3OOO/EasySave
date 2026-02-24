@@ -1,13 +1,24 @@
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using EasySave.ViewModels;
 
 namespace EasySave.Views;
-
-public partial class MainWindow : Window    // Code-behind for the main window of the application, it initializes the components defined in the XAML file and can contain additional logic related to the main window if needed.
+public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    //Event handler for when User click on Checkbox, will call RefreshSelectionStatus in MainWindowViewModel to update status of selected jobss
+    private void OnCheckBoxClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel vm)
+        {
+            // Refresh the selection status of the jobs in the viewmodel
+            vm.RefreshSelectionStatus();
+        }
     }
 }

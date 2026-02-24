@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -13,13 +13,17 @@ public class RunJobsViewModel : ViewModelBase
     private bool _isDifferential = false;
     private string _password = string.Empty;
     private string _errorMessage = string.Empty;
+    private bool _isMultipleSelection;
+    private string _displayTitle = string.Empty;
 
+    // Properties 
     public SavedJob Job { get; }
 
-    // single language manager
-    public LanguageViewModel _languageViewModel { get; } // Property for the language view model, used to get translations for the UI
+    // Property for the language view model, used to get translations for the UI
+    public LanguageViewModel _languageViewModel { get; }
 
-    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
+    // Property for error messages, used to display validation errors when saving the job settings.
+    public string ErrorMessage
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
@@ -31,10 +35,22 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _isDifferential, value);
     }
 
-    public string Password   // Property for the password path, with getter and setter that raises property change notifications
+    // Property for the password path, with getter and setter that raises property change notifications
+    public string Password
     {
         get => _password;
         set => SetProperty(ref _password, value);
+    }
+
+    // Properties for multiple selection display logic
+    public bool IsMultipleSelection
+    {
+        get => _isMultipleSelection;
+    }
+
+    public string DisplayTitle
+    {
+        get => _displayTitle;
     }
 
     // =======================================================
@@ -62,11 +78,24 @@ public class RunJobsViewModel : ViewModelBase
     // Information to send to MainWindows when user validate or quite window
     public event Action<bool, bool, string>? OnResult;
 
-    public RunJobsViewModel(SavedJob job)   //constructor
+    // Constructor updated to handle multiple selection flag and count
+    public RunJobsViewModel(SavedJob job, bool isMultiple = false, int selectedCount = 1)
     {
         string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
+
         Job = job;
+        _isMultipleSelection = isMultiple;
+
+        // Set the title dynamically based on the execution mode
+        if (_isMultipleSelection)
+        {
+            _displayTitle = $"Multiple Selection ({selectedCount} jobs)";
+        }
+        else
+        {
+            _displayTitle = Job.Name;
+        }
 
         ConfirmCommand = new RelayCommand(() =>
         {
@@ -81,7 +110,7 @@ public class RunJobsViewModel : ViewModelBase
                     return;
                 }
 
-                // check if password is valid
+                // Check if password is valid
                 if (!IsPasswordValid(_password))
                 {
                     ErrorMessage = _languageViewModel.GetTranslation("password_policy");
@@ -103,7 +132,8 @@ public class RunJobsViewModel : ViewModelBase
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false, false, string.Empty));
     }
 
-    private bool _canARunJon(out string processName)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
+    // Method to check if the source of the backup job is currently being used by another program
+    private bool _canARunJon(out string processName)
     {
         Config conf = Config.S_GetInstance();
         Process[] allProcesses = Process.GetProcesses();

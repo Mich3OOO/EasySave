@@ -28,15 +28,12 @@
 		<Style Selector="Button:pointerover">
 			<Setter Property="utils:CursorUtils.ImagePath" Value="{StaticResource HoverCursorPath}"/>
 		</Style>
-
 		<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="Background" Value="Transparent" />
 		</Style>
-
 		<Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="Background" Value="Transparent" />
 		</Style>
-
 		<Style Selector="ListBoxItem:pointerover Border.JobCard">
 			<Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}"/>
 			<Setter Property="BorderThickness" Value="2"/>
@@ -44,7 +41,6 @@
 	</Window.Styles>
 
 	<Grid RowDefinitions="Auto, *, Auto" Margin="30">
-
 		<Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
 			<Grid Grid.Column="0">
 				<Image Source="/Assets/EasySave_logo_white.png" Width="400" Height="120" Stretch="Uniform" HorizontalAlignment="Left"/>
@@ -60,19 +56,23 @@
 			<Grid RowDefinitions="Auto, *">
 				<TextBlock Grid.Row="0" Text="{Binding T_save_jobs}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
-				<ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Jobs}" SelectionMode="Single">
+				<ListBox Name="JobsListBox" Grid.Row="1" Background="Transparent" BorderThickness="0" 
+						 ItemsSource="{Binding Jobs}" SelectionMode="Multiple, Toggle" >
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<Border Classes="JobCard" Background="{DynamicResource ControlBackgroundBrush}" BorderBrush="{DynamicResource BorderMediumBrush}" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,0,0,10">
-								<Grid ColumnDefinitions="Auto, *, Auto">
-									<Border Grid.Column="0" Background="{DynamicResource SuccessBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
+								<Grid ColumnDefinitions="Auto, Auto, *, Auto">
+									
+									<CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Click="OnCheckBoxClick" Margin="0,0,15,0" VerticalAlignment="Center"/>
+
+									<Border Grid.Column="1" Background="{DynamicResource SuccessBrush}" CornerRadius="4" Padding="8,4" Margin="0,0,15,0" VerticalAlignment="Center">
 										<StackPanel Orientation="Horizontal">
 											<TextBlock Text="ID " Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold"/>
 											<TextBlock Text="{Binding Id}" Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold"/>
 										</StackPanel>
 									</Border>
 
-									<StackPanel Grid.Column="1" VerticalAlignment="Center">
+									<StackPanel Grid.Column="2" VerticalAlignment="Center">
 										<TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="Bold"/>
 										<StackPanel Orientation="Vertical" Margin="0,3,0,0">
 											<StackPanel Orientation="Horizontal">
@@ -86,7 +86,7 @@
 										</StackPanel>
 									</StackPanel>
 
-									<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+									<StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
 										<Button Command="{Binding $parent[Window].DataContext.RunJob}" CommandParameter="{Binding}" Background="Transparent">
 											<TextBlock Text="▷" FontSize="20" Foreground="{DynamicResource SuccessBrush}"/>
 										</Button>
@@ -105,43 +105,45 @@
 			</Grid>
 		</Border>
 
-		<Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0,25,0,0">
-			<Border Grid.Column="0"
-                    IsVisible="{Binding IsStatusVisible}"
-                    Background="{DynamicResource SuccessBrush}"
-                    Padding="15,8"
-                    CornerRadius="6"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
+		<Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,25,0,0">
+			<Button Grid.Column="0"
+					Content="Lancer la sélection"
+					Command="{Binding RunSelectedJobsCommand}"
+					IsVisible="{Binding HasSelectedJobs}"
+					Padding="15,10"
+					Background="{DynamicResource SuccessBrush}"
+					Foreground="{DynamicResource TextInvertedBrush}"
+					FontWeight="Bold" CornerRadius="6" Cursor="Hand"
+					Margin="0,0,15,0"/>
+
+			<Border Grid.Column="1"
+					IsVisible="{Binding IsStatusVisible}"
+					Background="{DynamicResource SuccessBrush}"
+					Padding="15,8"
+					CornerRadius="6"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center">
 				<StackPanel Orientation="Horizontal" Spacing="10">
 					<TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Medium"/>
 				</StackPanel>
 			</Border>
 
-			<Button Grid.Column="1"
-                    Content="{Binding T_create_job}"
-                    Command="{Binding CreateJob}"
-                    Width="160" Height="45"
-                    VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{DynamicResource SuccessBrush}"
-                    Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold" CornerRadius="6" Cursor="Hand"/>
+			<Button Grid.Column="2"
+					Content="{Binding T_create_job}"
+					Command="{Binding CreateJob}"
+					Width="160" Height="45"
+					VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{DynamicResource SuccessBrush}"
+					Foreground="{DynamicResource TextInvertedBrush}" FontWeight="Bold" CornerRadius="6" Cursor="Hand"/>
 		</Grid>
 
 		<Border Grid.Row="0" Grid.RowSpan="3" Background="{DynamicResource OverlayBrush}"
-                IsVisible="{Binding CurrentViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
+				IsVisible="{Binding CurrentViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
 			<ContentControl Content="{Binding CurrentViewModel}">
 				<ContentControl.DataTemplates>
-					<DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-						<v:SettingsView/>
-					</DataTemplate>
-					<DataTemplate DataType="{x:Type vm:JobSettingsViewModel}">
-						<v:JobSettingsView/>
-					</DataTemplate>
-					<DataTemplate DataType="{x:Type vm:RunJobsViewModel}">
-						<v:RunJobsView/>
-					</DataTemplate>
-					<DataTemplate DataType="{x:Type vm:JobsStateViewModel}">
-						<v:JobsStateView/>
-					</DataTemplate>
+					<DataTemplate DataType="{x:Type vm:SettingsViewModel}"><v:SettingsView/></DataTemplate>
+					<DataTemplate DataType="{x:Type vm:JobSettingsViewModel}"><v:JobSettingsView/></DataTemplate>
+					<DataTemplate DataType="{x:Type vm:RunJobsViewModel}"><v:RunJobsView/></DataTemplate>
+					<DataTemplate DataType="{x:Type vm:JobsStateViewModel}"><v:JobsStateView/></DataTemplate>
 				</ContentControl.DataTemplates>
 			</ContentControl>
 		</Border>
