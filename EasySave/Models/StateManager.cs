@@ -74,9 +74,9 @@ public class StateManager : IEventListener
             editedJobState.SourceFilePath = "";
             editedJobState.TargetFilePath = "";
             editedJobState.State = StateLevel.End;
-            editedJobState.TotalFilesToCopy = 0;
             editedJobState.TotalFilesSize = 0;
             editedJobState.NbFilesLeftToDo = 0;
+            editedJobState.TotalFilesToCopy = 0;
             editedJobState.Progression = 0;
         }
 
