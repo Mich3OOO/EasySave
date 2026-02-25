@@ -27,21 +27,29 @@ public class CompBackup : Backup
         
         foreach (var file in criticalFiles)
         {
-            if (_cancel) break;
-            BackupFile(file, destinationPath);
+            lock (_key)
+            {
+                if (_cancel) break;
+                BackupFile(file, destinationPath);
+            }
         }
 
         _isCriticalFileFinised = true;
         // Loop the files and execute copy
         foreach (var file in notCriticalFiles)
         {
-            if (_cancel) break;
-            while (!jobManager.canRunNotCriticalJobs())
+            lock (_key)
             {
+                if (_cancel) break;
+                while (!jobManager.canRunNotCriticalJobs())
+                {
 
-            }
+                }
                 // backup file
+
                 BackupFile(file, destinationPath);
             }
+
+        }
     }
 }
