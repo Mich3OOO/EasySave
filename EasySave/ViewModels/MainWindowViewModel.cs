@@ -79,6 +79,7 @@ public class MainWindowViewModel : ViewModelBase
 
     // Commands and data collections
     public ICommand ShowSettingsCommand { get; }
+    public ICommand ShowProgressCommand { get; }
     public ObservableCollection<SavedJob> Jobs { get; set; }
 
     private readonly Config _config = Config.GetInstance();
@@ -90,6 +91,7 @@ public class MainWindowViewModel : ViewModelBase
         LanguageViewModel.LanguageChanged += OnLanguageChanged;
 
         ShowSettingsCommand = new RelayCommand(ShowSettings);
+        ShowProgressCommand = new RelayCommand(ShowProgress);
 
         // Initialize command for multiple selection
         RunSelectedJobsCommand = new RelayCommand(RunSelectedJobs);
@@ -190,7 +192,7 @@ public class MainWindowViewModel : ViewModelBase
                     _progressWindow.Closed += (s, e) =>
                     {
                         _progressWindow = null;
-                        _sharedProgressViewModel?.ActiveJobs.Clear();
+                        // Suppression de l'effacement automatique de l'historique
                     };
                     _progressWindow.Show();
                 }
@@ -294,7 +296,7 @@ public class MainWindowViewModel : ViewModelBase
                         _progressWindow.Closed += (s, e) =>
                         {
                             _progressWindow = null;
-                            _sharedProgressViewModel?.ActiveJobs.Clear();
+                            // Suppression de l'effacement automatique de l'historique
                         };
                         _progressWindow.Show();
                     }
@@ -367,5 +369,36 @@ public class MainWindowViewModel : ViewModelBase
     public void CancelJob(SavedJob job)
     {
         _jobManager.CancelJob(job);
+    }
+
+    private void ShowProgress()
+    {
+        if (_sharedProgressViewModel == null)
+        {
+            _sharedProgressViewModel = new JobsStateViewModel();
+            _sharedProgressViewModel.OnCloseRequested += () => _progressWindow?.Close();
+        }
+        if (_progressWindow == null)
+        {
+            _progressWindow = new Window
+            {
+                Title = "EasySave - Progression",
+                Width = 700,
+                Height = 450,
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://EasySave/Assets/Icon.png"))),
+                Content = new EasySave.Views.JobsStateView { DataContext = _sharedProgressViewModel },
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            _progressWindow.Closed += (s, e) =>
+            {
+                _progressWindow = null;
+                // Suppression de l'effacement automatique de l'historique
+            };
+            _progressWindow.Show();
+        }
+        else
+        {
+            _progressWindow.Activate();
+        }
     }
 }

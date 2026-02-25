@@ -92,8 +92,8 @@
     "fr": "Cette action est irréversible"
   },
   "delete": {
-    "en": "🗑️ Delete",
-    "fr": "🗑️ Supprimer"
+    "en": "Delete",
+    "fr": "Supprimer"
   },
   "invald_backup_id": {
     "en": "Invalid backup ID",
@@ -210,5 +210,9 @@
   "finished": {
     "en": "Finished ✅",
     "fr": "Terminée ✅"
+  },
+  "clear_history": {
+    "en": "Clear history",
+    "fr": "Effacer l'historique"
   }
 }
