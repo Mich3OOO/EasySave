@@ -45,10 +45,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
     public void Continue()
     {
-        lock (_key)
-        {
-            _continue = true;
-        }
+        
+        _continue = true;
     }
 
     public void Cancel()
@@ -110,7 +108,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             isLargeFile = (fileSize > config.MaxParallelLargeFileSizeKo * 1024);
             if (isLargeFile)
             {
-                Console.WriteLine($"[DEBUG] Début transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
                 LargeFileSemaphore.Wait();
             }
 
