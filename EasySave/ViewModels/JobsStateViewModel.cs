@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,12 +7,14 @@ using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public partial class JobsStateViewModel : ViewModelBase
+public partial class JobsStateViewModel : ObservableObject
 {
     // List of the jobs who are running right now
     public ObservableCollection<JobProgressViewModel> ActiveJobs { get; } = [];
 
     public IRelayCommand ClearHistoryCommand { get; }
+
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
 
     public string T_saves_progression => LanguageViewModel.GetTranslation("saves_progression");
 
@@ -52,12 +53,14 @@ public partial class JobsStateViewModel : ViewModelBase
     }
 }
 
-public partial class JobProgressViewModel : ViewModelBase, IEventListener
+public partial class JobProgressViewModel : ObservableObject, IEventListener
 {
     [ObservableProperty] private string _jobName;
     [ObservableProperty] private double _progress;
     [ObservableProperty] private bool _isPaused;
     [ObservableProperty] private bool _isFinished;
+
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
 
     public string PauseIcon => IsPaused ? "▷" : "⏸";
     public string T_saves_progression => LanguageViewModel.GetTranslation("saves_progression");

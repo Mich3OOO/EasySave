@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using EasySave.ViewModels;
 
 namespace EasySave;
 
@@ -32,6 +31,7 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object? data) // Method that checks if the provided data is a view model, it returns true if the data is an instance of ViewModelBase, and false otherwise. This is used to determine if the ViewLocator can handle the given data and build a corresponding view for it.
     {
-        return data is ViewModelBase;
+        // Considère comme ViewModel tout objet dont le nom de type se termine par 'ViewModel'
+        return data != null && data.GetType().Name.EndsWith("ViewModel");
     }
 }

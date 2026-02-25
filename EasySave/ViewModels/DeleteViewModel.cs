@@ -1,5 +1,5 @@
-using System;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace EasySave.ViewModels;
@@ -8,9 +8,9 @@ namespace EasySave.ViewModels;
 /// ViewModel for the confirmation dialog when deleting a backup job. It contains 
 /// the job name to display in the dialog and commands for confirming or canceling the deletion.
 /// </summary>
-public class DeleteViewModel : ViewModelBase
+public class DeleteViewModel : ObservableObject
 {
-
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
     public string T_confirm_deletion => LanguageViewModel.GetTranslation("confirm_deletion");
     public string T_are_you_sure_deletion => LanguageViewModel.GetTranslation("are_you_sure_deletion");
     public string T_irreversible_action => LanguageViewModel.GetTranslation("irreversible_action");

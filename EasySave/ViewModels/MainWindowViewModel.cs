@@ -2,17 +2,17 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using EasySave.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace EasySave.ViewModels;
 
 /// <summary>
 /// Main view model for the application. Manages navigation, job CRUD operations, and UI state.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ObservableObject
 {
     // Manage progress window
     private JobsStateViewModel? _sharedProgressViewModel;
@@ -24,14 +24,16 @@ public class MainWindowViewModel : ViewModelBase
     public string CustomHoverCursorPath { get; set; } = "avares://EasySave/Assets/cursor-hover.cur";
     private readonly JobManager _jobManager =  JobManager.GetInstance();
 
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
+
     public string T_save_jobs => LanguageViewModel.GetTranslation("save_jobs");
     public string T_create_job => LanguageViewModel.GetTranslation("create_job");
     public string T_settings_tooltip => LanguageViewModel.GetTranslation("settings_tooltip");
     public string T_run_selection => LanguageViewModel.GetTranslation("run_selection");
 
     // Navigation - holds the current view model being displayed
-    private ViewModelBase? _currentViewModel;
-    public ViewModelBase? CurrentViewModel
+    private object? _currentViewModel;
+    public object? CurrentViewModel
     {
         get => _currentViewModel;
         set => SetProperty(ref _currentViewModel, value);
@@ -192,28 +194,20 @@ public class MainWindowViewModel : ViewModelBase
                     _progressWindow.Closed += (s, e) =>
                     {
                         _progressWindow = null;
-                        // Suppression de l'effacement automatique de l'historique
                     };
                     _progressWindow.Show();
                 }
                 else
                 {
-                    _progressWindow.Activate(); // Bring window to front
+                    _progressWindow.Activate();
                 }
 
-                // Optional success message
-                await ShowSuccessMessage($"Launching {combinedNames} backups...");
-
-                // Loop through all true jobs and launch them in parallel
                 foreach (SavedJob? job in selectedJobs)
                 {
-                    // Avoid launching a job that is already running
                     if (_stateManager.GetStateFrom(job.Name)?.State == StateLevel.Active) continue;
 
-                    // Create progress bar
                     JobProgressViewModel progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
 
-                    // Subscribe to event manager
                     EventManager.GetInstance().Subscribe(progressBarObserver);
 
                     // Run backup in background thread so UI doesn't freeze. 
@@ -222,10 +216,8 @@ public class MainWindowViewModel : ViewModelBase
                     {
                         try
                         {
-                            // Init backup info
                             var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
-                            // Create the correct backup type
                             IBackup backup;
                             if (isDiff)
                                 backup = new DiffBackup(job, backupInfo, password);
@@ -233,7 +225,7 @@ public class MainWindowViewModel : ViewModelBase
                                 backup = new CompBackup(job, backupInfo, password);
 
                             _jobManager.AddJob(job, backup);
-                            // Run backup
+
                             backup.ExecuteBackup();
                         }
                         catch (Exception ex)
@@ -243,13 +235,10 @@ public class MainWindowViewModel : ViewModelBase
                     });
                 }
 
-                // Clean up the UI by unchecking all boxes
                 foreach (SavedJob? j in selectedJobs) j.IsSelected = false;
                 RefreshSelectionStatus();
             }
         };
-
-        // Show the popup
         CurrentViewModel = runJobVM;
     }
 
@@ -263,7 +252,7 @@ public class MainWindowViewModel : ViewModelBase
             RunJobsViewModel runJobVM = new(job);
             runJobVM.OnResult += async (confirmed, isDiff, password) =>
             {
-                CurrentViewModel = null; // Close config dialog
+                CurrentViewModel = null;
 
                 if (confirmed)
                 {
@@ -274,10 +263,8 @@ public class MainWindowViewModel : ViewModelBase
                         _sharedProgressViewModel.OnCloseRequested += () => _progressWindow?.Close();
                     }
 
-                    // Create progress bar
                     JobProgressViewModel progressBarObserver = _sharedProgressViewModel.AddNewJob(job.Name);
 
-                    // Subscribe to event manager
                     EventManager.GetInstance().Subscribe(progressBarObserver);
 
                     // Setup separate progress window
@@ -296,27 +283,20 @@ public class MainWindowViewModel : ViewModelBase
                         _progressWindow.Closed += (s, e) =>
                         {
                             _progressWindow = null;
-                            // Suppression de l'effacement automatique de l'historique
                         };
                         _progressWindow.Show();
                     }
                     else
                     {
-                        _progressWindow.Activate(); // Bring window to front
+                        _progressWindow.Activate();
                     }
 
-                    // Optional success message
-                    await ShowSuccessMessage($"🚀 {job.Name} : Backup starting...");
-
-                    // Run backup in background thread so UI doesn't freeze
                     await Task.Run(() =>
                     {
                         try
                         {
-                            // Init backup info
                             var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
-                            // Create the correct backup type
                             IBackup backup;
                             if (isDiff)
                                 backup = new DiffBackup(job, backupInfo, password);
@@ -324,7 +304,7 @@ public class MainWindowViewModel : ViewModelBase
                                 backup = new CompBackup(job, backupInfo, password);
 
                             _jobManager.AddJob(job, backup);
-                            // Run backup
+
                             backup.ExecuteBackup();
                         }
                         catch (Exception ex)
@@ -392,7 +372,6 @@ public class MainWindowViewModel : ViewModelBase
             _progressWindow.Closed += (s, e) =>
             {
                 _progressWindow = null;
-                // Suppression de l'effacement automatique de l'historique
             };
             _progressWindow.Show();
         }

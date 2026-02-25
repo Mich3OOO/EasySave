@@ -2,13 +2,14 @@ using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Interfaces;
 using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class RunJobsViewModel : ViewModelBase
+public class RunJobsViewModel : ObservableObject
 {
     private bool _isDifferential = false;
     private string _password = string.Empty;
@@ -16,11 +17,8 @@ public class RunJobsViewModel : ViewModelBase
     private bool _isMultipleSelection;
     private string _displayTitle = string.Empty;
 
-    // Properties 
     public SavedJob Job { get; }
 
-
-    // Property for error messages, used to display validation errors when saving the job settings.
     public string ErrorMessage
     {
         get => _errorMessage;
@@ -39,7 +37,6 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _password, value);
     }
 
-    // Properties for multiple selection display logic
     public bool IsMultipleSelection
     {
         get => _isMultipleSelection;
@@ -50,7 +47,7 @@ public class RunJobsViewModel : ViewModelBase
         get => _displayTitle;
     }
 
-    // TRANSLATIONS
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
     public string T_start_save => LanguageViewModel.GetTranslation("start_save");
     public string T_save_type => LanguageViewModel.GetTranslation("save_type");
     public string T_comp => LanguageViewModel.GetTranslation("comp");
@@ -69,7 +66,6 @@ public class RunJobsViewModel : ViewModelBase
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
 
-    // Information to send to MainWindows when user validate or quite window
     public event Action<bool, bool, string>? OnResult;
 
     // Constructor updated to handle multiple selection flag and count
@@ -101,7 +97,6 @@ public class RunJobsViewModel : ViewModelBase
                     return;
                 }
 
-                // Check if password is valid
                 if (!IsPasswordValid(_password))
                 {
                     ErrorMessage = LanguageViewModel.GetTranslation("password_policy");
@@ -119,7 +114,6 @@ public class RunJobsViewModel : ViewModelBase
             }
         });
 
-        // If Cancel, send false and empty strings
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false, false, string.Empty));
     }
 

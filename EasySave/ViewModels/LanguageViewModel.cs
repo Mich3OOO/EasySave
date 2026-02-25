@@ -1,5 +1,8 @@
 using System.Text.Json;
 using EasySave.Models;
+using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace EasySave.ViewModels;
 
@@ -12,13 +15,17 @@ public class LanguageViewModel
     private static LanguageViewModel? _instance;
     private static readonly object _lock = new();
 
-    public static LanguageViewModel GetInstance(string dictionaryPath)
+    public static LanguageViewModel GetInstance()
     {
         if (_instance == null)
         {
             lock (_lock)
             {
-                _instance ??= new LanguageViewModel(dictionaryPath);
+                if (_instance == null)
+                {
+                    var dictionaryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+                    _instance = new LanguageViewModel(dictionaryPath);
+                }
             }
         }
         return _instance;

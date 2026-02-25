@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
 using Avalonia;
@@ -13,8 +14,10 @@ namespace EasySave.ViewModels;
 /// ViewModel for the Settings view.
 /// Handles application settings such as language, log format, and priority extensions.
 /// </summary>
-public class SettingsViewModel : ViewModelBase
+public class SettingsViewModel : ObservableObject
 {
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
+
     public string T_settings => LanguageViewModel.GetTranslation("settings_menu");
     public string T_language_selection => LanguageViewModel.GetTranslation("language_selection");
     public string T_logs_format => LanguageViewModel.GetTranslation("logs_format");

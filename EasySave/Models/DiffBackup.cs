@@ -10,9 +10,6 @@ namespace EasySave.Models;
 /// </summary>
 public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : Backup(savedJob, backupInfo,pw) 
 {
-    private static readonly string dico = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
-    private readonly string dictionaryPath = dico;
-
     /// <summary>
     /// Override of the ExecuteBackup method to perform a differential backup, 
     /// creating a timestamped folder and copying only the files that have been 
@@ -77,7 +74,7 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
         }
         else
         {
-            throw new Exception(LanguageViewModel.GetInstance(dictionaryPath).GetTranslation("!complete_backup"));
+            throw new Exception(LanguageViewModel.GetInstance().GetTranslation("!complete_backup"));
         }
 
 
