@@ -22,6 +22,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     protected bool _isCriticalFileFinised = false;
 
     protected static readonly SemaphoreSlim LargeFileSemaphore = new(1, 1);
+    protected readonly object _key = new();
 
     public void SetPassword(string password)
     {
@@ -46,10 +47,15 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
     public void Cancel()
     {
-        _cancel = true;
-        // inform to event listener that backup has finisihed;
-        _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
-        EventManager.GetInstance().Update(_backupInfo);
+        lock (_key)
+        {
+            _cancel = true;
+            // inform to event listener that backup has finisihed;
+            _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
+            EventManager.GetInstance().Update(_backupInfo);
+            
+        }
+        
             
     }
 
