@@ -1,10 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Collections.Generic;
-using Avalonia.Animation;
 using EasySave.Interfaces;
 using EasySave.ViewModels;
 
@@ -22,12 +16,13 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     protected BackupInfo _backupInfo = backupInfo;
     protected string _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
     private string _password = pw;
-
+    
     private bool _continue = true;
     protected bool _cancel = false;
     protected bool _isCriticalFileFinised = false;
 
     protected static readonly SemaphoreSlim LargeFileSemaphore = new(1, 1);
+    protected readonly object _key = new();
 
     public void SetPassword(string password)
     {
@@ -38,25 +33,36 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     /// Abstract method to execute the backup, to be implemented by derived classes
     /// </summary>
     public abstract void ExecuteBackup();
-
     public bool isCriticalCopyFinished() => _isCriticalFileFinised;
 
     public void Pause()
     {
-        _continue = false;
+        lock (_key)
+        {
+            _continue = false;
+        }
     }
 
     public void Continue()
     {
-        _continue = true;
+        lock (_key)
+        {
+            _continue = true;
+        }
     }
 
     public void Cancel()
     {
-        _cancel = true;
-        // inform to event listener that backup has finisihed;
-        _backupInfo.TotalFiles = _backupInfo.CurrentFile;
-        EventManager.GetInstance().Update(_backupInfo);
+        lock (_key)
+        {
+            _cancel = true;
+            // inform to event listener that backup has finisihed;
+            _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
+            EventManager.GetInstance().Update(_backupInfo);
+            
+        }
+        
+            
     }
 
     protected string CreateTimestampedFolder(string subFolderType)
@@ -72,7 +78,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     /// </summary>
     protected void BackupFile(string sourceFilePath, string destinationPath)
     {
-        long fileSize = 0;
+        uint fileSize = 0;
         bool isLargeFile = false;
         Config config = Config.GetInstance();
         string openedProcess;
@@ -98,7 +104,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             // Prepare copy information
             CopyInfo copyInfo = new CopyInfo();
             copyInfo.Source = sourceFilePath;
-            fileSize = new FileInfo(sourceFilePath).Length;
+            fileSize = (uint) new FileInfo(sourceFilePath).Length;
             copyInfo.Size = fileSize;
 
             isLargeFile = (fileSize > config.MaxParallelLargeFileSizeKo * 1024);
@@ -109,6 +115,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             }
 
             var relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
+
             var targetFilePath = Path.Combine(destinationPath, relativePath);
 
             var targetDirectory = Path.GetDirectoryName(targetFilePath);
@@ -125,7 +132,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 targetFilePath += ".7z";
                 DateTime temp = DateTime.Now;
                 EncryptFile(sourceFilePath, targetFilePath);
-                copyInfo.TimeToEncrypt = (int)(DateTime.Now - temp).TotalMicroseconds;
+                copyInfo.TimeToEncrypt = (uint)(DateTime.Now - temp).TotalMicroseconds;
             }
             else
             {
@@ -213,7 +220,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
-
     protected string[] SeparateCriticalFiles(out string[] notCriticalFiles)
     {
         var criticalExtensions = Config.GetInstance().CriticalExtensions;
@@ -234,6 +240,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
         notCriticalFiles = [.. allFiles];
         return [.. criticalfiles];
+        
     }
 
     /// <summary>
@@ -248,4 +255,5 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
         EventManager.GetInstance().Update(_backupInfo);
     }
+    
 }
