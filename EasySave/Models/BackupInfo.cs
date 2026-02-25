@@ -11,4 +11,5 @@ public class BackupInfo
     public int CurrentFile;
     public int TotalFiles;
     public StateLevel State;
+    public string BlockingSoftwareName;
 }

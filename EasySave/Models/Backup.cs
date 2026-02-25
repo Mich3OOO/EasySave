@@ -1,4 +1,9 @@
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Collections.Generic;
 using Avalonia.Animation;
 using EasySave.Interfaces;
 using EasySave.ViewModels;
@@ -17,7 +22,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     protected BackupInfo _backupInfo = backupInfo;
     protected string _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
     private string _password = pw;
-    
+
     private bool _continue = true;
     protected bool _cancel = false;
     protected bool _isCriticalFileFinised = false;
@@ -33,6 +38,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     /// Abstract method to execute the backup, to be implemented by derived classes
     /// </summary>
     public abstract void ExecuteBackup();
+
     public bool isCriticalCopyFinished() => _isCriticalFileFinised;
 
     public void Pause()
@@ -49,9 +55,8 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         _cancel = true;
         // inform to event listener that backup has finisihed;
-        _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
+        _backupInfo.TotalFiles = _backupInfo.CurrentFile;
         EventManager.GetInstance().Update(_backupInfo);
-            
     }
 
     protected string CreateTimestampedFolder(string subFolderType)
@@ -65,25 +70,28 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     /// <summary>
     /// Method to backup a single file, handling encryption if needed, and updating the backup status
     /// </summary>
-    protected void BackupFile(string sourceFilePath, string destinationPath)   
+    protected void BackupFile(string sourceFilePath, string destinationPath)
     {
         long fileSize = 0;
         bool isLargeFile = false;
         Config config = Config.GetInstance();
         string openedProcess;
 
-
-
         try
         {
             if (!_canARunJob(out openedProcess) || !_continue)
             {
                 JobManager.GetInstance().PauseJob(_savedJob);
+
                 _backupInfo.State = StateLevel.Paused;
+                _backupInfo.BlockingSoftwareName = openedProcess;
                 EventManager.GetInstance().Update(_backupInfo);
+
                 SpinWait.SpinUntil(() => _canARunJob(out openedProcess) && _continue);
                 JobManager.GetInstance().ContinueJob(_savedJob);
+
                 _backupInfo.State = StateLevel.Active;
+                _backupInfo.BlockingSoftwareName = string.Empty;
                 EventManager.GetInstance().Update(_backupInfo);
             }
 
@@ -101,7 +109,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             }
 
             var relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
-
             var targetFilePath = Path.Combine(destinationPath, relativePath);
 
             var targetDirectory = Path.GetDirectoryName(targetFilePath);
@@ -130,7 +137,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
             // Notify observer
             UpdateStatus(copyInfo);
-
         }
         // Handle any exceptions that occur during the file backup process
         catch (Exception ex)
@@ -153,11 +159,11 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
         Config conf = Config.GetInstance();
         Process[] allProcesses = Process.GetProcesses();
         processName = "";
+
         foreach (Process process in allProcesses)
         {
             if (conf.Softwares.Contains(process.ProcessName))
             {
-                _continue = true;
                 processName = process.ProcessName;
                 return false;
             }
@@ -182,9 +188,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
         ProcessStartInfo p = new()
         {
             FileName = _sevenZipPath,
-
             Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"",
-
             WindowStyle = ProcessWindowStyle.Hidden, // To hide black screen
             CreateNoWindow = true,
             UseShellExecute = false
@@ -209,11 +213,11 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
+
     protected string[] SeparateCriticalFiles(out string[] notCriticalFiles)
     {
-        
         var criticalExtensions = Config.GetInstance().CriticalExtensions;
-        var allFiles = new List<string>(GetFilesList()); 
+        var allFiles = new List<string>(GetFilesList());
         var criticalfiles = new List<string>(GetFilesList());
 
         for (var i = allFiles.Count - 1; i >= 0; i--)
@@ -230,7 +234,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
         notCriticalFiles = [.. allFiles];
         return [.. criticalfiles];
-        
     }
 
     /// <summary>
@@ -245,5 +248,4 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
         EventManager.GetInstance().Update(_backupInfo);
     }
-    
 }

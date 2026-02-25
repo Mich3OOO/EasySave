@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -59,6 +61,8 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
     [ObservableProperty] private double _progress;
     [ObservableProperty] private bool _isPaused;
     [ObservableProperty] private bool _isFinished;
+    [ObservableProperty] private bool _isBusinessSoftwareRunning;
+    [ObservableProperty] private string _businessSoftwareMessage = string.Empty;
 
     public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
 
@@ -86,20 +90,28 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
         Dispatcher.UIThread.Post(() =>
         {
             UpdateProgress(percentage);
-        });
 
-        if (data.State == StateLevel.Paused)
-        {
-            IsPaused = true;
-        }
-        else if (data.State == StateLevel.Active)
-        {
-            IsPaused = false;
-        }
+            if (data.State == StateLevel.Paused)
+            {
+                IsPaused = true;
 
-        Dispatcher.UIThread.Post(() =>
-        {
-            UpdateProgress(percentage);
+                if (!string.IsNullOrEmpty(data.BlockingSoftwareName))
+                {
+                    IsBusinessSoftwareRunning = true;
+                    BusinessSoftwareMessage = $"En pause : {data.BlockingSoftwareName} détecté";
+                }
+                else
+                {
+                    IsBusinessSoftwareRunning = false;
+                }
+            }
+            else if (data.State == StateLevel.Active)
+            {
+                IsPaused = false;
+                IsBusinessSoftwareRunning = false;
+                BusinessSoftwareMessage = string.Empty;
+            }
+
             OnPropertyChanged(nameof(PauseIcon));
         });
     }
