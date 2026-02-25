@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
@@ -102,15 +102,15 @@ public class JobSettingsViewModel : ViewModelBase
 
             SavedJob job = _originalJob ?? new SavedJob();
             job.Name = Name;
-            job.SetSource(Source);
-            job.SetDestination(Destination);
+            job.Source = Source;
+            job.Destination = Destination;
 
 
             OnSaveRequested?.Invoke(job);
         }
         catch (Exception)
         {
-            ErrorMessage = LanguageViewModel.GetTranslation("error_path");
+            throw;
         }
     }
 

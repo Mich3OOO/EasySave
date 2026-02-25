@@ -20,8 +20,8 @@ public class CompBackup : Backup
         var files = GetFilesList();
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = notCriticalFiles.Length + criticalFiles.Length;
-        _backupInfo.TotalFiles = files.Length;
+        _backupInfo.TotalFiles = (uint) (notCriticalFiles.Length + criticalFiles.Length);
+        _backupInfo.TotalFiles = (uint) files.Length;
         _backupInfo.CurrentFile = 0;
 
         
@@ -29,7 +29,7 @@ public class CompBackup : Backup
         {
             if (_cancel) break;
             BackupFile(file, destinationPath);
-            }
+        }
 
         _isCriticalFileFinised = true;
         // Loop the files and execute copy

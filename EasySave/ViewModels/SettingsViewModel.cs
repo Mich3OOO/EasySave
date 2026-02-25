@@ -115,8 +115,8 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
-    private int _maxParallelLargeFileSizeKo;
-    public int MaxParallelLargeFileSizeKo
+    private uint _maxParallelLargeFileSizeKo;
+    public uint MaxParallelLargeFileSizeKo
     {
         get => _maxParallelLargeFileSizeKo;
         set

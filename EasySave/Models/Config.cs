@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using EasySave.Models.Exepctions;
 
 namespace EasySave.Models;
 
@@ -11,23 +12,23 @@ namespace EasySave.Models;
 class ConfigData
 {
     [JsonInclude]
-    public Languages Language = Languages.En;
+    public Languages Language { get; set; } = Languages.En;
     [JsonInclude]
-    public LogsFormats LogsFormat = LogsFormats.Json;
+    public LogsFormats LogsFormat { get; set; } = LogsFormats.Json;
     [JsonInclude]
-    public LogsMods LogsMods = LogsMods.Local;
+    public LogsMods LogsMods { get; set; } = LogsMods.Local;
     [JsonInclude]
-    public string[] ExtensionsToEncrypt = [];
+    public string[] ExtensionsToEncrypt { get; set; } = [];
     [JsonInclude]
-    public string[] CriticalExtensions = [];
+    public string[] CriticalExtensions { get; set; } = [];
     [JsonInclude]
-    public List<SavedJob> SavedJobs = [];
+    public List<SavedJob> SavedJobs { get; set; } = [];
     [JsonInclude]
-    public string[] Softwares = [];
+    public string[] Softwares { get; set; } = [];
     [JsonInclude]
-    public string API_URL = "http://localhost:8080/api/logs";
+    public string API_URL { get; set; } = "http://localhost:8080/api/logs";
     [JsonInclude]
-    public int MaxParallelLargeFileSizeKo = 10240;
+    public uint MaxParallelLargeFileSizeKo { get; set; } = 10240;
 
 
     public ConfigData(Config _config)
@@ -61,13 +62,13 @@ public class Config
     private string[] _extensionsToEncrypt;
 
     private string[] _softwares;
-    public string[] _criticalExtensions;
+    private string[] _criticalExtensions;
     private string _API_URL;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
     private readonly string _confPath = "./config.json";
 
-    private int _maxParallelLargeFileSizeKo = 10240;
+    private uint _maxParallelLargeFileSizeKo = 10240;
     public Languages Language { get => _language; set => _language = value; }
     public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
     public LogsMods LogsMods { get => _logsMods; set => _logsMods = value; }
@@ -78,7 +79,15 @@ public class Config
     public string[] CriticalExtensions { get => _criticalExtensions; set => _criticalExtensions = value; }
 
 
-    public int MaxParallelLargeFileSizeKo { get => _maxParallelLargeFileSizeKo; set => _maxParallelLargeFileSizeKo = value; }
+    public uint MaxParallelLargeFileSizeKo
+    {
+        get => _maxParallelLargeFileSizeKo;
+        set
+        {
+            if (value < 1) throw new UserException("error_bad_filesize");
+            _maxParallelLargeFileSizeKo = value;
+        }
+    }
 
     /// <summary>
     /// The constructor is private to prevent instantiation from outside the class

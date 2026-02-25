@@ -13,7 +13,7 @@ public abstract class ViewModelBase : ObservableObject
     public LanguageViewModel LanguageViewModel { get; }
     public ViewModelBase()
     {
-        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+        var dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
         LanguageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
     }
 }

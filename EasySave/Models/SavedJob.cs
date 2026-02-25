@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using EasySave.Models.Exepctions;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace EasySave.Models;
 
@@ -7,7 +10,7 @@ namespace EasySave.Models;
 /// Class representing a saved job, it holds the information about a backup 
 /// job that can be executed later
 /// </summary>
-public class SavedJob   
+public class SavedJob
 {
     private int _id;
     private string _name;
@@ -16,28 +19,10 @@ public class SavedJob
     private bool _isSelected = false;
 
 
-
-    public string GetName()
-    {
-        return this._name;
-    }
-    public string GetDestination()
-    {
-        return this._destination;
-    }
-    public string GetSource()
-    {
-        return this._source;
-    }
-
-
     public bool IsSelected
     {
         get => _isSelected;
-        set
-        {
-            _isSelected = value;
-        }
+        set { _isSelected = value; }
     }
 
     /// <summary>
@@ -45,21 +30,56 @@ public class SavedJob
     /// the class, they are not used to get the fields because we want to control 
     /// the setting of the destination and source fields
     /// </summary>
-    public int Id { get => _id; set => _id = value; }
-    public string Name { get => _name; set => _name = value; }
-    public string Destination { get => _destination; set => SetDestination(value); }
-    public string Source { get => _source; set => _source = value; }
+    public int Id
+    {
+        get
+        {
+            if (_id < 0) throw new InvalidOperationException("class property not set properly expected an id >= 0");
+            return _id;
+            
+        }
+        set
+        {
+            if (value < 0) throw new ValidationException("class property not set properly expected an id >= 0");
+            _id = value;
+        }
+    }
+
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            if (string.Empty == value) throw new UserException("error_bad_jobName");
+            _name = value;
+        }
+    }
+
+    public string Destination
+    {
+        get => _destination;
+        set
+        {
+            if (!Path.Exists(value)) throw new UserException("invalid_destination");
+            _destination = value;
+        }
+    }
+
+    public string Source
+    {
+        get => _source;
+        set
+        {
+            if (!Path.Exists(value)) throw new UserException("invalid_destination");
+            _source = value;
+        }
+    }
 
     /// <summary>
     /// Constructor
     /// </summary>
     public SavedJob(int id, string name, string source, string destination)
     {
-        _id = -1;
-        _name = "";
-        _source = "./";
-        _destination = "./";
-
         Id = id;
         Name = name;
         Source = source;
@@ -87,49 +107,16 @@ public class SavedJob
         _name = savedJob._name;
         _source = savedJob._source;
         _destination = savedJob._destination;
-
     }
 
-    /// <summary>
-    /// Method to set the destination field, it checks if the given destination 
-    /// is a valid path before setting it, if it's not a valid path, it throws an exception
-    /// </summary>
-    public void SetDestination(string destination)
-    {
-        if (Path.IsPathRooted(destination))
-        {
-            _destination = destination;
-        }
-        else
-        {
-            throw new Exception("Invalid destination path");
-        }
-    }
-
-    /// <summary>
-    /// Method to set the source field, it checks if the given source is a 
-    /// valid path before setting it, if it's not a valid path, it throws an exception
-    /// </summary>
-    public void SetSource(string source)
-    {
-        if (Path.IsPathRooted(source))
-        {
-            _source = source;
-        }
-        else
-        {
-            throw new Exception("Invalid destination path");
-        }
-    }
 
     /// <summary>
     /// Override the ToString method to return a string representation of the 
     /// SavedJob object, it is used to display the SavedJob object in the UI
     /// </summary>
     /// <returns></returns>
-    public override string ToString()   
+    public override string ToString()
     {
         return $"{_id} -  {_name} | {_destination} -> {_source}";
     }
-
 }

@@ -66,7 +66,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     /// </summary>
     protected void BackupFile(string sourceFilePath, string destinationPath)   
     {
-        long fileSize = 0;
+        uint fileSize = 0;
         var isLargeFile = false;
         var config = Config.GetInstance();
 
@@ -76,7 +76,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             {
                 Source = sourceFilePath
             };
-            fileSize = new FileInfo(sourceFilePath).Length;
+            fileSize = (uint) new FileInfo(sourceFilePath).Length;
             copyInfo.Size = fileSize;
 
             isLargeFile = (fileSize > config.MaxParallelLargeFileSizeKo * 1024);
@@ -104,7 +104,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 targetFilePath += ".7z";
                 DateTime temp = DateTime.Now;
                 EncryptFile(sourceFilePath, targetFilePath);
-                copyInfo.TimeToEncrypt = (int)(DateTime.Now - temp).TotalMicroseconds;
+                copyInfo.TimeToEncrypt = (uint)(DateTime.Now - temp).TotalMicroseconds;
             }
             else
             {
