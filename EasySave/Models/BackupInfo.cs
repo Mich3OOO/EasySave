@@ -10,4 +10,5 @@ public class BackupInfo
     public CopyInfo? LastCopyInfo;
     public int CurrentFile;
     public int TotalFiles;
+    public StateLevel State;
 }

@@ -7,5 +7,6 @@ public enum StateLevel
 {
     Active,
     Inactive,
+    Paused,
     End
 }

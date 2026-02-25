@@ -75,7 +75,6 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
     // called by observer when a file is copied
     public void Update(BackupInfo data)
     {
-        // Only update this progress bar if the event is for this specific job
         if (data.SavedJobInfo.Name != JobName)
             return;
 
@@ -88,6 +87,21 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
         {
             UpdateProgress(percentage);
         });
+
+        if (data.State == StateLevel.Paused)
+        {
+            IsPaused = true;
+        }
+        else if (data.State == StateLevel.Active)
+        {
+            IsPaused = false;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateProgress(percentage);
+            OnPropertyChanged(nameof(PauseIcon));
+        });
     }
 
     public void UpdateProgress(double percentage)
@@ -96,6 +110,7 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
         if (Progress >= 100 && !IsFinished)
         {
             IsFinished = true;
+            EventManager.GetInstance().UnSubscribe(this);
         }
     }
 

@@ -38,6 +38,11 @@ public class EventManager
         this._subscribers.Add(listener);
     }
 
+    public void UnSubscribe(IEventListener listener)
+    {
+        this._subscribers.Remove(listener);
+    }
+
     /// <summary>
     /// Notify all subscribers with BackupInfo
     /// </summary>

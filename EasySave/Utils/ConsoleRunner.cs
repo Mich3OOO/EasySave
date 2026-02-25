@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using EasySave.Models;
+using EasySave.ViewModels;
 
 namespace EasySave.Utils;
 
@@ -238,7 +239,7 @@ public static class ConsoleRunner
             } while (key.Key != ConsoleKey.Enter);
             Console.WriteLine();
 
-            if (!EasySave.ViewModels.RunJobsViewModel.IsPasswordValid(password))
+            if (!RunJobsViewModel.IsPasswordValid(password))
             {
                 Console.WriteLine("Error: Password must be at least 12 characters, with lowercase, uppercase, digit, and special character.");
                 continue;

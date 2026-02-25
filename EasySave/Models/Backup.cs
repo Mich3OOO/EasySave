@@ -69,24 +69,22 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     {
         long fileSize = 0;
         bool isLargeFile = false;
-        Config config = Config.S_GetInstance();
+        Config config = Config.GetInstance();
         string openedProcess;
 
-        // Group feature: check if forbidden software is running
-        if (!_canARunJon(out openedProcess))
-        {
-            JobManager.GetInstance().PauseJob(_savedJob);
-        }
+
 
         try
         {
-            while (!_continue)
+            if (!_canARunJob(out openedProcess) || !_continue)
             {
-                Thread.Sleep(250);
-                if (_canARunJon(out openedProcess))
-                {
-                    JobManager.GetInstance().ContinueJob(_savedJob);
-                }
+                JobManager.GetInstance().PauseJob(_savedJob);
+                _backupInfo.State = StateLevel.Paused;
+                EventManager.GetInstance().Update(_backupInfo);
+                SpinWait.SpinUntil(() => _canARunJob(out openedProcess) && _continue);
+                JobManager.GetInstance().ContinueJob(_savedJob);
+                _backupInfo.State = StateLevel.Active;
+                EventManager.GetInstance().Update(_backupInfo);
             }
 
             // Prepare copy information
@@ -150,15 +148,16 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     }
 
     // Method to check if the source of the backup job is currently being used by another programm
-    private bool _canARunJon(out string processName)
+    private bool _canARunJob(out string processName)
     {
-        Config conf = Config.S_GetInstance();
+        Config conf = Config.GetInstance();
         Process[] allProcesses = Process.GetProcesses();
         processName = "";
         foreach (Process process in allProcesses)
         {
             if (conf.Softwares.Contains(process.ProcessName))
             {
+                _continue = true;
                 processName = process.ProcessName;
                 return false;
             }

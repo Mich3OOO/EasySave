@@ -112,7 +112,7 @@ public class RunJobsViewModel : ObservableObject
     }
 
     // Check password policy
-    public bool IsPasswordValid(string password)
+    public static bool IsPasswordValid(string password)
     {
         if (string.IsNullOrEmpty(password))
             return false;
