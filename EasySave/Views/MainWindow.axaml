@@ -46,8 +46,11 @@
 				<Image Source="/Assets/EasySave_logo_white.png" Width="400" Height="120" Stretch="Uniform" HorizontalAlignment="Left"/>
 			</Grid>
 			<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Top" Margin="0,10,0,0">
+				<Button Background="Transparent" Command="{Binding ShowProgressCommand}" Cursor="Hand" ToolTip.Tip="Afficher la progression des sauvegardes">
+					<TextBlock Text="📊" FontSize="24" Foreground="{DynamicResource SuccessBrush}"/>
+				</Button>
 				<Button Background="Transparent" Command="{Binding ShowSettingsCommand}" Cursor="Hand" ToolTip.Tip="{Binding T_settings_tooltip}">
-					<TextBlock Text="⚙" FontSize="24" Foreground="{DynamicResource TextPrimaryBrush}"/>
+					<TextBlock Text="⚙️" FontSize="24" Foreground="{DynamicResource TextPrimaryBrush}"/>
 				</Button>
 			</StackPanel>
 		</Grid>

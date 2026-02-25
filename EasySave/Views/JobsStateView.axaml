@@ -5,7 +5,7 @@
              x:DataType="vm:JobsStateViewModel">
 
     <Border Background="{DynamicResource CardBackgroundBrush}" Padding="20">
-        <Grid RowDefinitions="Auto, *">
+        <Grid RowDefinitions="Auto, *, Auto">
             
             <Grid Grid.Row="0" Margin="0,0,0,20">
                 <StackPanel Orientation="Horizontal" Spacing="10">
@@ -62,6 +62,31 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
+            <!-- Bouton delete en bas à droite -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,20,0,0">
+                <Button Content="{Binding T_delete}"
+                        Classes="emoji"
+                        Command="{Binding ClearHistoryCommand}"
+                        Width="160"
+                        Height="45"
+                        CornerRadius="8"
+                        Background="{DynamicResource DangerButtonBrush}"
+                        Foreground="{DynamicResource TextInvertedBrush}"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Cursor="Hand"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource DangerButtonHoverBrush}"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Background" Value="{DynamicResource DangerButtonPressedBrush}"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>
