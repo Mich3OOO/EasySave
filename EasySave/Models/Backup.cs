@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Avalonia.Animation;
 using EasySave.Interfaces;
 using EasySave.ViewModels;
 
@@ -67,15 +68,30 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     protected void BackupFile(string sourceFilePath, string destinationPath)   
     {
         long fileSize = 0;
-        var isLargeFile = false;
-        var config = Config.GetInstance();
+        bool isLargeFile = false;
+        Config config = Config.S_GetInstance();
+        string openedProcess;
+
+        // Group feature: check if forbidden software is running
+        if (!_canARunJon(out openedProcess))
+        {
+            JobManager.GetInstance().PauseJob(_savedJob);
+        }
 
         try
         {
-            CopyInfo copyInfo = new()
+            while (!_continue)
             {
-                Source = sourceFilePath
-            };
+                Thread.Sleep(250);
+                if (_canARunJon(out openedProcess))
+                {
+                    JobManager.GetInstance().ContinueJob(_savedJob);
+                }
+            }
+
+            // Prepare copy information
+            CopyInfo copyInfo = new CopyInfo();
+            copyInfo.Source = sourceFilePath;
             fileSize = new FileInfo(sourceFilePath).Length;
             copyInfo.Size = fileSize;
 
@@ -117,10 +133,6 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
             // Notify observer
             UpdateStatus(copyInfo);
 
-            while (!_continue)
-            {
-                // Pause
-            }
         }
         // Handle any exceptions that occur during the file backup process
         catch (Exception ex)
@@ -135,6 +147,23 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 LargeFileSemaphore.Release();
             }
         }
+    }
+
+    // Method to check if the source of the backup job is currently being used by another programm
+    private bool _canARunJon(out string processName)
+    {
+        Config conf = Config.S_GetInstance();
+        Process[] allProcesses = Process.GetProcesses();
+        processName = "";
+        foreach (Process process in allProcesses)
+        {
+            if (conf.Softwares.Contains(process.ProcessName))
+            {
+                processName = process.ProcessName;
+                return false;
+            }
+        }
+        return true;
     }
 
     /// <summary>

@@ -90,13 +90,7 @@ public class RunJobsViewModel : ObservableObject
             {
                 if (Job == null) throw new ArgumentException(T_invalid_backup_id);
 
-                // Group feature: check if forbidden software is running
-                if (!CanARunJob(out var openedProcess))
-                {
-                    ErrorMessage = T_source_in_use + " : " + openedProcess;
-                    return;
-                }
-
+                // Check if password is valid
                 if (!IsPasswordValid(_password))
                 {
                     ErrorMessage = LanguageViewModel.GetTranslation("password_policy");
@@ -117,28 +111,8 @@ public class RunJobsViewModel : ObservableObject
         CancelCommand = new RelayCommand(() => OnResult?.Invoke(false, false, string.Empty));
     }
 
-    // Method to check if the source of the backup job is currently being used by another programm
-    private bool CanARunJob(out string processName)
-    {
-        var conf = Config.GetInstance();
-        Process[] allProcesses = Process.GetProcesses();
-        processName = "";
-        foreach (Process process in allProcesses)
-        {
-            if (conf.Softwares.Contains(process.ProcessName))
-            {
-                processName = process.ProcessName;
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /// <summary>
-    /// Checks whether the password meets the required policy
-    /// Min 12 char, with lower, upper, digits and special character
-    /// </summary>
-    public static bool IsPasswordValid(string password)
+    // Check password policy
+    public bool IsPasswordValid(string password)
     {
         if (string.IsNullOrEmpty(password))
             return false;
