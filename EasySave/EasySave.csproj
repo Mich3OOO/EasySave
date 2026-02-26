@@ -5,14 +5,24 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\EasyLog\EasyLog.csproj" />
-        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaXaml Remove="assets\ColorThemes.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="Utils\ColorThemes.axaml">
+        <SubType>Designer</SubType>
+      </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -29,25 +39,15 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Views\DeleteView.axaml.cs">
-        <DependentUpon>DeleteView.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="App.axaml.cs">
-        <DependentUpon>App.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
 
     <ItemGroup>
       <None Include="CryptoSoft\7za.exe">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Utils\dictionary.json">
+      <None Include="CryptoSoft\7zz">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Utils\Dictionary.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

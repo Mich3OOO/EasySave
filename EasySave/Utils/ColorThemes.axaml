@@ -1,0 +1,52 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#121212"/>
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#1E1E1E"/>
+            <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#252526"/>
+            <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#3C3C3C"/>
+            <SolidColorBrush x:Key="ButtonHoverBrush" Color="#4A4A4A"/>
+            <SolidColorBrush x:Key="ButtonPressedBrush" Color="#2E2E2E"/>
+            <SolidColorBrush x:Key="OverlayBrush" Color="#CC000000"/>
+            <SolidColorBrush x:Key="BorderMediumBrush" Color="#333333"/>
+            <SolidColorBrush x:Key="BorderLightBrush" Color="#3C3C3C"/>
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="White"/>
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#AAAAAA"/>
+            <SolidColorBrush x:Key="TextInvertedBrush" Color="#121212"/>
+            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#00E676"/>
+            <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
+            <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="#2E7D32"/>
+            <SolidColorBrush x:Key="DangerBrush" Color="#FF5252"/>
+            <SolidColorBrush x:Key="DangerTextBrush" Color="#E53935"/>
+            <SolidColorBrush x:Key="DangerButtonBrush" Color="#C62828"/>
+            <SolidColorBrush x:Key="DangerButtonHoverBrush" Color="#D32F2F"/>
+            <SolidColorBrush x:Key="DangerButtonPressedBrush" Color="#B71C1C"/>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Default">
+            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#E3E6E9"/> <SolidColorBrush x:Key="CardBackgroundBrush" Color="#F0F2F5"/> <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#E6E8EB"/> <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#D8DCE0"/> <SolidColorBrush x:Key="ButtonHoverBrush" Color="#C8CCD0"/>
+            <SolidColorBrush x:Key="ButtonPressedBrush" Color="#B8BCC0"/>
+            
+            <SolidColorBrush x:Key="OverlayBrush" Color="#1A000000"/> 
+
+            <SolidColorBrush x:Key="BorderMediumBrush" Color="#C8CCD0"/>
+            <SolidColorBrush x:Key="BorderLightBrush" Color="#D8DCE0"/>
+
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#24292E"/>
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#586069"/>
+            <SolidColorBrush x:Key="TextInvertedBrush" Color="#FFFFFF"/>
+
+            <SolidColorBrush x:Key="PrimaryActionBrush" Color="#008CFF"/> 
+            <SolidColorBrush x:Key="SuccessBrush" Color="#008CFF"/> 
+            <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="#28A745"/> 
+            <SolidColorBrush x:Key="DangerBrush" Color="#D73A49"/> 
+            <SolidColorBrush x:Key="DangerTextBrush" Color="#CB2431"/> 
+            <SolidColorBrush x:Key="DangerButtonBrush" Color="#D73A49"/>
+            <SolidColorBrush x:Key="DangerButtonHoverBrush" Color="#CB2431"/>
+            <SolidColorBrush x:Key="DangerButtonPressedBrush" Color="#B31D28"/>
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

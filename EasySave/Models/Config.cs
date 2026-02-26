@@ -1,134 +1,202 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using EasySave.Models.Exepctions;
 
 namespace EasySave.Models;
 
-class ConfigStructure // This class is used to serialize and deserialize the config file, it is not used in the program itself
+/// <summary>
+/// This class is used to serialize and deserialize the config file, it is not 
+/// used in the program itself
+/// </summary>
+class ConfigData
 {
-    // The JsonInclude attribute is used to include the fields in the serialization and deserialization process, even if they are not public properties
     [JsonInclude]
-    public Languages Language = Languages.En;
-    [JsonInclude]  
-    public LogsFormats LogsFormat  = LogsFormats.Json;
+    public Languages Language { get; set; } = Languages.En;
     [JsonInclude]
-    public string[] ExtensionsToEncrypt = {};
+    public LogsFormats LogsFormat { get; set; } = LogsFormats.Json;
     [JsonInclude]
-    public List<SavedJob> SavedJobs = new();
+    public LogsMods LogsMods { get; set; } = LogsMods.Local;
     [JsonInclude]
-    public string[] Softwares = {};
+    public string[] ExtensionsToEncrypt { get; set; } = [];
+    [JsonInclude]
+    public string[] CriticalExtensions { get; set; } = [];
+    [JsonInclude]
+    public List<SavedJob> SavedJobs { get; set; } = [];
+    [JsonInclude]
+    public string[] Softwares { get; set; } = [];
+    [JsonInclude]
+    public string API_URL { get; set; } = "http://localhost:8080/api/logs";
+    [JsonInclude]
+    public uint MaxParallelLargeFileSizeKo { get; set; } = 10240;
 
 
-    public ConfigStructure(Config _config)
-    { 
-        
+    public ConfigData(Config _config)
+    {
+
         Language = _config.Language;
-        LogsFormat  = _config.LogsFormat;
+        LogsFormat = _config.LogsFormat;
+        LogsMods = _config.LogsMods;
         ExtensionsToEncrypt = _config.ExtensionsToEncrypt;
         SavedJobs = _config.SavedJobs;
         Softwares = _config.Softwares;
-        
+        API_URL = _config.API_URL;
+
+        MaxParallelLargeFileSizeKo = _config.MaxParallelLargeFileSizeKo;
+        CriticalExtensions = _config.CriticalExtensions;
+
     }
-    public ConfigStructure()
-    {}
-    
-    
-    
+    public ConfigData() { }
 
 }
 
-public class Config // Class representing the configuration of the application, it is a singleton class that holds the selected language and the list of saved jobs
+/// <summary>
+/// Class representing the configuration of the application, it is a singleton 
+/// class that holds the selected language and the list of saved jobs
+/// </summary>
+public class Config
 {
-    // The singleton pattern is used to ensure that there is only one instance of the Config class throughout the application, and it can be accessed globally via the S_GetInstance method
     private Languages _language;
     private LogsFormats _logsFormat;
-    private string[] _extensionsToEncrypt;    // The default extensions to encrypt, it is set to a list of common document formats
+    private LogsMods _logsMods;
+    private string[] _extensionsToEncrypt;
+
     private string[] _softwares;
+    private string[] _criticalExtensions;
+    private string _API_URL;
     private static Config? s_instance;
     private List<SavedJob> _savedJobs;
-    private readonly string _confPath = "./config.json";    // The path to the config file, it is set to the current directory with the name "config.json"
+    private readonly string _confPath = "./config.json";
+
+    private uint _maxParallelLargeFileSizeKo = 10240;
     public Languages Language { get => _language; set => _language = value; }
     public LogsFormats LogsFormat { get => _logsFormat; set => _logsFormat = value; }
+    public LogsMods LogsMods { get => _logsMods; set => _logsMods = value; }
     public string[] ExtensionsToEncrypt { get => _extensionsToEncrypt; set => _extensionsToEncrypt = value; }
     public string[] Softwares { get => _softwares; set => _softwares = value; }
-    public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs);}
-    
+    public string API_URL { get => _API_URL; set => _API_URL = value; }
+    public List<SavedJob> SavedJobs { get => new List<SavedJob>(_savedJobs); }
+    public string[] CriticalExtensions { get => _criticalExtensions; set => _criticalExtensions = value; }
 
-    private Config()    // The constructor is private to prevent instantiation from outside the class
+
+    public uint MaxParallelLargeFileSizeKo
+    {
+        get => _maxParallelLargeFileSizeKo;
+        set
+        {
+            if (value < 1) throw new UserException("error_bad_filesize");
+            _maxParallelLargeFileSizeKo = value;
+        }
+    }
+
+    /// <summary>
+    /// The constructor is private to prevent instantiation from outside the class
+    /// </summary>
+    private Config()
     {
         _savedJobs = null!;
 
         if (File.Exists(_confPath))
         {
-            _loadConfig();
+            LoadConfig();
         }
         else
         {
-            _setDefaultConfig();
+            SetDefaultConfig();
             SaveConfig();
         }
     }
 
-    public static Config S_GetInstance()    // Static method to get the single instance of the Config class
+    /// <summary>
+    /// Static method to get the single instance of the Config class
+    /// </summary>
+    /// <returns></returns>
+    public static Config GetInstance()
     {
         s_instance ??= new Config();
         return s_instance;
     }
 
-    public void SaveConfig()    // Method to save the current configuration to the config file, it serializes the ConfigStructure struct and writes it to the file
+    /// <summary>
+    /// Method to save the current configuration to the config file, it serializes 
+    /// the ConfigStructure struct and writes it to the file
+    /// </summary>
+    public void SaveConfig()
     {
         if (File.Exists(_confPath)) File.Delete(_confPath);
-        using (FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write))
-        {
-            ConfigStructure config = new ConfigStructure(this);
-            fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
-
-        }
+        using FileStream fs = File.Open(_confPath, FileMode.CreateNew, FileAccess.Write);
+        ConfigData config = new ConfigData(this);
+        fs.Write(new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(config)));
     }
 
-    private void _loadConfig()  //  Method to load the configuration from the config file, it reads the file, deserializes it into a ConfigStructure struct and updates the current configuration accordingly
+    /// <summary>
+    /// Method to load the configuration from the config file, it reads the file, 
+    /// deserializes it into a ConfigStructure struct and updates the current configuration accordingly
+    /// </summary>
+    private void LoadConfig()
     {
-        using (FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read))
+        using FileStream fs = File.Open(_confPath, FileMode.OpenOrCreate, FileAccess.Read);
+        var json = "";
+        var b = new byte[1024];
+        var temp = new UTF8Encoding(true);
+
+        while (fs.Read(b, 0, b.Length) > 0)
         {
-            string json = "";
-            byte[] b = new byte[1024];
-            UTF8Encoding temp = new UTF8Encoding(true);
-
-            while (fs.Read(b, 0, b.Length) > 0)
-            {
-                json += temp.GetString(b);
-            }
-
-            ConfigStructure? config = JsonSerializer.Deserialize<ConfigStructure>(json.Trim('\0'));
-
-            if (config is null)
-            {
-                _setDefaultConfig();
-                SaveConfig();
-            }
-            else
-            {
-                _language = config.Language;
-                _logsFormat = config.LogsFormat;
-                _extensionsToEncrypt = config.ExtensionsToEncrypt;
-                _savedJobs = config.SavedJobs;
-                _softwares = config.Softwares;
-            }
-
+            json += temp.GetString(b);
         }
+
+        ConfigData? config = JsonSerializer.Deserialize<ConfigData>(json.Trim('\0'));
+
+        if (config is null)
+        {
+            SetDefaultConfig();
+            SaveConfig();
+        }
+        else
+        {
+            SetConfig(config);
+        }
+
     }
 
-    private void _setDefaultConfig()    // Method to set the default configuration, it is called when there is no config file or when the config file is invalid, it sets the default language to English and initializes an empty list of saved jobs
+    /// <summary>
+    /// Method to set the default configuration, it is called when there is no 
+    /// config file or when the config file is invalid
+    /// </summary>
+    private void SetDefaultConfig()
     {
         _language = Languages.En;
         _logsFormat = LogsFormats.Json;
-        _savedJobs = new List<SavedJob>();
-        _extensionsToEncrypt = new String[] { ".txt", ".docx", ".xlsx", ".pdf"};
+        _savedJobs = [];
+        _extensionsToEncrypt = [".txt", ".docx", ".xlsx", ".pdf"];
+        _softwares = [];
+        _criticalExtensions = [];
+        _API_URL = "http://localhost:8080/api/logs";
+        _maxParallelLargeFileSizeKo = 10240;
     }
 
-    public bool AddJob(SavedJob job)    // Method to add a new job to the list of saved jobs, it takes a SavedJob object as a parameter and checks if a job with the same name and ID already exists in the list, if not, it adds the new job to the list and returns true, otherwise it returns false
+    private void SetConfig(ConfigData config)
     {
-        if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)   // Check if a job with the same name and ID already exists in the list of saved jobs, if not, add the new job to the list and return true, otherwise return false
+        _language = config.Language;
+        _logsFormat = config.LogsFormat;
+        _logsMods = config.LogsMods;
+        _extensionsToEncrypt = config.ExtensionsToEncrypt;
+        _savedJobs = config.SavedJobs;
+        _softwares = config.Softwares;
+        _criticalExtensions = config.CriticalExtensions;
+        _API_URL = config.API_URL ?? "http://localhost:8080/api/logs";
+        _maxParallelLargeFileSizeKo = config.MaxParallelLargeFileSizeKo;
+    }
+
+    /// <summary>
+    /// Method to add a new job to the list of saved jobs, it takes a SavedJob 
+    /// object as a parameter and checks if a job with the same name and ID already 
+    /// exists in the list, if not, it adds the new job to the list and returns 
+    /// true, otherwise it returns false
+    /// </summary>
+    public bool AddJob(SavedJob job)
+    {
+        if (_savedJobs.FirstOrDefault(j => j.Name == job.Name && j.Id == job.Id) == null)
         {
             _savedJobs.Add(job);
             return true;
@@ -137,9 +205,13 @@ public class Config // Class representing the configuration of the application, 
         return false;
     }
 
-    public void UpdateJob(string jobName, SavedJob job)  // Method to update a saved job, it takes the name of the job to update and the new job data, it searches for the job with the given name and updates its properties if found
+    /// <summary>
+    /// Method to update a saved job, it takes the name of the job to update and 
+    /// the new job data, it searches for the job with the given name and updates 
+    /// its properties if found
+    /// </summary>
+    public void UpdateJob(string jobName, SavedJob job)
     {
-
         SavedJob? jobToUpdate = _savedJobs.FirstOrDefault(j => j.Name == jobName);
 
         if (jobToUpdate != null)
@@ -150,18 +222,32 @@ public class Config // Class representing the configuration of the application, 
 
         }
     }
-    public SavedJob? GetJob(string jobName) // Method to get a saved job by its name, it searches for the job with the given name and returns a copy of it if found, otherwise it returns null
+
+    /// <summary>
+    /// Method to get a saved job by its name, it searches for the job with the 
+    /// given name and returns a copy of it if found, otherwise it returns null 
+    /// </summary>
+    public SavedJob? GetJob(string jobName)
     {
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Name == jobName);
         return job is null ? null : new(job);
     }
 
-    public SavedJob? GetJob(int id) // Method to get a saved job by its id, it searches for the job with the given id and returns a copy of it if found, otherwise it returns null
+    /// <summary>
+    /// Method to get a saved job by its id, it searches for the job with the given 
+    /// id and returns a copy of it if found, otherwise it returns null
+    /// </summary>
+    public SavedJob? GetJob(int id)
     {
         SavedJob? job = _savedJobs.FirstOrDefault(j => j.Id == id);
         return job is null ? null : new(job);
     }
-    public void DeleteJob(SavedJob job) // Method to delete a saved job, it takes the job to delete and removes it from the list of saved jobs if it exists
+
+    /// <summary>
+    /// Method to delete a saved job, it takes the job to delete and removes it from 
+    /// the list of saved jobs if it exists
+    /// </summary>
+    public void DeleteJob(SavedJob job)
     {
         _savedJobs.RemoveAll(j => j.Id == job.Id);
     }

@@ -1,74 +1,152 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using EasySave.Interfaces;
+using EasySave.ViewModels;
 
 namespace EasySave.Models;
 
-public abstract class Backup : IBackup  // Abstract class representing a backup operation, implementing the IBackup interface
+/// <summary>
+/// Abstract class representing a backup operation, implementing the IBackup interface
+/// </summary>
+/// <remarks>
+/// Constructor to initialize the backup with a saved job and backup info
+/// </remarks>
+public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") : IBackup
 {
-    protected SavedJob _savedJob;
-    protected BackupInfo _backupInfo;
-    protected string _sevenZipPath;
-    private string _password;
+    protected SavedJob _savedJob = savedJob;
+    protected BackupInfo _backupInfo = backupInfo;
+    protected string _sevenZipPath = _getCorrecte7zipVersion();
+    private string _password = pw;
+    
+    private bool _continue = true;
+    protected bool _cancel = false;
+    protected bool _isCriticalFileFinised = false;
 
-    public Backup(SavedJob savedJob, BackupInfo backupInfo, string pw = "") // Constructor to initialize the backup with a saved job and backup info
-    {
-        _password = pw;
-        _savedJob = savedJob;
-        _backupInfo = backupInfo;
-        _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
-    }
+    protected static readonly SemaphoreSlim LargeFileSemaphore = new(1, 1);
+    protected readonly object _key = new();
 
     public void SetPassword(string password)
     {
         _password = password;
     }
 
-    public abstract void ExecuteBackup();   // Abstract method to execute the backup, to be implemented by derived classes
-
-    //Create a timestamp folder for backup
-    protected string _createTimestampedFolder(string subFolderType)
+    private static string _getCorrecte7zipVersion()
     {
-        string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        string fullPath = Path.Combine(_savedJob.Destination, subFolderType, timestamp);
+        string binary = "7za.exe"; //windows binnary
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            binary = "7zz";
+        }
+        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", binary);;
+    }
+
+    /// <summary>
+    /// Abstract method to execute the backup, to be implemented by derived classes
+    /// </summary>
+    public abstract void ExecuteBackup();
+    public bool isCriticalCopyFinished() => _isCriticalFileFinised;
+
+    public void Pause()
+    {
+        lock (_key)
+        {
+            _continue = false;
+        }
+    }
+
+    public void Continue()
+    {
+        
+        _continue = true && _canARunJob(out string _);
+    }
+
+    public void Cancel()
+    {
+        lock (_key)
+        {
+            _cancel = true;
+            // inform to event listener that backup has finisihed;
+            _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
+            EventManager.GetInstance().Update(_backupInfo);
+            
+        }
+        
+            
+    }
+
+    public bool IsPause()
+    {
+       
+        return !_continue;
+    }
+
+    protected string CreateTimestampedFolder(string subFolderType)
+    {
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        var fullPath = Path.Combine(_savedJob.Destination, subFolderType, timestamp);
         Directory.CreateDirectory(fullPath);
         return fullPath;
     }
 
-    protected void _backupFile(string sourceFilePath, string destinationPath)   // Method to backup a single file, handling encryption if needed, and updating the backup status
+    /// <summary>
+    /// Method to backup a single file, handling encryption if needed, and updating the backup status
+    /// </summary>
+    protected void BackupFile(string sourceFilePath, string destinationPath)
     {
+        uint fileSize = 0;
+        bool isLargeFile = false;
+        Config config = Config.GetInstance();
+        string openedProcess;
+
         try
         {
+            if (!_canARunJob(out openedProcess) || !_continue)
+            {
+                JobManager.GetInstance().PauseJob(_savedJob);
+
+                _backupInfo.State = StateLevel.Paused;
+                _backupInfo.BlockingSoftwareName = openedProcess;
+                EventManager.GetInstance().Update(_backupInfo);
+
+                SpinWait.SpinUntil(() => _canARunJob(out openedProcess) && _continue);
+                JobManager.GetInstance().ContinueJob(_savedJob);
+
+                _backupInfo.State = StateLevel.Active;
+                _backupInfo.BlockingSoftwareName = string.Empty;
+                EventManager.GetInstance().Update(_backupInfo);
+            }
+
             // Prepare copy information
             CopyInfo copyInfo = new CopyInfo();
             copyInfo.Source = sourceFilePath;
-            copyInfo.Size = new FileInfo(sourceFilePath).Length;
+            fileSize = (uint) new FileInfo(sourceFilePath).Length;
+            copyInfo.Size = fileSize;
 
-            // Calculate relative path to maintain structure
-            string relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
+            isLargeFile = (fileSize > config.MaxParallelLargeFileSizeKo * 1024);
+            if (isLargeFile)
+            {
+                LargeFileSemaphore.Wait();
+            }
 
-            // Construct full target path using specific destination folder
-            string targetFilePath = Path.Combine(destinationPath, relativePath);
+            var relativePath = Path.GetRelativePath(_savedJob.Source, sourceFilePath);
 
+            var targetFilePath = Path.Combine(destinationPath, relativePath);
 
-            // Create destination directory if it doesn't exist
-            string? targetDirectory = Path.GetDirectoryName(targetFilePath);
+            var targetDirectory = Path.GetDirectoryName(targetFilePath);
             if (targetDirectory != null && !Directory.Exists(targetDirectory))
             {
                 Directory.CreateDirectory(targetDirectory);
             }
 
-            // Make copy with time
             copyInfo.StartTime = DateTime.Now;
 
-            // Check if the file need to be encrypt
-            Config config = Config.S_GetInstance();
             if (config.ExtensionsToEncrypt.Contains(Path.GetExtension(targetFilePath)))
             {
                 // Add .7z to the file path end Check Encrypt time
                 targetFilePath += ".7z";
                 DateTime temp = DateTime.Now;
-                _encryptFile(sourceFilePath, targetFilePath);
-                copyInfo.TimeToEncrypt = (int)(DateTime.Now - temp).TotalMicroseconds;
+                EncryptFile(sourceFilePath, targetFilePath);
+                copyInfo.TimeToEncrypt = (uint)(DateTime.Now - temp).TotalMicroseconds;
             }
             else
             {
@@ -76,20 +154,50 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
             }
             copyInfo.EndTime = DateTime.Now;
 
-            // Add File path after change it if the file is encrypt
             copyInfo.Destination = targetFilePath;
 
             // Notify observer
-            _updateStatus(copyInfo);
+            UpdateStatus(copyInfo);
         }
-        catch (Exception ex)    // Handle any exceptions that occur during the file backup process
+        // Handle any exceptions that occur during the file backup process
+        catch (Exception ex)
         {
             Console.WriteLine($"Error copying file {sourceFilePath}: {ex.Message}");
         }
+        finally
+        {
+            if (isLargeFile)
+            {
+                //Console.WriteLine($"[DEBUG] Fin transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
+                LargeFileSemaphore.Release();
+            }
+        }
     }
 
-    // To encrypt file with 7z (it work only if the 7za.exe is placed at the same emplacement that EasySave.exe
-    private void _encryptFile(string sourceFilePath, string targetFilePath) // Method to encrypt a file using 7-Zip, constructing the appropriate command-line arguments and handling the process execution
+    // Method to check if the source of the backup job is currently being used by another programm
+    private bool _canARunJob(out string processName)
+    {
+        Config conf = Config.GetInstance();
+        Process[] allProcesses = Process.GetProcesses();
+        processName = "";
+
+        foreach (Process process in allProcesses)
+        {
+            if (conf.Softwares.Contains(process.ProcessName))
+            {
+                processName = process.ProcessName;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Method to encrypt a file using 7-Zip, constructing the appropriate 
+    /// command-line arguments and handling the process execution (it work 
+    /// only if the 7za.exe is placed at the same emplacement that EasySave.exe)
+    /// </summary>
+    private void EncryptFile(string sourceFilePath, string targetFilePath)
     {
         // a = add (to add fie)
         // -t7z = 7z format
@@ -98,45 +206,68 @@ public abstract class Backup : IBackup  // Abstract class representing a backup 
         // -mx=1 = fast compression
         // -y = to remplace existing file
 
-        ProcessStartInfo p = new ProcessStartInfo();
-        p.FileName = _sevenZipPath;
-
-        p.Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"";
-
-        p.WindowStyle = ProcessWindowStyle.Hidden; // To hide black screen
-        p.CreateNoWindow = true;
-        p.UseShellExecute = false;
-
-        using (Process process = Process.Start(p))  // Start the 7z process with the specified arguments
+        ProcessStartInfo p = new()
         {
-            if (process != null)
-            {
-                process.WaitForExit(); // Wait the end of 7z encryptation
+            FileName = _sevenZipPath,
+            Arguments = $"a -t7z -p\"{_password}\" -mhe=on -mx=1 -y \"{targetFilePath}\" \"{sourceFilePath}\"",
+            WindowStyle = ProcessWindowStyle.Hidden, // To hide black screen
+            CreateNoWindow = true,
+            UseShellExecute = false
+        };
 
-                // Check if encryptation Wrk
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"7-Zip failed with exit code {process.ExitCode}");
-                }
+        using var process = Process.Start(p);
+        if (process != null)
+        {
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                throw new Exception($"7-Zip failed with exit code {process.ExitCode}");
             }
         }
     }
 
-    protected virtual string[] _getFilesList()
+    /// <summary>
+    /// Return all files to backup
+    /// </summary>
+    protected virtual string[] GetFilesList()
     {
-        // Return all files to backup
         return Directory.GetFiles(_savedJob.Source, "*", SearchOption.AllDirectories);
     }
-
-    protected void _updateStatus(CopyInfo newCopyInfo)  // Update the backup information and notify the EventManager
+    protected string[] SeparateCriticalFiles(out string[] notCriticalFiles)
     {
-        // Update general info
+        var criticalExtensions = Config.GetInstance().CriticalExtensions;
+        var allFiles = new List<string>(GetFilesList());
+        var criticalfiles = new List<string>(GetFilesList());
+
+        for (var i = allFiles.Count - 1; i >= 0; i--)
+        {
+            foreach (var extension in criticalExtensions)
+            {
+                if (allFiles[i].EndsWith(extension))
+                {
+                    criticalfiles.Add(allFiles[i]);
+                    allFiles.RemoveAt(i);
+                }
+            }
+        }
+
+        notCriticalFiles = [.. allFiles];
+        return [.. criticalfiles];
+        
+    }
+
+    /// <summary>
+    /// Update the backup information and notify the EventManager
+    /// </summary>
+    protected void UpdateStatus(CopyInfo newCopyInfo)
+    {
         _backupInfo.SavedJobInfo = _savedJob;
         _backupInfo.LastCopyInfo = _backupInfo.CurrentCopyInfo;
         _backupInfo.CurrentCopyInfo = newCopyInfo;
         _backupInfo.CurrentFile++;
 
-        // Notify Observer
         EventManager.GetInstance().Update(_backupInfo);
     }
+    
 }

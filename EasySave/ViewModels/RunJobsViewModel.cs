@@ -1,27 +1,29 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using EasySave.Models;
-using EasySave.Interfaces;
+using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using EasySave.Interfaces;
+using EasySave.Models;
 
 namespace EasySave.ViewModels;
 
-public class RunJobsViewModel : ViewModelBase
+public class RunJobsViewModel : ObservableObject
 {
     private bool _isDifferential = false;
     private string _password = string.Empty;
-    public SavedJob Job { get; }
-    
     private string _errorMessage = string.Empty;
-    
-    
-    public string ErrorMessage  // Property for error messages, with getter and setter that raises property change notifications. This is used to display validation errors when saving the job settings.
+    private bool _isMultipleSelection;
+    private string _displayTitle = string.Empty;
+
+    public SavedJob Job { get; }
+
+    public string ErrorMessage
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
     }
-    public string T_invalid_backup_id => _languageViewModel.GetTranslation("invalid_backup_id");
-    public string T_source_in_use => _languageViewModel.GetTranslation("source_in_use");
 
     public bool IsDifferential
     {
@@ -29,88 +31,94 @@ public class RunJobsViewModel : ViewModelBase
         set => SetProperty(ref _isDifferential, value);
     }
 
-    public LanguageViewModel _languageViewModel { get; } // Property for the language view model, used to get translations for the UI
-
-    public string Password   // Property for the password path, with getter and setter that raises property change notifications
+    public string Password
     {
         get => _password;
         set => SetProperty(ref _password, value);
     }
 
-    public string T_launch_save => _languageViewModel.GetTranslation("launch_save");
-    public string T_what_type_save => _languageViewModel.GetTranslation("what_type_save");
-    public string T_complete => _languageViewModel.GetTranslation("complete");
-    public string T_differential => _languageViewModel.GetTranslation("differential");
-    public string T_password => _languageViewModel.GetTranslation("password");
-    public string T_enter_password => _languageViewModel.GetTranslation("enter_password");
-    public string T_cancel => _languageViewModel.GetTranslation("cancel");
-    public string T_launch => _languageViewModel.GetTranslation("launch");
+    public bool IsMultipleSelection
+    {
+        get => _isMultipleSelection;
+    }
 
+    public string DisplayTitle
+    {
+        get => _displayTitle;
+    }
 
-
-
+    public LanguageViewModel LanguageViewModel { get; } = LanguageViewModel.GetInstance();
+    public string T_start_save => LanguageViewModel.GetTranslation("start_save");
+    public string T_save_type => LanguageViewModel.GetTranslation("save_type");
+    public string T_comp => LanguageViewModel.GetTranslation("comp");
+    public string T_confirm_diff => LanguageViewModel.GetTranslation("diff");
+    public string T_invalid_backup_id => LanguageViewModel.GetTranslation("invalid_backup_id");
+    public string T_source_in_use => LanguageViewModel.GetTranslation("source_in_use");
+    public string T_launch_save => LanguageViewModel.GetTranslation("launch_save");
+    public string T_what_type_save => LanguageViewModel.GetTranslation("what_type_save");
+    public string T_complete => LanguageViewModel.GetTranslation("complete");
+    public string T_differential => LanguageViewModel.GetTranslation("differential");
+    public string T_password => LanguageViewModel.GetTranslation("password");
+    public string T_enter_password => LanguageViewModel.GetTranslation("enter_password");
+    public string T_cancel => LanguageViewModel.GetTranslation("cancel");
+    public string T_launch => LanguageViewModel.GetTranslation("launch");
 
     public ICommand ConfirmCommand { get; }
     public ICommand CancelCommand { get; }
 
-    public event Action<bool>? OnResult; // true = Lancer, false = Annuler
+    public event Action<bool, bool, string>? OnResult;
 
-    public RunJobsViewModel(SavedJob job)   //constructor
+    // Constructor updated to handle multiple selection flag and count
+    public RunJobsViewModel(SavedJob job, bool isMultiple = false, string combinedNames = "")
     {
-        string dictionaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
-        _languageViewModel = LanguageViewModel.GetInstance(dictionaryPath);
         Job = job;
+        _isMultipleSelection = isMultiple;
+
+        // Set the title dynamically based on the execution mode
+        if (_isMultipleSelection && !string.IsNullOrEmpty(combinedNames))
+        {
+            _displayTitle = combinedNames;
+        }
+        else
+        {
+            _displayTitle = Job.Name;
+        }
+
         ConfirmCommand = new RelayCommand(() =>
         {
             try
             {
+                if (Job == null) throw new ArgumentException(T_invalid_backup_id);
+
+                // Check if password is valid
+                if (!IsPasswordValid(_password))
+                {
+                    ErrorMessage = LanguageViewModel.GetTranslation("password_policy");
+                    return;
+                }
+
                 ErrorMessage = string.Empty;
-                _runBackup();
+
+                // send data to MainWindowViewModel (Confirm: yes, Backup type, Password)
+                OnResult?.Invoke(true, IsDifferential, Password);
             }
             catch (Exception e)
             {
                 ErrorMessage = e.Message;
             }
         });
-        CancelCommand = new RelayCommand(() => OnResult?.Invoke(false));
-    }
-    
-    private void _runBackup()   //private method to run single backup
-    {
-        if (Job == null) throw new ArgumentException(T_invalid_backup_id);
-        if (!_canARunJon(out string openedProcess)) throw new Exception(T_source_in_use + " : " + openedProcess);
-        BackupInfo backupInfo = new BackupInfo() {SavedJobInfo = Job};
-        backupInfo.TotalFiles = 0;   //initialize total files to 0, will be updated in the backup process
 
-        if (IsDifferential)     //if backup type is differential, create a DiffBackup object and call its ExecuteBackup method
-        {
-            IBackup backup = new DiffBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
-        else if (!IsDifferential)
-        {
-            IBackup backup = new CompBackup(Job, backupInfo,_password);
-            backup.ExecuteBackup();
-        }
-
-        OnResult?.Invoke(true);
+        CancelCommand = new RelayCommand(() => OnResult?.Invoke(false, false, string.Empty));
     }
-    private bool _canARunJon(out string processName)  // Method to check if the source of the backup job is currently being used by another program, it gets the list of all running processes and checks if any of them has a main module that contains the source path of the backup job, if it finds one, it returns false, otherwise it returns true
+
+    // Check password policy
+    public static bool IsPasswordValid(string password)
     {
-        Config conf = Config.S_GetInstance();
-        Process[] allProcesses = Process.GetProcesses();
-        processName = "";
-        foreach (Process process in allProcesses)
-        {
-            if(conf.Softwares.Contains(process.ProcessName ))
-            {
-                processName =  process.ProcessName;
-                return false;
-            }
-            
-        }
-        
-        return true;
+        if (string.IsNullOrEmpty(password))
+            return false;
+
+        string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$";
+
+        return Regex.IsMatch(password, pattern);
     }
 }
-

@@ -1,0 +1,14 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: EasyLogAPI/Dockerfile
+    container_name: easylog_api
+    ports:
+      - "8080:8080"
+    volumes:
+      - easylog-data:/app/logs
+
+volumes:
+  easylog-data:
+    

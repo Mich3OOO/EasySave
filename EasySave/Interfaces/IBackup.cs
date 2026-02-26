@@ -1,7 +1,15 @@
 
 namespace EasySave.Interfaces;
 
-public interface IBackup    // Interface for backup operations
+/// <summary>
+/// Interface for backup operations
+/// </summary>
+public interface IBackup    
 {
-    void ExecuteBackup();
+    public void ExecuteBackup();
+    public bool isCriticalCopyFinished();
+    public void Pause();
+    public void Continue();
+    public void Cancel();
+    public bool IsPause();
 }

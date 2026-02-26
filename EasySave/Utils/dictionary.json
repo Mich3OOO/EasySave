@@ -1,4 +1,4 @@
-﻿{
+{
   "save_jobs": {
     "en": "Save Jobs",
     "fr": "Travaux de Sauvegarde"
@@ -22,6 +22,10 @@
   "logs_format": {
     "en": "Logs format",
     "fr": "Format des logs"
+  },
+  "logs_mods": {
+    "en": "Logs mod",
+    "fr": "Mode des logs"
   },
   "business_software": {
     "en": "Business software (pause the save job)",
@@ -89,7 +93,7 @@
   },
   "delete": {
     "en": "Delete",
-    "fr": "🗑️ Supprimer"
+    "fr": "Supprimer"
   },
   "invald_backup_id": {
     "en": "Invalid backup ID",
@@ -119,6 +123,14 @@
     "en": "⚠️ Error loading dictionary : ",
     "fr": "⚠️ Erreur lors du chargement du dictionnaire : "
   },
+  "error_bad_jobName": {
+    "en": "⚠️ Invalid job name",
+    "fr": "⚠️ Nom du travail invalide"
+  },
+  "error_bad_filesize": {
+    "en": "⚠️ invalid max file size",
+    "fr": "⚠️ Taille de fichier maximal invalide"
+  },
   "launch_save": {
     "en": "Launch Save",
     "fr": "Lancer la sauvegarde"
@@ -139,9 +151,13 @@
     "en": "Launch",
     "fr": "Démarrer"
   },
-  "error_path": {
-    "en": "⚠️ Invalid path destination ",
-    "fr": "⚠️ Chemin invalide"
+  "invalid_destination": {
+    "en": "⚠️ Invalid destination path ",
+    "fr": "⚠️ Chemin cible invalide"
+  },
+  "invalid_source": {
+    "en": "⚠️ Invalid source path ",
+    "fr": "⚠️ Chemin source invalide"
   },
   "what_type_save": {
     "en": "What type of save do you want to launch ?",
@@ -150,5 +166,65 @@
   "enter_password": {
     "en": "Enter the password",
     "fr": "Entrez le mot de passe"
+  },
+  "password_policy": {
+    "en": "The password does not comply with the policy: Minimum 12 characters, including at least one uppercase letter, lowercase letter, special character, and number.",
+    "fr": "Le mot de passe ne respecte pas la politique de sécurité : minimum 12 caractères, dont au moins une majuscule, une minuscule, un caractère spécial et un chiffre."
+  },
+  "!complete_backup": {
+    "en": "Can't find a complete backup",
+    "fr": "Nous ne pouvons pas trouver de sauvegarde complète"
+  },
+  "logs_mod_local": {
+    "en": "Local",
+    "fr": "Local"
+  },
+  "logs_mod_centralized": {
+    "en": "Centralized",
+    "fr": "Centralisé"
+  },
+  "logs_mod_both": {
+    "en": "Both",
+    "fr": "Local et centralisé"
+  },
+  "dark_mode": {
+    "en": "Dark Mode",
+    "fr": "Mode sombre"
+  },
+  "light_mode": {
+    "en": "Light Mode",
+    "fr": "Mode clair"
+  },
+  "api_url": {
+    "en": "URL of your API",
+    "fr": "URL de votre API"
+  },
+  "file_size": {
+    "en": "Large file threshold (KB)",
+    "fr": "Seuil fichier volumineux (Ko)"
+  },
+  "explain_file_size": {
+    "en": "Value at which a file is considered large",
+    "fr": "Valeur pour laquelle un fichier est considérer comme volumineux"
+  },
+  "critical_extensions": {
+    "en": "Critical files",
+    "fr": "Fichiers critiques"
+  },
+  "run_selection": {
+    "en": "Run the selection",
+    "fr": "Lancer la sélection"
+  },
+  "saves_progression": {
+    "en": "Saves progression",
+    "fr": "Progression des sauvegardes"
+  },
+  "finished": {
+    "en": "Finished ✅",
+    "fr": "Terminée ✅"
+  },
+  "clear_history": {
+    "en": "Clear history",
+    "fr": "Effacer l'historique"
   }
 }

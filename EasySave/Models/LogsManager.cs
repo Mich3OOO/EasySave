@@ -1,95 +1,111 @@
-using System;
-using EasySave.Interfaces;
 using EasyLog;
+using EasySave.Interfaces;
+using System.Text;
 
 namespace EasySave.Models;
 
-public class LogsManager : IEventListener   // Class representing the logs manager, implementing the IEventListener interface
+/// <summary>
+/// Class representing the logs manager, implementing the IEventListener interface
+/// </summary>
+public class LogsManager : IEventListener   
 {
+    private readonly Config _config = Config.GetInstance();
+    public LogsMods LogsMods { get; set; } = LogsMods.Both;
 
-    Config _config = Config.S_GetInstance();
-    private string _format;
-
-    // Constructor that automatically subscribes to EventManager
+    /// <summary>
+    /// Constructor that automatically subscribes to EventManager
+    /// </summary>
     public LogsManager()
     {
+        LogsMods = Config.GetInstance().LogsMods;
         EventManager.GetInstance().Subscribe(this);
     }
-    // Transform and transfer BackupInfos to Logger
+
+    /// <summary>
+    /// Transform and transfer BackupInfos to Logger
+    /// </summary>
     public void Update(BackupInfo data)
     {
-        string logText = ""; // Initializing the log text variable
-        LogsFormats format = _config.LogsFormat; // Retrieving the logs format from config
-        if (format == LogsFormats.Json) // If the format is JSON, transform the data into a JSON string
+        LogsFormats format = _config.LogsFormat;
+        string logText;
+        string formatExtension;
+        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null) return;
+        if (format == LogsFormats.Json)
         {
-            _format = "json";
-            logText = this._toJson(data);
+            formatExtension = "json";
+            logText = ToJson(data);
         }
-        if (format == LogsFormats.Xml) // If the format is XML, transform the data into an XML string
+        else if (format == LogsFormats.Xml)
         {
-            _format = "xml";
-            logText = this._toXml(data);
+            formatExtension = "xml";
+            logText = ToXml(data);
         }
-        if (format != LogsFormats.Json && format != LogsFormats.Xml) // If the format isn't reconized or sent, to Txt (default)
+        else
         {
-            _format = "txt";
-            logText = this._toTxt(data);
+            formatExtension = "unknown";
+            logText = ToTxt(data);
         }
-        Logger.GetInstance().Log(logText, _format);
+
+        LogsMods currentLogsMods = Config.GetInstance().LogsMods;
+        
+        // Gestion des modes
+        if (currentLogsMods == LogsMods.Local || currentLogsMods == LogsMods.Both)
+        {
+            Logger.GetInstance().Log(logText, formatExtension);
+        }
+        if (currentLogsMods == LogsMods.Centralized || currentLogsMods == LogsMods.Both)
+        {
+            _ = SendLogToApiAsync(logText, formatExtension, _config.API_URL); // fire-and-forget, pas d'attente
+        }
+        //Console.WriteLine("[LogsManager] Update: Fin");
     }
 
-    // Transform BackupInfo data into a JSON string
-    private string _toJson(BackupInfo data)
+    /// <summary>
+    /// Transform BackupInfo data into a JSON string
+    /// </summary>
+    private static string ToJson(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
         }
-        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
-        {
-            throw new ArgumentException("Invalid backup data structure.");
-        }
-        // Create 'JSON' string with infos from data
+
         return $@"{{
-           ""Name"": ""{data.SavedJobInfo.GetName()}"",
+           ""Name"": ""{data.SavedJobInfo.Name}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
            ""FileTarget"": ""{data.CurrentCopyInfo.Destination}"",
            ""FileSize"": {data.CurrentCopyInfo.Size},
            ""FileTransferTime"": {(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds},
            ""TimeToEncrypt"": {data.CurrentCopyInfo.TimeToEncrypt},
-           ""Time"": ""{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}""
+           ""Time"": ""{DateTime.Now:dd/MM/yyyy HH:mm:ss}""
          }}";
     }
 
-    // Transform BackupInfo data into a XML string
-    private string _toXml(BackupInfo data)
+    /// <summary>
+    /// Transform BackupInfo data into a XML string
+    /// </summary>
+    private static string ToXml(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
         }
-        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
-        {
-            throw new ArgumentException("Invalid backup data structure.");
-        }
-        // Create 'XML' string with infos from data
         return $@"<Log>
-                    <JobName>{data.SavedJobInfo.GetName()}</JobName>
+                    <JobName>{data.SavedJobInfo.Name}</JobName>
                     <FileSource>{data.CurrentCopyInfo.Source}</FileSource>
                     <FileTarget>{data.CurrentCopyInfo.Destination}</FileTarget>
                     <FileSize>{data.CurrentCopyInfo.Size}</FileSize>
                     <FileTransferTime>{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds}</FileTransferTime>
                     <TimeToEncrypt>{data.CurrentCopyInfo.TimeToEncrypt}</TimeToEncrypt>
-                    <Time>{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}</Time>
+                    <Time>{DateTime.Now:dd/MM/yyyy HH:mm:ss}</Time>
                 </Log>";
     }
 
-    // Transform BackupInfo data into a string
-    private string _toTxt(BackupInfo data)
+    /// <summary>
+    /// Transform BackupInfo data into a string
+    /// </summary>
+    private static string ToTxt(BackupInfo data)
     {
-        // Check if the data sent
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
@@ -98,7 +114,33 @@ public class LogsManager : IEventListener   // Class representing the logs manag
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-        // Create string with infos from data
-        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
+        return $@"[{data.SavedJobInfo.Name}] - time:{DateTime.Now:dd/MM/yyyy HH:mm:ss} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
+    }
+
+    /// <summary>
+    /// Centralization of logs in Docker
+    /// </summary>
+    public static async Task SendLogToApiAsync(string logContent, string format, string url)
+    {
+        try
+        {
+            using var httpClient = new HttpClient();
+            StringContent content;
+
+            if (format == "json")
+                content = new StringContent(logContent, Encoding.UTF8, "application/json");
+            else if (format == "xml")
+                content = new StringContent(logContent, Encoding.UTF8, "application/xml");
+            else
+                content = new StringContent(logContent, Encoding.UTF8, "text/plain");
+
+            HttpResponseMessage response = await httpClient.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors de l'envoi du log à l'API : {ex.Message}");
+        }
     }
 }
