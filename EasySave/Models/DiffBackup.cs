@@ -26,6 +26,14 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
         // Initialize the progress counter
         _backupInfo.TotalFiles = (uint) (notCriticalFiles.Length + criticalFiles.Length);
         _backupInfo.CurrentFile = 0;
+
+        if (_backupInfo.TotalFiles <= 0)
+        {
+            _backupInfo.TotalFiles = 1;
+            UpdateStatus(new CopyInfo(_backupInfo.SavedJobInfo.Destination,_backupInfo.SavedJobInfo.Source,DateTime.MinValue,0,DateTime.MinValue,0));
+            return;
+
+        }
         
         foreach (var file in criticalFiles)
         {
@@ -50,6 +58,9 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
                 BackupFile(file, destinationPath);
             }
         }
+        
+        
+        
     }
 
     /// <summary>
