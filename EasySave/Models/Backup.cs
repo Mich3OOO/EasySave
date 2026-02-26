@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using EasySave.Interfaces;
 using EasySave.ViewModels;
 
@@ -14,7 +15,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 {
     protected SavedJob _savedJob = savedJob;
     protected BackupInfo _backupInfo = backupInfo;
-    protected string _sevenZipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", "7za.exe");
+    protected string _sevenZipPath = _getCorrecte7zipVersion();
     private string _password = pw;
     
     private bool _continue = true;
@@ -27,6 +28,16 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     public void SetPassword(string password)
     {
         _password = password;
+    }
+
+    private static string _getCorrecte7zipVersion()
+    {
+        string binary = "7za.exe"; //windows binnary
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            binary = "7zz";
+        }
+        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CryptoSoft", binary);;
     }
 
     /// <summary>
@@ -46,7 +57,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
     public void Continue()
     {
         
-        _continue = true;
+        _continue = true && _canARunJob(out string _);
     }
 
     public void Cancel()
@@ -61,6 +72,12 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
         }
         
             
+    }
+
+    public bool IsPause()
+    {
+       
+        return !_continue;
     }
 
     protected string CreateTimestampedFolder(string subFolderType)
@@ -151,7 +168,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
         {
             if (isLargeFile)
             {
-                Console.WriteLine($"[DEBUG] Fin transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
+                //Console.WriteLine($"[DEBUG] Fin transfert gros fichier : {sourceFilePath} ({fileSize / 1024} Ko)");
                 LargeFileSemaphore.Release();
             }
         }

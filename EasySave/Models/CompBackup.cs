@@ -17,11 +17,9 @@ public class CompBackup : Backup
         var jobManager = JobManager.GetInstance();
 
         var criticalFiles = SeparateCriticalFiles(out var notCriticalFiles);
-        var files = GetFilesList();
 
         // Initialize the progress counter
         _backupInfo.TotalFiles = (uint) (notCriticalFiles.Length + criticalFiles.Length);
-        _backupInfo.TotalFiles = (uint) files.Length;
         _backupInfo.CurrentFile = 0;
 
         

@@ -63,6 +63,12 @@ public class JobManager : IEventListener
             _runningJobs.Remove(data.SavedJobInfo.Name);
         }
     }
+    
+    public bool IsPaused(SavedJob job)
+    {
+       return _runningJobs[job.Name].IsPause();
+        
+    }
 
     public bool canRunNotCriticalJobs()
     {

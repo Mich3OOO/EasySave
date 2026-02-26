@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
 using Avalonia;
 using Avalonia.Styling;
+using EasySave.Models.Exepctions;
 
 namespace EasySave.ViewModels;
 
@@ -33,7 +34,7 @@ public class SettingsViewModel : ObservableObject
     public string T_light_mode => LanguageViewModel.GetTranslation("light_mode");
     public string T_api_url => LanguageViewModel.GetTranslation("api_url");
     public string T_critical_extensions => LanguageViewModel.GetTranslation("critical_extensions");
-
+    public string ErrorMessage { get; set; } = "";
     /// <summary>
     /// Command to save the settings.
     /// </summary>
@@ -118,8 +119,8 @@ public class SettingsViewModel : ObservableObject
         }
     }
 
-    private uint _maxParallelLargeFileSizeKo;
-    public uint MaxParallelLargeFileSizeKo
+    private uint? _maxParallelLargeFileSizeKo;
+    public uint? MaxParallelLargeFileSizeKo
     {
         get => _maxParallelLargeFileSizeKo;
         set
@@ -162,18 +163,33 @@ public class SettingsViewModel : ObservableObject
     }
     private void Save()
     {
-        LanguageViewModel.SetLanguage(SelectedLanguage);
-        _config.Language = SelectedLanguage;
-        _config.LogsFormat = SelectedLogsFormats;
-        _config.ExtensionsToEncrypt = Extension.ToLower().Split(',');
-        _config.Softwares = Softwares.Split(',');
-        _config.LogsMods = SelectedLogsMods;
-        _config.CriticalExtensions = CriticalExtensions.ToLower().Split(',');
-        _config.API_URL = API_URL;
-        _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo;
-        _config.SaveConfig();
+        try
+        {
+            ErrorMessage = "";
+            LanguageViewModel.SetLanguage(SelectedLanguage);
+            _config.Language = SelectedLanguage;
+            _config.LogsFormat = SelectedLogsFormats;
+            _config.ExtensionsToEncrypt = Extension.ToLower().Split(',');
+            _config.Softwares = Softwares.Split(',');
+            _config.LogsMods = SelectedLogsMods;
+            _config.CriticalExtensions = CriticalExtensions.ToLower().Split(',');
+            _config.API_URL = API_URL;
+            _config.MaxParallelLargeFileSizeKo = MaxParallelLargeFileSizeKo ?? throw new UserException("error_bad_filesize");
+            _config.SaveConfig();
+            OnSaveRequested?.Invoke();
 
-        OnSaveRequested?.Invoke();
+        }
+        catch (UserException ex)
+        {
+            ErrorMessage = ex.Message;
+            OnPropertyChanged(nameof(ErrorMessage));
+            Console.WriteLine(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error {ex.Message}");
+        }
+        
     }
 
     private void Cancel()

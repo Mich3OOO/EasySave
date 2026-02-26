@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Models;
+using EasySave.Models.Exepctions;
 
 namespace EasySave.ViewModels;
 
@@ -93,9 +94,13 @@ public class JobSettingsViewModel : ObservableObject
 
             OnSaveRequested?.Invoke(job);
         }
+        catch (UserException ex)
+        {
+            ErrorMessage = ex.Message;
+        }
         catch (Exception)
         {
-            ErrorMessage = LanguageViewModel.GetTranslation("error_path");
+            Console.WriteLine($"Error saving job {_originalJob?.Name}");
         }
     }
 

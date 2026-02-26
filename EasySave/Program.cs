@@ -65,7 +65,7 @@ internal class Program
             var job = jobs.FirstOrDefault(j => j.Id == id);
             if (job == null)
             {
-                Console.WriteLine($"Job {id} not found.");
+                
                 continue;
             }
 

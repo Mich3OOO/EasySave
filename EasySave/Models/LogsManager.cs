@@ -29,6 +29,7 @@ public class LogsManager : IEventListener
         LogsFormats format = _config.LogsFormat;
         string logText;
         string formatExtension;
+        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null) return;
         if (format == LogsFormats.Json)
         {
             formatExtension = "json";
@@ -56,7 +57,7 @@ public class LogsManager : IEventListener
         {
             _ = SendLogToApiAsync(logText, formatExtension, _config.API_URL); // fire-and-forget, pas d'attente
         }
-        Console.WriteLine("[LogsManager] Update: Fin");
+        //Console.WriteLine("[LogsManager] Update: Fin");
     }
 
     /// <summary>
@@ -68,10 +69,7 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
         }
-        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
-        {
-            throw new ArgumentException("Invalid backup data structure.");
-        }
+
         return $@"{{
            ""Name"": ""{data.SavedJobInfo.Name}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
@@ -91,10 +89,6 @@ public class LogsManager : IEventListener
         if (data == null)
         {
             throw new ArgumentNullException(nameof(data), "Backup data cannot be null.");
-        }
-        if (data.SavedJobInfo == null || data.CurrentCopyInfo == null)
-        {
-            throw new ArgumentException("Invalid backup data structure.");
         }
         return $@"<Log>
                     <JobName>{data.SavedJobInfo.Name}</JobName>

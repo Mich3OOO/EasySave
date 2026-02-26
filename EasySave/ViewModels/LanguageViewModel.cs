@@ -23,7 +23,7 @@ public class LanguageViewModel
             {
                 if (_instance == null)
                 {
-                    var dictionaryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "Dictionary.json");
+                    var dictionaryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Utils", "dictionary.json");
                     _instance = new LanguageViewModel(dictionaryPath);
                 }
             }

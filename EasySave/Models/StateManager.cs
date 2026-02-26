@@ -48,6 +48,8 @@ public class StateManager : IEventListener
     /// </summary>
     public void Update(BackupInfo data) 
     {
+        if(data.CurrentCopyInfo is null || data.LastCopyInfo is null) return;
+        
         StateInfo? editedJobState = _states.FirstOrDefault(s => s.Name == data.SavedJobInfo.Name);
 
         if (editedJobState == null)
@@ -59,10 +61,12 @@ public class StateManager : IEventListener
             _states.Add(editedJobState);
         }
 
-        if (data.CurrentFile < data.TotalFiles)
+        
+
+        if (data.CurrentFile < data.TotalFiles )
         {
-            editedJobState.SourceFilePath = data.CurrentCopyInfo.Source;
-            editedJobState.TargetFilePath = data.CurrentCopyInfo.Destination;
+            editedJobState.SourceFilePath = data.CurrentCopyInfo?.Source ?? data.SavedJobInfo.Source;
+            editedJobState.TargetFilePath = data.CurrentCopyInfo?.Destination ?? data.SavedJobInfo.Destination;
             editedJobState.State = StateLevel.Active;
             editedJobState.TotalFilesToCopy = data.TotalFiles;
             editedJobState.TotalFilesSize = editedJobState.TotalFilesSize + data.CurrentCopyInfo.Size;

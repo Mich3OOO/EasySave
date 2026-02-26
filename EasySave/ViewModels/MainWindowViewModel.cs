@@ -290,28 +290,28 @@ public class MainWindowViewModel : ObservableObject
                     {
                         _progressWindow.Activate();
                     }
-
-                    await Task.Run(() =>
+                    
+                    try
                     {
-                        try
-                        {
-                            var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
+                        var backupInfo = new BackupInfo() { SavedJobInfo = job, TotalFiles = 0 };
 
-                            IBackup backup;
-                            if (isDiff)
-                                backup = new DiffBackup(job, backupInfo, password);
-                            else
-                                backup = new CompBackup(job, backupInfo, password);
+                        IBackup backup;
+                        if (isDiff && DiffBackup.ExistAnyCompBackup(job))
+                            backup = new DiffBackup(job, backupInfo, password);
+                        else
+                            backup = new CompBackup(job, backupInfo, password);
+                        
+                        Task.Run(() =>backup.ExecuteBackup());
 
-                            _jobManager.AddJob(job, backup);
+                        _jobManager.AddJob(job, backup);
 
-                            backup.ExecuteBackup();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[BACKUP ERROR] {ex.Message}");
-                        }
-                    });
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[BACKUP ERROR] {ex.Message}");
+                    }
+                    
                 }
             };
             CurrentViewModel = runJobVM;

@@ -129,23 +129,28 @@ public partial class JobProgressViewModel : ObservableObject, IEventListener
     [RelayCommand]
     private void TogglePause()
     {
-        IsPaused = !IsPaused;
-        OnPropertyChanged(nameof(PauseIcon));
-
-        // Get SavedJobs object by his name
         var jobToPause = Config.GetInstance().SavedJobs.FirstOrDefault(j => j.Name == JobName);
+        var jobManager = JobManager.GetInstance();
+        
+        OnPropertyChanged(nameof(PauseIcon));
+        // Get SavedJobs object by his name
+      
 
         if (jobToPause != null)
         {
-            if (IsPaused)
+            if (!IsPaused)
             {
-                JobManager.GetInstance().PauseJob(jobToPause);
+                jobManager.PauseJob(jobToPause);
             }
             else
             {
-                JobManager.GetInstance().ContinueJob(jobToPause);
+                jobManager.ContinueJob(jobToPause);
             }
+            
+            
         }
+        
+        IsPaused = jobManager.IsPaused(jobToPause);
     }
 
     [RelayCommand]

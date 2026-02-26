@@ -102,4 +102,11 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
 
         return [.. modifiedFiles];
     }
+
+    public static bool ExistAnyCompBackup(SavedJob savedJob)
+    {
+        var completeFolderPath = Path.Combine(savedJob.Destination, "Complete");
+        return Directory.Exists(completeFolderPath);
+
+    }
 }

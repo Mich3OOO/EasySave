@@ -76,17 +76,25 @@
 
                     <StackPanel Spacing="5">
                         <TextBlock Text="{Binding T_size_file}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="SemiBold"/>
-                        <TextBox Watermark="Ex: 10240"
-                                 Background="{DynamicResource ControlBackgroundBrush}"
-                                 BorderBrush="{DynamicResource BorderMediumBrush}"
-                                 Foreground="{DynamicResource TextPrimaryBrush}"
-                                 CornerRadius="6"
-                                 Text="{Binding MaxParallelLargeFileSizeKo}" />
-						    <StackPanel Orientation="Horizontal" Spacing="5">
-						        <TextBlock Text="⚠️" Classes="emoji" Foreground="{DynamicResource DangerTextBrush}" FontSize="12"/>
-						        <TextBlock Text="{Binding T_explain_file_size}" Foreground="{DynamicResource DangerTextBrush}" FontSize="11" FontStyle="Italic"/>
-						    </StackPanel>
+                        <NumericUpDown Watermark="Ex: 10240"
+                                       Background="{DynamicResource ControlBackgroundBrush}"
+                                       BorderBrush="{DynamicResource BorderMediumBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       CornerRadius="6"
+                                       Value="{Binding MaxParallelLargeFileSizeKo}"
+                                       Minimum="1"
+                                       Maximum="4294967295"/>
+						 
 						</StackPanel>
+                    
+                    <Separator Height="1" Background="{DynamicResource BorderMediumBrush}" Margin="0,5"/>
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                               Foreground="{DynamicResource DangerTextBrush}" 
+                               FontSize="12" 
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
                     <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
                         <Button Grid.Column="0" 

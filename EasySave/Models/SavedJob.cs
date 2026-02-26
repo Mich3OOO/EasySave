@@ -70,7 +70,7 @@ public class SavedJob
         get => _source;
         set
         {
-            if (!Path.Exists(value)) throw new UserException("invalid_destination");
+            if (!Path.Exists(value)) throw new UserException("invalid_source");
             _source = value;
         }
     }
