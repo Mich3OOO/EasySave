@@ -53,6 +53,17 @@ The following table details the evolution of features across the different itera
 * External Components :
   * `EasyLog.dll` : Logs managment library.
   * `CryptoSoft` : Third party encrypting software (7zip).
+ 
+## Building the documentation
+
+The documentation is generated with DocFX. You need to run these commands to install DocFX and generate the documentation :
+
+```
+dotnet tool install -g docfx
+docfx docfx.json --serve
+```
+
+Then go to `http://localhost:8080` in your browser.
 
 ## Centralized Logging with EasyLog API
 
