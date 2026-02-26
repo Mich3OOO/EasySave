@@ -2,7 +2,7 @@
 _layout: landing
 ---
 
-<img src="./docs/Images/EasySave_logo_white.png" alt="EasySave's logo" width="600" />   
+<img src="./Docs/Images/EasySave_logo_white.png" alt="EasySave's logo" width="600" />   
 
 # **Welcome to EasySave's Documentation**
 
