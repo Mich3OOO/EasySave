@@ -8,10 +8,6 @@ namespace EasySave.Test
     {
         private readonly Config _config = Config.GetInstance();
 
-        // Paths created with Path.Combine to avoid horrible errors
-        private static readonly string TempSrc = Path.Combine(Path.GetTempPath(), "src");
-        private static readonly string TempDst = Path.Combine(Path.GetTempPath(), "dst");
-
         [TestMethod]
         public void TestSetConfig()
         {
