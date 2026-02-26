@@ -118,8 +118,8 @@ public static class ConsoleRunner
         // 5. Large file threshold
         Console.WriteLine("Large file size threshold (KB) [10240]: ");
         var thresholdStr = Console.ReadLine();
-        int threshold = 10240;
-        if (!string.IsNullOrWhiteSpace(thresholdStr) && int.TryParse(thresholdStr, out int parsedThreshold))
+        uint threshold = 10240;
+        if (!string.IsNullOrWhiteSpace(thresholdStr) && uint.TryParse(thresholdStr, out uint parsedThreshold))
             threshold = parsedThreshold;
 
         // 6. Encrypt?

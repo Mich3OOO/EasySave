@@ -24,25 +24,31 @@ public class DiffBackup(SavedJob savedJob, BackupInfo backupInfo, string pw = ""
         
 
         // Initialize the progress counter
-        _backupInfo.TotalFiles = notCriticalFiles.Length + criticalFiles.Length;
+        _backupInfo.TotalFiles = (uint) (notCriticalFiles.Length + criticalFiles.Length);
         _backupInfo.CurrentFile = 0;
         
         foreach (var file in criticalFiles)
         {
-            if (_cancel) break;
-            BackupFile(file, destinationPath);
+            lock (_key)
+            {
+                if (_cancel) break;
+                BackupFile(file, destinationPath);
+            }
         }
         
         _isCriticalFileFinised = true;
 
         foreach (string file in notCriticalFiles)
         {
-            if (_cancel) break;
-            while (!jobManager.canRunNotCriticalJobs())
+            lock (_key)
             {
-                
+                if (_cancel) break;
+                while (!jobManager.canRunNotCriticalJobs())
+                {
+                    
+                }
+                BackupFile(file, destinationPath);
             }
-            BackupFile(file, destinationPath);
         }
     }
 

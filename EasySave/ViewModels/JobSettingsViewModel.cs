@@ -1,3 +1,4 @@
+﻿using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -87,8 +88,8 @@ public class JobSettingsViewModel : ObservableObject
 
             SavedJob job = _originalJob ?? new SavedJob();
             job.Name = Name;
-            job.SetSource(Source);
-            job.SetDestination(Destination);
+            job.Source = Source;
+            job.Destination = Destination;
 
             OnSaveRequested?.Invoke(job);
         }

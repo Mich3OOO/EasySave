@@ -123,6 +123,14 @@
     "en": "⚠️ Error loading dictionary : ",
     "fr": "⚠️ Erreur lors du chargement du dictionnaire : "
   },
+  "error_bad_jobName": {
+    "en": "⚠️ Invalid job name",
+    "fr": "⚠️ Nom du travail invalide"
+  },
+  "error_bad_filesize": {
+    "en": "⚠️ invalid max file size",
+    "fr": "⚠️ Taille de fichier maximal invalide"
+  },
   "launch_save": {
     "en": "Launch Save",
     "fr": "Lancer la sauvegarde"
@@ -143,9 +151,13 @@
     "en": "Launch",
     "fr": "Démarrer"
   },
-  "error_path": {
-    "en": "⚠️ Invalid path destination ",
-    "fr": "⚠️ Chemin invalide"
+  "invalid_destination": {
+    "en": "⚠️ Invalid destination path ",
+    "fr": "⚠️ Chemin cible invalide"
+  },
+  "invalid_source": {
+    "en": "⚠️ Invalid source path ",
+    "fr": "⚠️ Chemin source invalide"
   },
   "what_type_save": {
     "en": "What type of save do you want to launch ?",

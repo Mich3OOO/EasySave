@@ -73,7 +73,7 @@ public class LogsManager : IEventListener
             throw new ArgumentException("Invalid backup data structure.");
         }
         return $@"{{
-           ""Name"": ""{data.SavedJobInfo.GetName()}"",
+           ""Name"": ""{data.SavedJobInfo.Name}"",
            ""FileSource"": ""{data.CurrentCopyInfo.Source}"",
            ""FileTarget"": ""{data.CurrentCopyInfo.Destination}"",
            ""FileSize"": {data.CurrentCopyInfo.Size},
@@ -97,7 +97,7 @@ public class LogsManager : IEventListener
             throw new ArgumentException("Invalid backup data structure.");
         }
         return $@"<Log>
-                    <JobName>{data.SavedJobInfo.GetName()}</JobName>
+                    <JobName>{data.SavedJobInfo.Name}</JobName>
                     <FileSource>{data.CurrentCopyInfo.Source}</FileSource>
                     <FileTarget>{data.CurrentCopyInfo.Destination}</FileTarget>
                     <FileSize>{data.CurrentCopyInfo.Size}</FileSize>
@@ -120,7 +120,7 @@ public class LogsManager : IEventListener
         {
             throw new ArgumentException("Invalid backup data structure.");
         }
-        return $@"[{data.SavedJobInfo.GetName()}] - time:{DateTime.Now:dd/MM/yyyy HH:mm:ss} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
+        return $@"[{data.SavedJobInfo.Name}] - time:{DateTime.Now:dd/MM/yyyy HH:mm:ss} - source:{data.CurrentCopyInfo.Source} ; target:{data.CurrentCopyInfo.Destination} ; size:{data.CurrentCopyInfo.Size} ; transferTime:{(data.CurrentCopyInfo.EndTime - data.CurrentCopyInfo.StartTime).TotalMilliseconds} ; timeToEncrypt:{data.CurrentCopyInfo.TimeToEncrypt}";
     }
 
     /// <summary>
