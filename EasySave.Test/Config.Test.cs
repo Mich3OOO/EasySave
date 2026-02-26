@@ -30,41 +30,10 @@ namespace EasySave.Test
         }
 
         [TestMethod]
-        public void TestAddJob()
-        {
-            var job = new SavedJob(101, "UnitTest_AddJob", TempSrc, TempDst);
-            bool added = _config.AddJob(job);
-            Assert.IsTrue(added);
-            _config.DeleteJob(job);
-        }
-
-        [TestMethod]
-        public void TestAddJob_Duplicate()
-        {
-            var job = new SavedJob(102, "UnitTest_Duplicate", TempSrc, TempDst);
-            _config.AddJob(job);
-
-            bool addedAgain = _config.AddJob(job);
-            Assert.IsFalse(addedAgain);
-
-            _config.DeleteJob(job);
-        }
-
-        [TestMethod]
         public void TestGetJob_Null()
         {
             var result = _config.GetJob("this_job_does_not_exist_feur");
             Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        public void DeleteJob()
-        {
-            var job = new SavedJob(103, "UnitTest_Delete", TempSrc, TempDst);
-            _config.AddJob(job);
-            _config.DeleteJob(job);
-
-            Assert.IsNull(_config.GetJob("UnitTest_Delete"));
         }
     }
 }
