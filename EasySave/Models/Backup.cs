@@ -62,9 +62,10 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
 
     public void Cancel()
     {
+        _cancel = true;
         lock (_key)
         {
-            _cancel = true;
+            
             // inform to event listener that backup has finisihed;
             _backupInfo.TotalFiles = _backupInfo.CurrentFile; 
             EventManager.GetInstance().Update(_backupInfo);
@@ -108,7 +109,7 @@ public abstract class Backup(SavedJob savedJob, BackupInfo backupInfo, string pw
                 _backupInfo.BlockingSoftwareName = openedProcess;
                 EventManager.GetInstance().Update(_backupInfo);
 
-                SpinWait.SpinUntil(() => _canARunJob(out openedProcess) && _continue);
+                SpinWait.SpinUntil(() => (_canARunJob(out openedProcess) && _continue) || _cancel);
                 JobManager.GetInstance().ContinueJob(_savedJob);
 
                 _backupInfo.State = StateLevel.Active;
